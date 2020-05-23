@@ -7,10 +7,11 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class NewDoctor {
+public class Patient {
 
+    private String id;
     private String firstName;
     private String lastName;
-    private String speciality;
+    private String peselNumber;
     private String phoneNumber;
 }

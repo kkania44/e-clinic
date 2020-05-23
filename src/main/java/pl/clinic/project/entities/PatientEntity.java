@@ -26,6 +26,6 @@ public class PatientEntity {
     @Column(name = "PT_PESEL", nullable = false, length = 11, unique = true)
     private String peselNumber;
     @Column(name = "PT_PHONENUMBER", nullable = false, length = 9, unique = true)
-    private Integer phoneNumber;
+    private String phoneNumber;
 
 }
