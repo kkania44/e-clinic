@@ -28,5 +28,4 @@ public class PatientEntity {
     @Column(name = "PT_PHONENUMBER", nullable = false, length = 9, unique = true)
     private Integer phoneNumber;
 
-
 }
