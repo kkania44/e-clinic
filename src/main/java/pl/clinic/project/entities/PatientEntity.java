@@ -17,7 +17,7 @@ import javax.persistence.*;
 public class PatientEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "PT_ID", unique = true, nullable = false)
+    @Column(name = "PT_ID", unique = true)
     private Integer id;
     @Column(name = "PT_FIRSTNAME", nullable = false)
     private String firstName;
