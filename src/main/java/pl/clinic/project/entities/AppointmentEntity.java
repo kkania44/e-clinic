@@ -7,7 +7,8 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "appointments")
@@ -21,12 +22,17 @@ public class AppointmentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "AT_ID")
     private Integer id;
-    @Column(name = "DR_ID", nullable = false)
-    private Integer doctorId;
-    @Column(name = "PT_ID", nullable = false)
-    private Integer patientId;
+    @ManyToOne
+    @JoinColumn(name = "DOCTOR_ID")
+    private DoctorEntity doctor;
+    @ManyToOne
+    @JoinColumn(name = "PATIENT_ID")
+    private PatientEntity patient;
     @Column(name = "AT_DATE", nullable = false, unique = true)
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-    private Timestamp date;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate date;
+    @Column(name = "AT_TIME", nullable = false)
+    @DateTimeFormat(pattern = "HH:mm")
+    private LocalTime time;
 
 }
