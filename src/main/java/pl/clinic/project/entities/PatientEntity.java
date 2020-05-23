@@ -1,4 +1,4 @@
-package pl.clinic.project.entities.patients;
+package pl.clinic.project.entities;
 
 
 import lombok.AllArgsConstructor;
