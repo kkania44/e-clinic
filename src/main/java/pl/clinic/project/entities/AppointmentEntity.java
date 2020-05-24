@@ -23,10 +23,10 @@ public class AppointmentEntity {
     @Column(name = "AT_ID")
     private Integer id;
     @ManyToOne
-    @JoinColumn(name = "DOCTOR_ID")
+    @JoinColumn(name = "DR_ID")
     private DoctorEntity doctor;
     @ManyToOne
-    @JoinColumn(name = "PATIENT_ID")
+    @JoinColumn(name = "PT_ID")
     private PatientEntity patient;
     @Column(name = "AT_DATE", nullable = false, unique = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
