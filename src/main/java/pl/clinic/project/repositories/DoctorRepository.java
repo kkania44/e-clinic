@@ -1,4 +1,7 @@
 package pl.clinic.project.repositories;
 
-public class DoctorRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface DoctorRepository extends JpaRepository<DoctorRepository, Integer> {
+
 }

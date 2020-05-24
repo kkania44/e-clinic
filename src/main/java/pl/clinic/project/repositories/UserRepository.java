@@ -1,4 +1,8 @@
 package pl.clinic.project.repositories;
 
-public class UserRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import pl.clinic.project.entities.UserEntity;
+
+public interface UserRepository extends JpaRepository <UserEntity, Integer> {
+
 }
