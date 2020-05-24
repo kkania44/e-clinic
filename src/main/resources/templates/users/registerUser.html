@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>E-przychodnia - rejestracja</title>
+</head>
+<body>
+<form th:action="@{/users/add}" method="post" th:object="${user}">
+    E-mail: <input type="text" th:field="*{email}"><br>
+    Hasło: <input type="password" th:field="*{password}"><br>
+    <input type="submit" value="Zarejestruj się">
+</form>
+</body>
+</html>

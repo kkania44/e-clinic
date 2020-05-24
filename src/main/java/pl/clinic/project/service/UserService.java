@@ -25,7 +25,7 @@ public class UserService {
         UserEntity userEntity = UserEntity.builder()
                 .email(user.getEmail())
                 .password(passwordEncoder.encode(user.getPassword()))
-                .role(user.getRole().getName())
+                .role("USER_PATIENT")
                 .patient(null)
                 .doctor(null)
                 .build();

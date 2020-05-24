@@ -10,7 +10,7 @@ public class MvcLoginController {
 
     @GetMapping
     String loginPage() {
-        return "/login.html";
+        return "login.html";
     }
 
 }

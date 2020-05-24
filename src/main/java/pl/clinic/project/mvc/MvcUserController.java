@@ -15,15 +15,18 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/users")
-@RequiredArgsConstructor
 public class MvcUserController {
 
     private UserService userService;
 
+    public MvcUserController(UserService userService) {
+        this.userService = userService;
+    }
+
     @GetMapping("/add")
     ModelAndView addUserPage() {
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("users/addUser.html");
+        mav.setViewName("users/registerUser.html");
         mav.addObject("user", new User());
         return mav;
     }

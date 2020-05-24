@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>E-przychodnia - Zaloguj się</title>
+</head>
+<body>
+<form th:action="@{/authenticate}" method="post">
+    E-mail: <input type="text" id="email" name="email"><br>
+    Hasło: <input type="password" id="password" name="password"><br>
+    <input type="submit" value="Zaloguj się">
+</form>
+</body>
+</html>
