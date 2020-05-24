@@ -30,10 +30,12 @@ public class UserEntity {
     @Column(name = "US_ROLE")
     private UserRole role;
 
-    @Column(name = "US_PATIENT_ID")
-    private Integer patientId;
+    @OneToOne
+    @JoinColumn(name="PT_ID")
+    private PatientEntity patient;
 
-    @Column(name = "US_DOCTOR_ID")
-    private Integer doctorId;
+    @OneToOne
+    @JoinColumn(name = "DR_ID")
+    private DoctorEntity doctor;
 
 }
