@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 public class Patient {
 
-    private String id;
+    private Integer id;
     private String firstName;
     private String lastName;
     private String peselNumber;
