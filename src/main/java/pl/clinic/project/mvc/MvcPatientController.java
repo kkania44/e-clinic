@@ -4,10 +4,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import pl.clinic.project.model.Patient;
 import pl.clinic.project.service.PatientService;
@@ -25,7 +22,6 @@ public class MvcPatientController {
     }
 
     @GetMapping("/addPatient")
-    @PreAuthorize("hasRole('USER_PATIENT')")
     ModelAndView addNewPatientPage() {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("#");
@@ -34,7 +30,6 @@ public class MvcPatientController {
     }
 
     @PostMapping("/addPatient")
-    @PreAuthorize("hasRole('USER_PATIENT')")
     String addNewPatient (@Valid @ModelAttribute("patient") Patient patient, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("errors", bindingResult.getAllErrors());
@@ -44,4 +39,18 @@ public class MvcPatientController {
         patientService.createPatient(patient);
         return "redirect:/login";
     }
+
+    @GetMapping("/updatePatient/{id}")
+    ModelAndView updatePatientPage(@PathVariable Integer id) {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("#");
+
+        Patient patient = patientService.getById(id).get();
+        mav.addObject("patient", patient);
+
+        return mav;
+    }
+
+    @PostMapping("/updatePatient")
+
 }
