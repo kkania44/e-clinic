@@ -20,5 +20,7 @@ public class User {
     private String email;
     private String password;
     private UserRole role;
+    private Integer patientId;
+    private Integer doctorId;
 
 }
