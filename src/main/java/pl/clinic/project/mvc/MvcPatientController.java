@@ -1,5 +1,6 @@
 package pl.clinic.project.mvc;
 
+import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -67,6 +68,8 @@ public class MvcPatientController {
 
     @GetMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
+
+    //TODO poprawić metodę żeby wyświetlała tylko dane aktualnie zalogowanego pacjenta
     ModelAndView showPatientData(@PathVariable Integer id) {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("#");
