@@ -7,10 +7,10 @@ public enum UserRole {
 
     ADMIN("ADMIN"), USER_DOCTOR("USER_DOCTOR"), USER_PATIENT("USER_DOCTOR");
 
-    private UserRole(String role) {
-        this.role = role;
+    private UserRole(String name) {
+        this.name = name;
     }
 
-    private String role;
+    private String name;
 
 }
