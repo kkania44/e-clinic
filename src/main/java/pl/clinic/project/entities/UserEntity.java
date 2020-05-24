@@ -1,9 +1,6 @@
 package pl.clinic.project.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import pl.clinic.project.UserRole;
 
 import javax.persistence.*;
@@ -12,6 +9,7 @@ import javax.persistence.*;
 @Table(name = "users")
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserEntity {
@@ -28,7 +26,7 @@ public class UserEntity {
     private String password;
 
     @Column(name = "US_ROLE")
-    private UserRole role;
+    private String role;
 
     @OneToOne
     @JoinColumn(name="PT_ID")

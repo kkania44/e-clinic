@@ -26,7 +26,7 @@ public class SecurityUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         List<GrantedAuthority> roles = new ArrayList<>();
-        roles.add(new SimpleGrantedAuthority("ROLE_"+ user.getRole().getName()));
+        roles.add(new SimpleGrantedAuthority("ROLE_"+ user.getRole()));
 
         return new User(email, user.getPassword(), roles);
     }
