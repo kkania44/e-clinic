@@ -1,7 +1,36 @@
 package pl.clinic.project.service;
 
 import org.springframework.stereotype.Service;
+import pl.clinic.project.entities.AppointmentEntity;
+import pl.clinic.project.entities.DoctorEntity;
+import pl.clinic.project.entities.PatientEntity;
+import pl.clinic.project.mapper.AppointmentMapper;
+import pl.clinic.project.model.Appointment;
+import pl.clinic.project.repositories.AppointmentRepository;
+import pl.clinic.project.repositories.DoctorRepository;
+import pl.clinic.project.repositories.PatientRepository;
 
 @Service
 public class AppointmentService {
+
+    private AppointmentRepository appointmentRepository;
+    private DoctorRepository doctorRepository;
+    private PatientRepository patientRepository;
+    private AppointmentMapper mapper;
+
+    public AppointmentService(AppointmentRepository appointmentRepository, DoctorRepository doctorRepository,
+                              PatientRepository patientRepository, AppointmentMapper mapper) {
+        this.appointmentRepository = appointmentRepository;
+        this.doctorRepository = doctorRepository;
+        this.patientRepository = patientRepository;
+        this.mapper = mapper;
+    }
+
+    public void createAppointment(Appointment appointment) {
+        DoctorEntity doctor = doctorRepository.findById(appointment.getDoctorId()).get();
+        PatientEntity patient = patientRepository.findById(appointment.getPatientId()).get();
+        AppointmentEntity appointmentEntity = mapper.mapToEntity(appointment, doctor, patient);
+        appointmentRepository.save(appointmentEntity);
+    }
+
 }
