@@ -2,8 +2,6 @@ package pl.clinic.project.model;
 
 import lombok.*;
 import org.hibernate.validator.constraints.pl.PESEL;
-import pl.clinic.project.validator.PeselNumberValidator;
-import pl.clinic.project.validator.ValidPeselNumber;
 
 @ToString
 @Getter
