@@ -1,4 +1,4 @@
 package pl.clinic.project.service;
 
-public class AppointmentEntity {
+public class AppointmentService {
 }
