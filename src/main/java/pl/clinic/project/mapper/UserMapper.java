@@ -14,7 +14,7 @@ public class UserMapper {
     }
 
     public UserEntity mapToEntity(User user) {
-        return new UserEntity(null, user.getEmail(), user.getPassword(), user.getRole()), user.getPatientId(), user.getDoctorId();
+        return new UserEntity(null, user.getEmail(), user.getPassword(), user.getRole(), user.getPatientId(), user.getDoctorId());
     }
 
 }
