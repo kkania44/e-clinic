@@ -35,7 +35,7 @@ public class MvcUserController {
             return "error.html";
         }
         userService.registerUser(user);
-        return "redirec:/login";
+        return "redirect:/login";
     }
 
     @GetMapping
