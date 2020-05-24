@@ -39,6 +39,7 @@ public class MvcUserController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     ModelAndView getAllUsers() {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("users/users.html");
