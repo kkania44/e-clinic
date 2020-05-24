@@ -25,6 +25,6 @@ public class DoctorEntity {
     private String lastName;
     @Column(name = "DR_SPECIALITY", nullable = false)
     private String speciality;
-    @Column(name = "DR_PHONENUMBER", nullable = false, unique = true, length = 9)
+    @Column(name = "DR_PHONENUMBER", nullable = false, unique = true)
     private String phoneNumber;
 }

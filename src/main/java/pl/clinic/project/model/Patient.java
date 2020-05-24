@@ -2,6 +2,7 @@ package pl.clinic.project.model;
 
 import lombok.*;
 import org.hibernate.validator.constraints.pl.PESEL;
+import pl.clinic.project.validator.PhoneNumber;
 
 @ToString
 @Getter
@@ -16,5 +17,6 @@ public class Patient {
 
     @PESEL
     private String peselNumber;
+    @PhoneNumber
     private String phoneNumber;
 }

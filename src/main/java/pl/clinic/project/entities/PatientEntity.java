@@ -23,7 +23,7 @@ public class PatientEntity {
     private String lastName;
     @Column(name = "PT_PESEL", nullable = false, length = 11, unique = true)
     private String peselNumber;
-    @Column(name = "PT_PHONENUMBER", nullable = false, length = 9, unique = true)
+    @Column(name = "PT_PHONENUMBER", nullable = false, unique = true)
     private String phoneNumber;
 
 }
