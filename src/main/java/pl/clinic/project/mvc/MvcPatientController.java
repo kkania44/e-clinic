@@ -22,6 +22,7 @@ public class MvcPatientController {
     }
 
     @GetMapping("/addPatient")
+    @PreAuthorize("isAuthenticated()")
     ModelAndView addNewPatientPage() {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("#");
@@ -30,6 +31,7 @@ public class MvcPatientController {
     }
 
     @PostMapping("/addPatient")
+    @PreAuthorize("isAuthenticated()")
     String addNewPatient (@Valid @ModelAttribute("patient") Patient patient, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("errors", bindingResult.getAllErrors());
@@ -41,6 +43,7 @@ public class MvcPatientController {
     }
 
     @GetMapping("/updatePatient/{id}")
+    @PreAuthorize("hasRole('USER_PATIENT')")
     ModelAndView updatePatientPage(@PathVariable Integer id) {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("#");
@@ -52,6 +55,7 @@ public class MvcPatientController {
     }
 
     @PostMapping("/updatePatient")
+    @PreAuthorize("hasRole('USER_PATIENT')")
     String updatePatient(@Valid @ModelAttribute("patient") Patient patient, BindingResult bindingResult) {
         if (bindingResult.hasErrors()){
             return "error.html";
@@ -59,6 +63,15 @@ public class MvcPatientController {
 
         patientService.updatePatient(patient);
         return "redirect:/mainPage";
+    }
+
+    @GetMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
+    ModelAndView showPatientData(@PathVariable Integer id) {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("#");
+        mav.addObject("patient", patientService.getById(id).get());
+        return mav;
     }
 
 }
