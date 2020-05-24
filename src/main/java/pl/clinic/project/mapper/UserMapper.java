@@ -10,7 +10,7 @@ public class UserMapper {
     }
 
     public UserEntity mapToEntity(User user) {
-        return new UserEntity(user.getId(), user.getEmail(), user.getPassword(), user.getRole());
+        return new UserEntity(null, user.getEmail(), user.getPassword(), user.getRole());
     }
 
 }

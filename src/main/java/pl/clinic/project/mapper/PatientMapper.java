@@ -11,7 +11,7 @@ public class PatientMapper {
     }
 
     public PatientEntity mapToEntity(Patient patient) {
-        return new PatientEntity(patient.getId(), patient.getFirstName(), patient.getLastName(),
+        return new PatientEntity(null , patient.getFirstName(), patient.getLastName(),
                 patient.getPeselNumber(), patient.getPhoneNumber());
     }
 

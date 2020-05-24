@@ -6,7 +6,7 @@ import pl.clinic.project.model.Doctor;
 public class DoctorMapper {
 
     public DoctorEntity mapToEntity(Doctor doctor) {
-        return new DoctorEntity(doctor.getId(), doctor.getFirstName(), doctor.getLastName(),
+        return new DoctorEntity(null, doctor.getFirstName(), doctor.getLastName(),
                 doctor.getSpeciality(), doctor.getPhoneNumber());
     }
 
