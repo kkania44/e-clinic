@@ -52,5 +52,13 @@ public class MvcPatientController {
     }
 
     @PostMapping("/updatePatient")
+    String updatePatient(@Valid @ModelAttribute("patient") Patient patient, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()){
+            return "error.html";
+        }
+
+        patientService.updatePatient(patient);
+        return "redirect:/mainPage";
+    }
 
 }
