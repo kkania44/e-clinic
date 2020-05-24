@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.clinic.project.UserRole;
 
+import javax.validation.constraints.Email;
+
 
 @Getter
 @Setter
@@ -14,6 +16,7 @@ import pl.clinic.project.UserRole;
 public class User {
 
     private Integer id;
+    @Email
     private String email;
     private String password;
     private UserRole role;
