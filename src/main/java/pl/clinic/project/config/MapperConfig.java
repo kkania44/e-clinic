@@ -2,6 +2,7 @@ package pl.clinic.project.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import pl.clinic.project.mapper.AppointmentMapper;
 import pl.clinic.project.mapper.DoctorMapper;
 import pl.clinic.project.mapper.PatientMapper;
 import pl.clinic.project.mapper.UserMapper;
@@ -21,6 +22,11 @@ public class MapperConfig {
     @Bean
     UserMapper userMapper() {
         return new UserMapper();
+    }
+
+    @Bean
+    AppointmentMapper appointmentMapper() {
+        return new AppointmentMapper();
     }
 
 }
