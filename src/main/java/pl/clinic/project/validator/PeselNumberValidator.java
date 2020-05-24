@@ -10,4 +10,6 @@ public class PeselNumberValidator implements ConstraintValidator<ValidPeselNumbe
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
         return false;
     }
+
+
 }

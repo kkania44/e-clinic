@@ -1,6 +1,8 @@
 package pl.clinic.project.model;
 
 import lombok.*;
+import pl.clinic.project.validator.PeselNumberValidator;
+import pl.clinic.project.validator.ValidPeselNumber;
 
 @ToString
 @Getter
