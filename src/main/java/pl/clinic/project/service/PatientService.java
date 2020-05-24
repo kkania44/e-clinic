@@ -1,8 +1,9 @@
 package pl.clinic.project.service;
 
-import javassist.NotFoundException;
+
 import org.springframework.stereotype.Service;
 import pl.clinic.project.entities.PatientEntity;
+import pl.clinic.project.exception.NotFoundException;
 import pl.clinic.project.mapper.PatientMapper;
 import pl.clinic.project.model.Patient;
 import pl.clinic.project.repositories.PatientRepository;
@@ -29,9 +30,9 @@ public class PatientService {
     }
 
     @Transactional
-    public void updatePatient (Patient patient) throws NotFoundException {
+    public void updatePatient (Patient patient){
         PatientEntity patientToUpdate = patientRepository.findById(patient.getId())
-                .orElseThrow( () -> new NotFoundException(String.format("Nie znaleziono pacjenta o id " + patient.getId())));
+                .orElseThrow( () -> new NotFoundException("Nie znaleziono pacjenta o id " + patient.getId()));
     patientToUpdate.setPhoneNumber(patient.getPhoneNumber());
     }
 
