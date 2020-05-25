@@ -28,6 +28,6 @@ public class SecurityUserDetailsService implements UserDetailsService {
         List<GrantedAuthority> roles = new ArrayList<>();
         roles.add(new SimpleGrantedAuthority("ROLE_"+ user.getRole()));
 
-        return new User(email, user.getPassword(), roles);
+        return new User(user.getEmail(), user.getPassword(), roles);
     }
 }
