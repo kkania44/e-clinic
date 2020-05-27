@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import pl.clinic.project.entities.UserEntity;
 import pl.clinic.project.service.UserService;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -36,7 +35,7 @@ public class MvcLoginController {
         UserEntity user = userService.getByEmail(email).get();
         HttpSession session = httpSessionFactory.getObject();
         session.setAttribute("userId", user.getId());
-        return "redirect:/userId";
+        return "redirect:/patients/addPatient";
     }
 
 }

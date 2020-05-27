@@ -27,7 +27,7 @@ public class MvcPatientController {
     @PreAuthorize("isAuthenticated()")
     ModelAndView addNewPatientPage() {
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("#");
+        mav.setViewName("patients/addPatient.html");
         mav.addObject("patient", new Patient());
         return mav;
     }
