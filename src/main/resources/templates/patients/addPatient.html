@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>E-przychodnia - nowy pacjent</title>
+</head>
+<body>
+<form th:action="@{/patients/addPatient}" method="post" th:object="${patient}">
+    Imię: <input type="text" th:field="*{firstName}"><br>
+    Nazwisko: <input type="text" th:field="*{lastName}"><br>
+    PESEL: <input type="text" th:field="*{peselNumber}"><br>
+    Numer telefonu: <input type="text" th:field="*{phoneNumber}"><br>
+    <input type="submit" value="Zatwierdź">
+</form>
+</body>
+</html>

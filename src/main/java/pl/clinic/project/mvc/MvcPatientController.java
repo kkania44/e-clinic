@@ -40,7 +40,7 @@ public class MvcPatientController {
         }
 
         patientService.createPatient(patient);
-        return "redirect:/login";
+        return "redirect:/patients/patientPanel.html";
     }
 
     @GetMapping("/updatePatient/{id}")
