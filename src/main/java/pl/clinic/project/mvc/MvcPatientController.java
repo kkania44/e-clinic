@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import pl.clinic.project.model.Patient;
 import pl.clinic.project.service.PatientService;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
@@ -68,8 +69,7 @@ public class MvcPatientController {
 
     @GetMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
-
-    //TODO poprawić metodę żeby wyświetlała tylko dane aktualnie zalogowanego pacjenta
+        //TODO poprawić metodę żeby wyświetlała tylko dane aktualnie zalogowanego pacjenta
     ModelAndView showPatientData(@PathVariable Integer id) {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("#");
