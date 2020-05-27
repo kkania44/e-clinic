@@ -9,8 +9,10 @@ import pl.clinic.project.mapper.UserMapper;
 import pl.clinic.project.model.User;
 import pl.clinic.project.repositories.UserRepository;
 
+import javax.servlet.http.HttpSession;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,6 +38,10 @@ public class UserService {
         return userRepository.findAll().stream()
                 .map(mapper::mapToApi)
                 .collect(Collectors.toList());
+    }
+
+    public Optional<UserEntity> getByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     public void deleteUser(Integer id){
