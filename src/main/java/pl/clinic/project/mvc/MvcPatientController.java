@@ -41,7 +41,13 @@ public class MvcPatientController {
         }
 
         patientService.createPatient(patient);
-        return "redirect:/patients/patientPanel.html";
+        return "redirect:/patients/patientPanel";
+    }
+
+    @GetMapping("/patientPanel")
+    @PreAuthorize("hasRole('USER_PATIENT')")
+    String patientPanelPage() {
+        return "patients/patientPanel.html";
     }
 
     @GetMapping("/updatePatient/{id}")

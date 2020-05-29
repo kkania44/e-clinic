@@ -15,7 +15,7 @@ public class Patient {
     private String firstName;
     private String lastName;
 
-    @PESEL
+//    @PESEL
     private String peselNumber;
     @PhoneNumber
     private String phoneNumber;
