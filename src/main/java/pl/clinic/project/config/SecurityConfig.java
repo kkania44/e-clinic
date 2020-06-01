@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -24,8 +25,6 @@ import pl.clinic.project.service.SecurityUserDetailsService;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final SecurityUserDetailsService userDetailsService;
-    @Autowired
-    private SecurityHandler successHandler;
 
     @Bean
     @Primary
@@ -50,10 +49,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers("/**").permitAll()
                 .and()
-                    .formLogin()
-                    .loginPage("/login")
-                    .successHandler(successHandler)
-                    .defaultSuccessUrl("/userId")
+                .formLogin()
+                .loginPage("/login")
+                .loginProcessingUrl("/authenticate")
+                .defaultSuccessUrl("/patients/patientPanel")
                 .and()
                     .logout()
                     .logoutUrl("/logout")

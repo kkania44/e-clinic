@@ -5,7 +5,7 @@
     <title>E-przychodnia - Zaloguj się</title>
 </head>
 <body>
-<form th:action="@{/login/sessionData}" method="post">
+<form th:action="@{/authenticate}" method="post">
     E-mail: <input type="text" id="username" name="username"><br>
     Hasło: <input type="password" id="password" name="password"><br>
     <input type="submit" value="Zaloguj się">

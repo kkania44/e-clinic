@@ -2,25 +2,32 @@ package pl.clinic.project.mvc;
 
 import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import pl.clinic.project.entities.UserEntity;
 import pl.clinic.project.model.Patient;
 import pl.clinic.project.service.PatientService;
+import pl.clinic.project.service.UserService;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/patients")
+@SessionAttributes("user")
 public class MvcPatientController {
 
     private final PatientService patientService;
+    private final UserService userService;
 
-    public MvcPatientController(PatientService patientService) {
+    public MvcPatientController(PatientService patientService, UserService userService) {
         this.patientService = patientService;
+        this.userService=userService;
     }
 
     @GetMapping("/addPatient")
@@ -46,8 +53,13 @@ public class MvcPatientController {
 
     @GetMapping("/patientPanel")
     @PreAuthorize("hasRole('USER_PATIENT')")
-    String patientPanelPage() {
-        return "patients/patientPanel.html";
+    String patientPanelPage(Model model) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        System.out.println(name);
+        UserEntity user = userService.getByEmail(name).get();
+        model.addAttribute("user", user);return "patients/patientPanel.html";
     }
 
     @GetMapping("/updatePatient/{id}")
@@ -73,13 +85,13 @@ public class MvcPatientController {
         return "redirect:/mainPage";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{Id}")
     @PreAuthorize("isAuthenticated()")
         //TODO poprawić metodę żeby wyświetlała tylko dane aktualnie zalogowanego pacjenta
     ModelAndView showPatientData(@PathVariable Integer id) {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("#");
-        mav.addObject("patient", patientService.getById(id).get());
+        mav.addObject("patient", patientService.getById((id)));
         return mav;
     }
 

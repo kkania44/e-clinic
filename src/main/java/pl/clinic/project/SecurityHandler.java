@@ -19,7 +19,7 @@ public class SecurityHandler implements AuthenticationSuccessHandler {
                                         Authentication authentication) throws IOException, ServletException {
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
         if(roles.contains(UserRole.USER_PATIENT.getName())){
-            httpServletResponse.sendRedirect("/login/sessionData");
+            httpServletResponse.sendRedirect("/patients/patientPanel");
         }
     }
 }

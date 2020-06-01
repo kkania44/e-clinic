@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>E-przychodnia - nowy pacjent</title>
 </head>
 <body>
+    <p th:text="${session.user.id}"> userId:  </p>
+
+
 <form th:action="@{/patients/addPatient}" method="post" th:object="${patient}">
     Imię: <input type="text" th:field="*{firstName}"><br>
     Nazwisko: <input type="text" th:field="*{lastName}"><br>
