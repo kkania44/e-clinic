@@ -7,7 +7,8 @@
 <body>
     <h4>Panel Pacjenta</h4>
     userid:
-    <h4 th:text="${session.userId}"></h4>
+    <span th:text="${session.user.id}"></span>
+    <br>
     <a href="/logout">Wyloguj się</a>
 </body>
 </html>

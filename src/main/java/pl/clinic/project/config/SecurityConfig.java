@@ -1,6 +1,7 @@
 package pl.clinic.project.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -12,6 +13,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import pl.clinic.project.SecurityHandler;
 import pl.clinic.project.service.SecurityUserDetailsService;
 
 @Configuration
@@ -21,6 +24,8 @@ import pl.clinic.project.service.SecurityUserDetailsService;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final SecurityUserDetailsService userDetailsService;
+    @Autowired
+    private SecurityHandler successHandler;
 
     @Bean
     @Primary
@@ -47,8 +52,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .formLogin()
                     .loginPage("/login")
-                    .loginProcessingUrl("/login/sessionData")
-                    .defaultSuccessUrl("/patients/addPatient")
+                    .successHandler(successHandler)
+                    .defaultSuccessUrl("/userId")
                 .and()
                     .logout()
                     .logoutUrl("/logout")
