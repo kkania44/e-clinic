@@ -24,9 +24,9 @@ public class PatientService {
         this.patientMapper = mapper;
     }
 
-    public void createPatient(Patient patient) {
+    public PatientEntity createPatient(Patient patient) {
         PatientEntity patientToAdd = patientMapper.mapToEntity(patient);
-        patientRepository.save(patientToAdd);
+        return patientRepository.save(patientToAdd);
     }
 
     @Transactional
