@@ -18,7 +18,7 @@ import pl.clinic.project.service.PatientService;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/doctorsPanel")
+@RequestMapping("/doctors")
 public class MvcDoctorController {
 
     private final DoctorService doctorService;
@@ -31,21 +31,22 @@ public class MvcDoctorController {
     @PreAuthorize("hasRole('ADMIN')")
     ModelAndView addNewDoctorPage() {
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("#");
+        mav.setViewName("admin/addDoctor.html");
         mav.addObject("doctor", new Doctor());
         return mav;
     }
 
-    @PostMapping("/addPatient")
+
+    @PostMapping("/addDoctor")
     @PreAuthorize("hasRole('ADMIN')")
-    String addNewPatient (@Valid @ModelAttribute("patient") Doctor doctor, BindingResult bindingResult, Model model) {
+    String addNewDoctor(@Valid @ModelAttribute("doctor") Doctor doctor, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("errors", bindingResult.getAllErrors());
             return "error.html";
         }
 
         doctorService.createDoctor(doctor);
-        return "redirect:/adminPanel";
+        return "redirect:/users/admin";
     }
 
 

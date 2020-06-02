@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Nowy doktor</title>
+</head>
+<body>
+<form th:action="@{/doctors/addDoctor}" method="post" th:object="${doctor}">
+    Imię: <input type="text" th:field="*{firstName}"><br>
+    Nazwisko: <input type="text" th:field="*{lastName}"><br>
+    Specjalizacja: <input type="text"  th:field="*{speciality}"><br>
+    Numer telefonu: <input type="text" th:field="*{phoneNumber}"><br>
+    <input type="submit" value="Zatwierdź">
+</form>
+</body>
+</html>
