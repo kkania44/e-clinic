@@ -22,7 +22,7 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/patients")
-@SessionAttributes("user")
+@SessionAttributes({"user", "patient"})
 public class MvcPatientController {
 
     private final PatientService patientService;
@@ -63,7 +63,6 @@ public class MvcPatientController {
     String patientPanelPage(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
-        System.out.println(name);
         User user = userService.getByEmail(name).get();
         model.addAttribute("user", user);
         if (user.getPatientId() != null) {
@@ -96,13 +95,16 @@ public class MvcPatientController {
         return "redirect:/mainPage";
     }
 
-    @GetMapping("/{Id}")
+    @GetMapping("/patientData")
     @PreAuthorize("isAuthenticated()")
-        //TODO poprawić metodę żeby wyświetlała tylko dane aktualnie zalogowanego pacjenta
-    ModelAndView showPatientData(@PathVariable Integer id) {
+    ModelAndView showPatientData() { ;
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        User user = userService.getByEmail(name).get();
+        Integer id = user.getPatientId();
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("#");
-        mav.addObject("patient", patientService.getById((id)));
+        mav.setViewName("patients/patientData");
+        mav.addObject("patient", patientService.getById(id));
         return mav;
     }
 

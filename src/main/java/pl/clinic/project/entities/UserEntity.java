@@ -2,6 +2,7 @@ package pl.clinic.project.entities;
 
 import lombok.*;
 import pl.clinic.project.UserRole;
+import pl.clinic.project.model.Patient;
 
 import javax.persistence.*;
 

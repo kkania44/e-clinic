@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Patient Data</title>
+</head>
+<body>
+<p th:text="${patient.get().getFirstName()}"></p>
+<p th:text="${patient.get().getLastName()}"></p>
+<p th:text="${patient.get().getPeselNumber()}"></p>
+<p th:text="${patient.get().getPhoneNumber()}"></p>
+
+<a th:href="@{/logout}">Wyloguj się</a>
+
+
+</body>
+</html>
