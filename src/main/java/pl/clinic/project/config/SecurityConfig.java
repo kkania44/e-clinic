@@ -25,6 +25,10 @@ import pl.clinic.project.service.SecurityUserDetailsService;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final SecurityUserDetailsService userDetailsService;
+    @Autowired
+    private SecurityHandler successHandler;
+
+
 
     @Bean
     @Primary
@@ -50,9 +54,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/**").permitAll()
                 .and()
                 .formLogin()
-                .loginPage("/login")
-                .loginProcessingUrl("/authenticate")
-                .defaultSuccessUrl("/patients/patientPanel")
+                .loginPage("/authenticate")
+                .successHandler(successHandler)
                 .and()
                     .logout()
                     .logoutUrl("/logout")

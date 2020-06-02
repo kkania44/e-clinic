@@ -53,6 +53,12 @@ public class MvcUserController {
         return mav;
     }
 
+    @GetMapping("/admin")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    String showAdminPanel() {
+        return "/admin/adminPanel.html";
+    }
+
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     void deleteUser(Integer id) {

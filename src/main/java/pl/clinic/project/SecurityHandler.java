@@ -2,6 +2,7 @@ package pl.clinic.project;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -18,8 +19,12 @@ public class SecurityHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                         Authentication authentication) throws IOException, ServletException {
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
-        if(roles.contains(UserRole.USER_PATIENT.getName())){
-            httpServletResponse.sendRedirect("/patients/patientPanel");
+        String redirectUrl = "";
+        if(roles.contains("ROLE_"+UserRole.USER_PATIENT.getName())){
+            redirectUrl = "/patients/patientPanel";
+        } else if(roles.contains("ROLE_"+UserRole.ADMIN.getName())) {
+            redirectUrl = "/users/admin";
         }
+        new DefaultRedirectStrategy().sendRedirect(httpServletRequest, httpServletResponse, redirectUrl);
     }
 }
