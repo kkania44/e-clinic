@@ -72,19 +72,18 @@ public class MvcPatientController {
         }
     }
 
-    @GetMapping("/updatePatient/{id}")
+    @GetMapping("/update")
     @PreAuthorize("hasRole('USER_PATIENT')")
-    ModelAndView updatePatientPage(@PathVariable Integer id) {
+    ModelAndView updatePatientPage(HttpSession session) {
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("#");
-
-        Patient patient = patientService.getById(id).get();
+        mav.setViewName("patients/updatePatient.html");
+        Patient patient = (Patient) session.getAttribute("patient");
         mav.addObject("patient", patient);
 
         return mav;
     }
 
-    @PostMapping("/updatePatient")
+    @PostMapping("/update")
     @PreAuthorize("hasRole('USER_PATIENT')")
     String updatePatient(@Valid @ModelAttribute("patient") Patient patient, BindingResult bindingResult) {
         if (bindingResult.hasErrors()){
@@ -92,7 +91,7 @@ public class MvcPatientController {
         }
 
         patientService.updatePatient(patient);
-        return "redirect:/mainPage";
+        return "redirect:/patients/patientData";
     }
 
     @GetMapping("/patientData")
@@ -104,7 +103,8 @@ public class MvcPatientController {
         Integer id = user.getPatientId();
         ModelAndView mav = new ModelAndView();
         mav.setViewName("patients/patientData");
-        mav.addObject("patient", patientService.getById(id));
+        Patient patient = patientService.getById(id).get();
+        mav.addObject("patient", patient);
         return mav;
     }
 

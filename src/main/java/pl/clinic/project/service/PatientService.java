@@ -33,7 +33,9 @@ public class PatientService {
     public void updatePatient (Patient patient){
         PatientEntity patientToUpdate = patientRepository.findById(patient.getId())
                 .orElseThrow( () -> new NotFoundException("Nie znaleziono pacjenta o id " + patient.getId()));
-    patientToUpdate.setPhoneNumber(patient.getPhoneNumber());
+        patientToUpdate.setFirstName(patient.getFirstName());
+        patientToUpdate.setLastName(patient.getLastName());
+        patientToUpdate.setPhoneNumber(patient.getPhoneNumber());
     }
 
     public Optional<Patient> getById(Integer id) {

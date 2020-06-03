@@ -5,13 +5,14 @@
     <title>Patient Data</title>
 </head>
 <body>
-<p th:text="${patient.get().getFirstName()}"></p>
-<p th:text="${patient.get().getLastName()}"></p>
-<p th:text="${patient.get().getPeselNumber()}"></p>
-<p th:text="${patient.get().getPhoneNumber()}"></p>
+Imię: <p th:text="${patient.firstName}"></p>
+Nazwisko: <p th:text="${patient.lastName}"></p>
+PESEL: <p th:text="${patient.peselNumber}"></p>
+Numer telefonu: <p th:text="${patient.phoneNumber}"></p>
 
-<a th:href="@{/logout}">Wyloguj się</a>
-
+<a th:href="@{/logout}">Wyloguj się</a><br>
+<a th:href="@{/patients/patientPanel}">Panel pacjenta</a><br>
+<a th:href="@{/patients/update}">Edytuj swoje dane</a><br>
 
 </body>
 </html>
