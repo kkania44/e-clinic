@@ -17,8 +17,10 @@ import pl.clinic.project.model.User;
 import pl.clinic.project.service.PatientService;
 import pl.clinic.project.service.UserService;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.net.HttpCookie;
 
 @Controller
 @RequestMapping("/patients")
@@ -105,6 +107,21 @@ public class MvcPatientController {
         mav.setViewName("patients/patientData");
         Patient patient = patientService.getById(id).get();
         mav.addObject("patient", patient);
+        return mav;
+    }
+
+    @GetMapping("/deleteData")
+    @PreAuthorize("isAuthenticated()")
+    ModelAndView deletePatientAndUserData() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+        User user = userService.getByEmail(email).get();
+        Integer id = user.getPatientId();
+        Patient patient = patientService.getById(id).get();
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("redirect:/logout");
+        userService.deleteUser(user.getId());
+        patientService.deleteById(patient.getId());
         return mav;
     }
 
