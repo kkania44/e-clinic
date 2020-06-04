@@ -4,11 +4,14 @@ import org.springframework.stereotype.Service;
 import pl.clinic.project.entities.AppointmentEntity;
 import pl.clinic.project.entities.DoctorEntity;
 import pl.clinic.project.entities.PatientEntity;
+import pl.clinic.project.exception.NotFoundException;
 import pl.clinic.project.mapper.AppointmentMapper;
 import pl.clinic.project.model.Appointment;
 import pl.clinic.project.repositories.AppointmentRepository;
 import pl.clinic.project.repositories.DoctorRepository;
 import pl.clinic.project.repositories.PatientRepository;
+
+import java.util.Optional;
 
 @Service
 public class AppointmentService {
@@ -31,6 +34,12 @@ public class AppointmentService {
         PatientEntity patient = patientRepository.findById(appointment.getPatientId()).get();
         AppointmentEntity appointmentEntity = mapper.mapToEntity(appointment, doctor, patient);
         appointmentRepository.save(appointmentEntity);
+    }
+
+    public Appointment getById(Integer id) {
+        return appointmentRepository.findById(id)
+                .map(mapper::mapToApi)
+                .orElseThrow(() -> new NotFoundException("Wizyta o tym id nie istnieje"));
     }
 
 }

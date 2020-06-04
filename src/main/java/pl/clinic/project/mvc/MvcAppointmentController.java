@@ -37,4 +37,13 @@ public class MvcAppointmentController {
         return "redirect:/patients/patientPanel";
     }
 
+    @GetMapping("/{id}")
+    public ModelAndView showAppointment(@PathVariable("id") Integer id) {
+        Appointment appointment = appointmentService.getById(id);
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("appointmentData.html");
+        mav.addObject("appointment", appointment);
+        return mav;
+    }
+
 }
