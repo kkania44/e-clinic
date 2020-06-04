@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Zarezerwuj wizytę</title>
+</head>
+<body>
+<form th:action="@{/appointments/book}" method="post" th:object="${appointment}">
+    Pacjent: <input type="text" value="${user.id}" th:field="*{patientId}"><br>
+    Doktor: <input type="text" th:field="*{doctorId}"><br>
+    Data: <input type="text" th:field="*{date}"><br>
+    Godzina: <input type="text" th:field="*{time}"><br>
+    <input type="submit" value="Zarezerwuj">
+</form>
+</body>
+</html>

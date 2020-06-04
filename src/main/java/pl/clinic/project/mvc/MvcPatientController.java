@@ -29,8 +29,6 @@ public class MvcPatientController {
 
     private final PatientService patientService;
     private final UserService userService;
-    @Autowired
-    private User user;
 
     public MvcPatientController(PatientService patientService, UserService userService) {
         this.patientService = patientService;
