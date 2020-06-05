@@ -38,7 +38,7 @@ public class MvcUserController {
             mav.setViewName("users/registerUser.html");
             mav.addObject("user", new User());
         } else {
-            mav.setViewName("redirect:/patients/patientPanel");
+            mav.setViewName("redirect:/");
         }
         return mav;
     }

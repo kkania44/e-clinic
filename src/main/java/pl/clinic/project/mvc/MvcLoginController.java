@@ -39,7 +39,7 @@ public class MvcLoginController {
         if (auth instanceof AnonymousAuthenticationToken) {
             return "login.html";
         } else {
-            return "mainPage.html";
+            return "redirect:/";
         }
     }
 
