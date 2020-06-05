@@ -7,8 +7,10 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Pattern;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -20,7 +22,7 @@ public class Appointment {
     private Integer doctorId;
     private Integer patientId;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate date;
+    private Date date;
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime time;
 

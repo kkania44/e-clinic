@@ -7,8 +7,10 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "appointments")
@@ -33,7 +35,7 @@ public class AppointmentEntity {
 
     @Column(name = "AT_DATE", nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate date;
+    private Date date;
 
     @Column(name = "AT_TIME", nullable = false)
     @DateTimeFormat(pattern = "HH:mm")
