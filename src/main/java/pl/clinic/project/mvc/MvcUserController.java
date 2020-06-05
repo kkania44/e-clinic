@@ -3,6 +3,9 @@ package pl.clinic.project.mvc;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,6 +19,7 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/users")
+@SessionAttributes({"user", "patient"})
 public class MvcUserController {
 
     private UserService userService;
@@ -29,8 +33,13 @@ public class MvcUserController {
     @GetMapping("/add")
     ModelAndView addUserPage() {
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("users/registerUser.html");
-        mav.addObject("user", new User());
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth instanceof AnonymousAuthenticationToken) {
+            mav.setViewName("users/registerUser.html");
+            mav.addObject("user", new User());
+        } else {
+            mav.setViewName("redirect:/patients/patientPanel");
+        }
         return mav;
     }
 
