@@ -8,14 +8,15 @@
     <h4>Panel Pacjenta</h4>
     <p th:text = "${user.id}">userId: </p>
     <br>
-    <a href="/patients/patientData">Twoje dane</a>
+    <a th:href="@{/patients/patientData}">Twoje dane</a>
     <br>
-    <a href="/doctors/all">Lista lekarzy - umów wizytę</a>
+    <a th:href="@{/doctors/all}">Lista lekarzy - umów wizytę</a>
     <br>
-    <a href="/patients/deleteData">Usuń swoje dane i konto</a>
+    <a th:href="@{/patients/deleteData}">Usuń swoje dane i konto</a>
     <br>
-    <a href="/appointments/appointmentData">Wyświetl swoje wizyty</a>
+    <a th:href="@{/appointments/appointmentData}">Wyświetl swoje wizyty</a>
     <br>
-    <a href="/logout">Wyloguj się</a>
+    <a th:href="@{/logout}">Wyloguj się</a>
+
 </body>
 </html>
