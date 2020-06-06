@@ -38,28 +38,35 @@ public class MvcAppointmentController {
         this.doctorService=doctorService;
     }
 
-    @GetMapping("/book")
-    public ModelAndView createAppointmentPage() {
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("appointments/bookAppointment.html");
-        mav.addObject("appointment", new Appointment());
-        return mav;
+    @GetMapping("/book/{id}")
+    @PreAuthorize("hasRole('USER_PATIENT')")
+    public ModelAndView createAppointmentPage(@PathVariable("id") Integer docId) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("appointments/bookAppointment.html");
+        modelAndView.addObject("appointment", new Appointment());
+        modelAndView.addObject("doctorId", docId);
+        return modelAndView;
     }
 
-    @PostMapping("/book")
-    public String createAppointment(@ModelAttribute("appointment") Appointment appointment, HttpSession session) {
+    @PostMapping("/book/{id}")
+    @PreAuthorize("hasRole('USER_PATIENT')")
+    public String createAppointment(@ModelAttribute("appointment") Appointment appointment,
+                                    @PathVariable("id") Integer docId, HttpSession session) {
         User user = (User)session.getAttribute("user");
         Integer patientId = user.getPatientId();
+
         appointment.setPatientId(patientId);
+        appointment.setDoctorId(docId);
         appointmentService.createAppointment(appointment);
         return "redirect:/patients/patientPanel";
     }
+
 
     @GetMapping("/{id}")
     public ModelAndView showAppointment(@PathVariable("id") Integer id) {
         Appointment appointment = appointmentService.getById(id);
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("appointmentData.html");
+        mav.setViewName("appointments/appointmentData.html");
         mav.addObject("appointment", appointment);
         return mav;
     }
