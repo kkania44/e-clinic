@@ -8,29 +8,34 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import pl.clinic.project.model.Appointment;
+import pl.clinic.project.model.Doctor;
 import pl.clinic.project.model.Patient;
 import pl.clinic.project.model.User;
 import pl.clinic.project.service.AppointmentService;
+import pl.clinic.project.service.DoctorService;
 import pl.clinic.project.service.PatientService;
 import pl.clinic.project.service.UserService;
 
+import javax.print.Doc;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 @RequestMapping("/appointments")
-@SessionAttributes({"user", "appointments"})
+@SessionAttributes({"user", "appointments", "doctors"})
 public class MvcAppointmentController {
 
     private final AppointmentService appointmentService;
     private final UserService userService;
     private final PatientService patientService;
+    private final DoctorService doctorService;
 
-    public MvcAppointmentController(AppointmentService appointmentService, UserService userService, PatientService patientService) {
+    public MvcAppointmentController(AppointmentService appointmentService, UserService userService, PatientService patientService, DoctorService doctorService) {
         this.appointmentService = appointmentService;
         this.userService = userService;
         this.patientService = patientService;
+        this.doctorService=doctorService;
     }
 
     @GetMapping("/book")
@@ -65,10 +70,20 @@ public class MvcAppointmentController {
    ModelAndView showPatientData(HttpSession session) { ;
         User user = (User)session.getAttribute("user");
         Integer id = user.getPatientId();
-
         ModelAndView mav = new ModelAndView();
         List<Appointment> appointments = appointmentService.getAllByPatientId(id);
+        List<Doctor> allDoctors = doctorService.getAll();
+        List<Doctor> doctors = new ArrayList<>();
+
+        for (int i = 0; i<allDoctors.size(); i++){
+            for (int y = 0; y<appointments.size(); y++){
+                if (allDoctors.get(i).getId().equals(appointments.get(y).getDoctorId())){
+                    doctors.add(allDoctors.get(i));
+                }
+            }
+        }
         mav.addObject("appointments", appointments);
+        mav.addObject("doctors", doctors);
         return mav;
     }
 
