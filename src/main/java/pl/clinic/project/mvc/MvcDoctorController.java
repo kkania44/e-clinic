@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import pl.clinic.project.model.Doctor;
-import pl.clinic.project.model.Patient;
-import pl.clinic.project.service.AppointmentService;
 import pl.clinic.project.service.DoctorService;
-import pl.clinic.project.service.PatientService;
 
 import javax.validation.Valid;
 import java.util.List;

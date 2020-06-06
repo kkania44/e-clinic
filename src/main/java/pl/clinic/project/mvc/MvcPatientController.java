@@ -1,7 +1,5 @@
 package pl.clinic.project.mvc;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,16 +9,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import pl.clinic.project.entities.PatientEntity;
-import pl.clinic.project.entities.UserEntity;
 import pl.clinic.project.model.Patient;
 import pl.clinic.project.model.User;
 import pl.clinic.project.service.PatientService;
 import pl.clinic.project.service.UserService;
-
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.net.HttpCookie;
 
 @Controller
 @RequestMapping("/patients")

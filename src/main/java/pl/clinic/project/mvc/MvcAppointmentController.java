@@ -1,22 +1,16 @@
 package pl.clinic.project.mvc;
 
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import pl.clinic.project.model.Appointment;
 import pl.clinic.project.model.Doctor;
-import pl.clinic.project.model.Patient;
 import pl.clinic.project.model.User;
 import pl.clinic.project.service.AppointmentService;
 import pl.clinic.project.service.DoctorService;
 import pl.clinic.project.service.PatientService;
 import pl.clinic.project.service.UserService;
-
-import javax.print.Doc;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
