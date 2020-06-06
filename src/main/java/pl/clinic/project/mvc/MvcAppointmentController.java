@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("eclinic/appointments")
+@RequestMapping("/appointments")
 @SessionAttributes({"user", "appointments", "doctors"})
 public class MvcAppointmentController {
 

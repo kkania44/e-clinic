@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("eclinic/patients")
+@RequestMapping("/patients")
 @SessionAttributes({"user", "patient"})
 public class MvcPatientController {
 

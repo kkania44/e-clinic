@@ -16,7 +16,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Controller
-@RequestMapping("eclinic/doctors")
+@RequestMapping("/doctors")
 public class MvcDoctorController {
 
     private final DoctorService doctorService;
