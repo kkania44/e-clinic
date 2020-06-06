@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-<table>
+<table style="float: left">
     <thead>
 <tr class="header">
     <td>Id.</td>
@@ -21,5 +21,23 @@
 </tr>
 </tbody>
 </table>
+<table style="float: left">
+    <thead>
+    <tr class="header2">
+        <td>Imię lekarza</td>
+        <td>Nazwisko lekarza</td>
+        <td>Specjalizacja</td>
+        <td>Numer telefonu</td>
+    </tr>
+    </thead>
+    <tbody><tr th:each="doctor : ${doctors}">
+        <td><span th:text="${doctor.firstName}"></span></td>
+        <td><span th:text="${doctor.lastName}"></span></td>
+        <td><span th:text="${doctor.speciality}"></span></td>
+        <td><span th:text="${doctor.phoneNumber}"></span></td>
+    </tr>
+    </tbody>
+</table>
+
 </body>
 </html>

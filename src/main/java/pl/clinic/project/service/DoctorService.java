@@ -7,7 +7,6 @@ import pl.clinic.project.exception.NotFoundException;
 import pl.clinic.project.mapper.DoctorMapper;
 import pl.clinic.project.model.Doctor;
 import pl.clinic.project.repositories.DoctorRepository;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -45,7 +44,6 @@ public class DoctorService {
         return doctorRepository.findById(id)
                 .map(ent -> mapper.mapToApi(ent));
     }
-
     public void deleteById(Integer id) {
         doctorRepository.deleteById(id);
     }
