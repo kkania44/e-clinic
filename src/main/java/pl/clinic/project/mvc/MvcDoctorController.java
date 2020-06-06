@@ -16,6 +16,7 @@ import pl.clinic.project.service.DoctorService;
 import pl.clinic.project.service.PatientService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("/doctors")
@@ -49,6 +50,15 @@ public class MvcDoctorController {
         return "redirect:/users/admin";
     }
 
+    @GetMapping("/all")
+    @PreAuthorize("hasAnyRole('USER_PATIENT', 'ADMIN')")
+    ModelAndView showAllDoctors() {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("doctors.html");
+        List<Doctor> doctors = doctorService.getAll();
+        mav.addObject("doctors", doctors);
+        return mav;
+    }
 
 
 }
