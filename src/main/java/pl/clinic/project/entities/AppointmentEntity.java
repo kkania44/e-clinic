@@ -35,7 +35,7 @@ public class AppointmentEntity {
 
     @Column(name = "AT_DATE", nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date date;
+    private LocalDate date;
 
     @Column(name = "AT_TIME", nullable = false)
     @DateTimeFormat(pattern = "HH:mm")

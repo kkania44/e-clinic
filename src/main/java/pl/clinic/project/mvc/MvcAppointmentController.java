@@ -15,11 +15,12 @@ import pl.clinic.project.service.PatientService;
 import pl.clinic.project.service.UserService;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 @RequestMapping("/appointments")
-@SessionAttributes({"user", "appointment"})
+@SessionAttributes({"user", "appointments"})
 public class MvcAppointmentController {
 
     private final AppointmentService appointmentService;
@@ -35,7 +36,7 @@ public class MvcAppointmentController {
     @GetMapping("/book")
     public ModelAndView createAppointmentPage() {
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("bookAppointment.html");
+        mav.setViewName("appointments/bookAppointment.html");
         mav.addObject("appointment", new Appointment());
         return mav;
     }
@@ -67,15 +68,17 @@ public class MvcAppointmentController {
         User user = userService.getByEmail(name).get();
         Integer id = user.getPatientId();
         ModelAndView mav = new ModelAndView();
-        List<Appointment> appointments = appointmentService.getAll();
-        for (Appointment appointment : appointments) {
-            if (appointment.getPatientId().equals(id)) {
-                mav.addObject("appointment", appointment);
+        List<Appointment> appointmentsList = new ArrayList<>();
+        List<Appointment> allAppointments = appointmentService.getAll();
+        for (int i =0; i<allAppointments.size(); i++) {
+            if (allAppointments.get(i).getPatientId().equals(id)) {
+                appointmentsList.add(allAppointments.get(i));
                 mav.setViewName("appointments/appointmentData.html");
             } else {
                 mav.setViewName("error.html");
             }
         }
+        mav.addObject("appointments", appointmentsList);
         return mav;
     }
 

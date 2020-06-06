@@ -1,14 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl" xmlns:th="thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-<p th:text="${appointment.id}"></p>
-<br>
-<p th:text="${appointment.date}"></p>
-<br>
-<p th:text="${appointment.time}"></p>
+<table>
+    <thead>
+<tr class="header">
+    <td>Id.</td>
+    <td>Data</td>
+    <td>Godzina</td>
+</tr>
+</thead>
+<tbody>
+<tr th:each="appointment : ${appointments}">
+    <td><span th:text="${appointment.id}"></span></td>
+    <td><span th:text="${appointment.date}"></span></td>
+    <td><span th:text="${appointment.time}"></span></td>
+</tr>
+</tbody>
+</table>
 </body>
 </html>

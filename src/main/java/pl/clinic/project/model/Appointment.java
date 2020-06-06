@@ -17,13 +17,11 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Appointment {
-
     private Integer id;
     private Integer doctorId;
     private Integer patientId;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date date;
+    private LocalDate date;
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime time;
-
 }
