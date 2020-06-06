@@ -45,6 +45,13 @@ public class AppointmentService {
                 .orElseThrow(() -> new NotFoundException("Wizyta o tym id nie istnieje"));
     }
 
+    public List<Appointment> getAllByPatientId(Integer patientId) {
+        return appointmentRepository.findAllByPatientId(patientId)
+                .stream()
+                .map(mapper::mapToApi)
+                .collect(Collectors.toList());
+    }
+
     public List<Appointment> getAll() {
         return appointmentRepository.findAll().stream()
                 .map(ent -> mapper.mapToApi(ent))

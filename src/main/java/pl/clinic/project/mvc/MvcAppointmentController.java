@@ -62,23 +62,13 @@ public class MvcAppointmentController {
 
     @GetMapping("/appointmentData")
     @PreAuthorize("isAuthenticated()")
-   ModelAndView showPatientData() { ;
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName();
-        User user = userService.getByEmail(name).get();
+   ModelAndView showPatientData(HttpSession session) { ;
+        User user = (User)session.getAttribute("user");
         Integer id = user.getPatientId();
+
         ModelAndView mav = new ModelAndView();
-        List<Appointment> appointmentsList = new ArrayList<>();
-        List<Appointment> allAppointments = appointmentService.getAll();
-        for (int i =0; i<allAppointments.size(); i++) {
-            if (allAppointments.get(i).getPatientId().equals(id)) {
-                appointmentsList.add(allAppointments.get(i));
-                mav.setViewName("appointments/appointmentData.html");
-            } else {
-                mav.setViewName("error.html");
-            }
-        }
-        mav.addObject("appointments", appointmentsList);
+        List<Appointment> appointments = appointmentService.getAllByPatientId(id);
+        mav.addObject("appointments", appointments);
         return mav;
     }
 
