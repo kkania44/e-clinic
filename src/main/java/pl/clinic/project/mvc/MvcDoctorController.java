@@ -51,7 +51,7 @@ public class MvcDoctorController {
     @PreAuthorize("hasAnyRole('USER_PATIENT', 'ADMIN')")
     ModelAndView showAllDoctors() {
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("doctors.html");
+        mav.setViewName("/doctors.html");
         List<Doctor> doctors = doctorService.getAll();
         mav.addObject("doctors", doctors);
         return mav;
