@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/patients")
+@RequestMapping("eclinic/patients")
 @SessionAttributes({"user", "patient"})
 public class MvcPatientController {
 
@@ -96,7 +96,7 @@ public class MvcPatientController {
         User user = userService.getByEmail(name).get();
         Integer id = user.getPatientId();
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("/patients/patientData.html");
+        mav.setViewName("patients/patientData.html");
         Patient patient = patientService.getById(id).get();
         mav.addObject("patient", patient);
         return mav;

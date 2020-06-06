@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>pl.clinic</groupId>
-    <artifactId>project</artifactId>
+    <artifactId>eclinic</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>project</name>
+    <name>eclinic</name>
     <description>Demo project for Spring Boot</description>
     <packaging>war</packaging>
 
@@ -102,6 +102,7 @@
     </dependencies>
 
     <build>
+        <finalName>eclinic</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

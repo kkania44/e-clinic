@@ -16,7 +16,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Controller
-@RequestMapping("/doctors")
+@RequestMapping("eclinic/doctors")
 public class MvcDoctorController {
 
     private final DoctorService doctorService;
@@ -51,7 +51,7 @@ public class MvcDoctorController {
     @PreAuthorize("hasAnyRole('USER_PATIENT', 'ADMIN')")
     ModelAndView showAllDoctors() {
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("/doctors.html");
+        mav.setViewName("doctors.html");
         List<Doctor> doctors = doctorService.getAll();
         mav.addObject("doctors", doctors);
         return mav;

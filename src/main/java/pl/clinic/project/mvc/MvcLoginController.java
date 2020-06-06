@@ -12,7 +12,7 @@ import pl.clinic.project.service.UserService;
 import java.util.Collection;
 
 @Controller
-@RequestMapping("/login")
+@RequestMapping("eclinic/login")
 @SessionAttributes("user")
 public class MvcLoginController {
 
