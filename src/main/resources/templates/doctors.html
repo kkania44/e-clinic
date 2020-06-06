@@ -10,12 +10,14 @@
         <td>Imię</td>
         <td>Nazwisko</td>
         <td>Specjalizacja</td>
+        <td> </td>
     </thead>
     <tbody>
     <tr th:each="doctor : ${doctors}">
         <td><span th:text="${doctor.firstName}"></span></td>
         <td><span th:text="${doctor.lastName}"></span></td>
         <td><span th:text="${doctor.speciality}"></span></td>
+        <td><a th:href="@{/appointments/book/} + ${doctor.id}">Umów wizytę</a></td>
     </tr>
     </tbody>
 </table>
