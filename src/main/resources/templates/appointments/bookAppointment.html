@@ -5,7 +5,7 @@
     <title>Zarezerwuj wizytę</title>
 </head>
 <body>
-<form th:action="@{/appointments/book/} +${doctorId}" method="post" th:object="${appointment}">
+<form th:action="@{/appointments/book/time/} +${doctorId}" method="post" th:object="${appointment}">
     Doktor id: <span th:text="${doctorId}" th:field="*{doctorId}"></span><br>
     Data: <select th:field="*{date}">
 
@@ -15,7 +15,7 @@
         </option>
     </select>
     <br>
-    Godzina: <input type="text" th:field="*{time}"><br>
+<!--    Godzina: <input type="text" th:field="*{time}"><br>-->
     <input type="submit" value="Zarezerwuj">
 </form>
 </body>

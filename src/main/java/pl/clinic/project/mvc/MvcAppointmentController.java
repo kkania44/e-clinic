@@ -13,12 +13,13 @@ import pl.clinic.project.service.DoctorService;
 import pl.clinic.project.service.PatientService;
 import pl.clinic.project.service.UserService;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 @RequestMapping("/appointments")
-@SessionAttributes({"user", "appointments", "doctors"})
+@SessionAttributes({"user", "appointment", "doctors"})
 public class MvcAppointmentController {
 
     private final AppointmentService appointmentService;
@@ -43,6 +44,19 @@ public class MvcAppointmentController {
         modelAndView.addObject("dates", availableDates);
         modelAndView.addObject("appointment", new Appointment());
         modelAndView.addObject("doctorId", docId);
+        return modelAndView;
+    }
+
+    @PostMapping("book/time/{id}")
+    public ModelAndView chooseTimePage(@ModelAttribute("appointment") Appointment appointment,
+                                       @PathVariable("id") Integer doctorId) {
+        ModelAndView modelAndView = new ModelAndView();
+        List<String> hours = AvailableDate.getWorkingHours();
+
+        modelAndView.addObject("appointment", appointment);
+        modelAndView.addObject("hours", hours);
+        modelAndView.addObject("doctorId", doctorId);
+        modelAndView.setViewName("appointments/bookAppointmentHour.html");
         return modelAndView;
     }
 

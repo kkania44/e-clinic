@@ -40,6 +40,10 @@ public class AvailableDate {
         return workingDays;
     }
 
+    public static List<String> getWorkingHours() {
+        return WORKING_HOURS;
+    }
+
     public static List<String> getAvailableHours(List<LocalTime> hours) {
         for (LocalTime time: hours) {
             String timeAsString = time.toString().substring(0,5);

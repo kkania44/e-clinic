@@ -6,9 +6,8 @@
 </head>
 <body>
 <form th:action="@{/appointments/book/} +${doctorId}" method="post" th:object="${appointment}">
-    Doktor id: <span th:text="${doctorId}" th:field="*{doctorId}"></span><br>
-    Data: <span th:text="*{date}" th:value="*{date}" th:field="*{date}"></span>
 
+    Data: <span th:text="*{date}" th:value="*{date}" th:field="*{date}"></span>
     <br>
     Godzina: <select th:field="*{time}">
             <option th:each="hour : ${hours}"
