@@ -12,6 +12,8 @@ import pl.clinic.project.repositories.AppointmentRepository;
 import pl.clinic.project.repositories.DoctorRepository;
 import pl.clinic.project.repositories.PatientRepository;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -49,6 +51,12 @@ public class AppointmentService {
         return appointmentRepository.findAllByPatientId(patientId)
                 .stream()
                 .map(mapper::mapToApi)
+                .collect(Collectors.toList());
+    }
+
+    public List<LocalTime> getAllByDoctorIdAndDate(Integer doctorId, LocalDate date) {
+        return appointmentRepository.findAllByDoctorIdAndDate(doctorId, date).stream()
+                .map(ent -> ent.getTime())
                 .collect(Collectors.toList());
     }
 

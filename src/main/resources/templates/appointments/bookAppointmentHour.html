@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Wybierz godzinę</title>
+</head>
+<body>
+<form th:action="@{/appointments/book/} +${doctorId}" method="post" th:object="${appointment}">
+    Doktor id: <span th:text="${doctorId}" th:field="*{doctorId}"></span><br>
+    Data: <span th:text="*{date}" th:value="*{date}" th:field="*{date}"></span>
+
+    <br>
+    Godzina: <select th:field="*{time}">
+            <option th:each="hour : ${hours}"
+                      th:value="${hour}"
+                      th:text="${hour}">
+            </option>
+    </select>
+    <br>
+    <input type="submit" value="Zarezerwuj">
+</form>
+</body>
+</html>

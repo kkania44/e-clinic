@@ -1,16 +1,20 @@
 package pl.clinic.project;
 
+import pl.clinic.project.model.Appointment;
+
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoField;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class AvailableDate {
+
+    private static final List<String> WORKING_HOURS = Arrays.asList(
+            "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30",
+            "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30");
 
     public static List<String> getWorkingDaysOfCurrentMonth() {
         Calendar calendar = Calendar.getInstance();
@@ -34,5 +38,14 @@ public class AvailableDate {
             }
         }
         return workingDays;
-        }
     }
+
+    public static List<String> getAvailableHours(List<LocalTime> hours) {
+        for (LocalTime time: hours) {
+            String timeAsString = time.toString().substring(0,5);
+            WORKING_HOURS.remove(timeAsString);
+        }
+        return WORKING_HOURS;
+    }
+
+}
