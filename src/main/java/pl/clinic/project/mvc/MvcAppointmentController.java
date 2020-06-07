@@ -4,16 +4,15 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import pl.clinic.project.AvailableDate;
+import pl.clinic.project.AvailableDateTime;
 import pl.clinic.project.model.Appointment;
 import pl.clinic.project.model.Doctor;
 import pl.clinic.project.model.User;
 import pl.clinic.project.service.AppointmentService;
 import pl.clinic.project.service.DoctorService;
-import pl.clinic.project.service.PatientService;
-import pl.clinic.project.service.UserService;
+
 import javax.servlet.http.HttpSession;
-import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,14 +22,11 @@ import java.util.List;
 public class MvcAppointmentController {
 
     private final AppointmentService appointmentService;
-    private final UserService userService;
-    private final PatientService patientService;
     private final DoctorService doctorService;
+    private AvailableDateTime availableDateTime = new AvailableDateTime();
 
-    public MvcAppointmentController(AppointmentService appointmentService, UserService userService, PatientService patientService, DoctorService doctorService) {
+    public MvcAppointmentController(AppointmentService appointmentService, DoctorService doctorService) {
         this.appointmentService = appointmentService;
-        this.userService = userService;
-        this.patientService = patientService;
         this.doctorService=doctorService;
     }
 
@@ -39,7 +35,7 @@ public class MvcAppointmentController {
     public ModelAndView createAppointmentPage(@PathVariable("id") Integer docId) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("appointments/bookAppointment.html");
-        List<String> availableDates = AvailableDate.getWorkingDaysOfCurrentMonth();
+        List<String> availableDates = AvailableDateTime.getWorkingDaysOfCurrentMonth();
 
         modelAndView.addObject("dates", availableDates);
         modelAndView.addObject("appointment", new Appointment());
@@ -51,7 +47,8 @@ public class MvcAppointmentController {
     public ModelAndView chooseTimePage(@ModelAttribute("appointment") Appointment appointment,
                                        @PathVariable("id") Integer doctorId) {
         ModelAndView modelAndView = new ModelAndView();
-        List<String> hours = AvailableDate.getWorkingHours();
+        List<LocalTime> occupiedHours = appointmentService.getAllByDoctorIdAndDate(doctorId, appointment.getDate());
+        List<String> hours = availableDateTime.getAvailableHours(occupiedHours);
 
         modelAndView.addObject("appointment", appointment);
         modelAndView.addObject("hours", hours);
