@@ -26,7 +26,7 @@ public class MvcLoginController {
     String loginPage() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth instanceof AnonymousAuthenticationToken) {
-            return "login.html";
+            return "login/login.html";
         }
         Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
         if (authorities.contains(new SimpleGrantedAuthority("ROLE_"+ UserRole.ADMIN.getName()))) {

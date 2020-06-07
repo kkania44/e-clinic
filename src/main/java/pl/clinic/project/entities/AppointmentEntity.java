@@ -29,7 +29,7 @@ public class AppointmentEntity {
     @JoinColumn(name = "DR_ID")
     private DoctorEntity doctor;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "PT_ID")
     private PatientEntity patient;
 

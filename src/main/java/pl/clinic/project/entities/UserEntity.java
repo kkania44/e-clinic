@@ -29,7 +29,7 @@ public class UserEntity {
     @Column(name = "US_ROLE")
     private String role;
 
-    @OneToOne
+    @OneToOne(orphanRemoval = true)
     @JoinColumn(name="PT_ID")
     private PatientEntity patient;
 

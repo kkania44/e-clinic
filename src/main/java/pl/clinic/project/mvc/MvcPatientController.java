@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import pl.clinic.project.entities.PatientEntity;
 import pl.clinic.project.model.Patient;
 import pl.clinic.project.model.User;
+import pl.clinic.project.service.AppointmentService;
 import pl.clinic.project.service.PatientService;
 import pl.clinic.project.service.UserService;
 import javax.servlet.http.HttpSession;
@@ -23,10 +24,12 @@ public class MvcPatientController {
 
     private final PatientService patientService;
     private final UserService userService;
+    private final AppointmentService appointmentService;
 
-    public MvcPatientController(PatientService patientService, UserService userService) {
+    public MvcPatientController(PatientService patientService, UserService userService, AppointmentService appointmentService) {
         this.patientService = patientService;
         this.userService=userService;
+        this.appointmentService=appointmentService;
     }
 
     @GetMapping("/addPatient")
@@ -108,12 +111,9 @@ public class MvcPatientController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
         User user = userService.getByEmail(email).get();
-        Integer id = user.getPatientId();
-        Patient patient = patientService.getById(id).get();
         ModelAndView mav = new ModelAndView();
         mav.setViewName("redirect:/logout");
         userService.deleteUser(user.getId());
-        patientService.deleteById(patient.getId());
         return mav;
     }
 
