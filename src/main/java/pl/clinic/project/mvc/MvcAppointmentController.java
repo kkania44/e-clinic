@@ -4,6 +4,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import pl.clinic.project.AvailableDate;
 import pl.clinic.project.model.Appointment;
 import pl.clinic.project.model.Doctor;
 import pl.clinic.project.model.User;
@@ -37,6 +38,9 @@ public class MvcAppointmentController {
     public ModelAndView createAppointmentPage(@PathVariable("id") Integer docId) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("appointments/bookAppointment.html");
+        List<String> availableDates = AvailableDate.getWorkingDaysOfCurrentMonth();
+
+        modelAndView.addObject("dates", availableDates);
         modelAndView.addObject("appointment", new Appointment());
         modelAndView.addObject("doctorId", docId);
         return modelAndView;
