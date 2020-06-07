@@ -2,8 +2,10 @@ package pl.clinic.project.entities;
 
 
 import lombok.*;
+import pl.clinic.project.model.Appointment;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "patients")
@@ -13,6 +15,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 public class PatientEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PT_ID", unique = true)
@@ -29,5 +32,8 @@ public class PatientEntity {
 
     @Column(name = "PT_PHONENUMBER", nullable = false, unique = true)
     private String phoneNumber;
+
+    @OneToMany(mappedBy = "patient", orphanRemoval = true)
+    private List<AppointmentEntity> appointments;
 
 }

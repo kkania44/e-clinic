@@ -12,7 +12,7 @@ public class PatientMapper {
 
     public PatientEntity mapToEntity(Patient patient) {
         return new PatientEntity(null , patient.getFirstName(), patient.getLastName(),
-                patient.getPeselNumber(), patient.getPhoneNumber());
+                patient.getPeselNumber(), patient.getPhoneNumber(), null);
     }
 
 }

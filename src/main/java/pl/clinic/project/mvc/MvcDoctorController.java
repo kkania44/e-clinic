@@ -1,5 +1,6 @@
 package pl.clinic.project.mvc;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,7 +31,6 @@ public class MvcDoctorController {
     ModelAndView addNewDoctorPage() {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("admin/addDoctor.html");
-        mav.addObject("doctor", new Doctor());
         return mav;
     }
 
@@ -42,9 +42,8 @@ public class MvcDoctorController {
             model.addAttribute("errors", bindingResult.getAllErrors());
             return "error.html";
         }
-
         doctorService.createDoctor(doctor);
-        return "redirect:/users/admin";
+        return "redirect:/users/add";
     }
 
     @GetMapping("/all")
