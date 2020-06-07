@@ -24,9 +24,12 @@ import pl.clinic.project.service.SecurityUserDetailsService;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+
+
     private final SecurityUserDetailsService userDetailsService;
     @Autowired
     private SecurityHandler successHandler;
+
 
 
 
