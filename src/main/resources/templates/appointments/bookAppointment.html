@@ -7,7 +7,14 @@
 <body>
 <form th:action="@{/appointments/book/} +${doctorId}" method="post" th:object="${appointment}">
     Doktor id: <span th:text="${doctorId}" th:field="*{doctorId}"></span><br>
-    Data: <input type="text" th:field="*{date}"><br>
+    Data: <select th:field="*{date}">
+
+        <option th:each="date : ${dates}"
+                th:value="${date}"
+                th:text="${date}">
+        </option>
+    </select>
+    <br>
     Godzina: <input type="text" th:field="*{time}"><br>
     <input type="submit" value="Zarezerwuj">
 </form>
