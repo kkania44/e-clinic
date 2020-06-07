@@ -24,12 +24,10 @@ public class MvcPatientController {
 
     private final PatientService patientService;
     private final UserService userService;
-    private final AppointmentService appointmentService;
 
-    public MvcPatientController(PatientService patientService, UserService userService, AppointmentService appointmentService) {
+    public MvcPatientController(PatientService patientService, UserService userService) {
         this.patientService = patientService;
         this.userService=userService;
-        this.appointmentService=appointmentService;
     }
 
     @GetMapping("/addPatient")
