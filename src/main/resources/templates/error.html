@@ -1,11 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Error</title>
 </head>
 <body>
 Wystąpił błąd
-<span th:text="${errors}"></span>
+<table>
+    <tbody>
+        <tr th:each="error : ${errors}">
+            <td th:text="${error.defaultMessage}"></td>
+        </tr>
+    </tbody>
+</table>
 </body>
 </html>

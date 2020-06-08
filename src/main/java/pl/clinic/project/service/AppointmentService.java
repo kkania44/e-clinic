@@ -60,10 +60,8 @@ public class AppointmentService {
                 .collect(Collectors.toList());
     }
 
-    public List<Appointment> getAll() {
-        return appointmentRepository.findAll().stream()
-                .map(ent -> mapper.mapToApi(ent))
-                .collect(Collectors.toList());
+    public void deleteById(Integer id){
+        appointmentRepository.deleteById(id);
     }
 
 }

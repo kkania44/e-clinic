@@ -6,6 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -45,10 +46,8 @@ public class MvcPatientController {
     @PreAuthorize("isAuthenticated()")
     String addNewPatient (@Valid @ModelAttribute("patient") Patient patient, BindingResult bindingResult, Model model, HttpSession session) {
         if (bindingResult.hasErrors()) {
-            final List<ObjectError> allErrors = bindingResult.getAllErrors();
-            for(Object error: allErrors) {
-                System.out.println(error.toString());
-            }
+            final List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+            model.addAttribute("errors", fieldErrors);
             return "error.html";
         }
         final PatientEntity addedPatient = patientService.createPatient(patient);

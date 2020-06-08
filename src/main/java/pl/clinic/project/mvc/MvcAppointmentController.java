@@ -2,6 +2,8 @@ package pl.clinic.project.mvc;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
@@ -70,17 +72,6 @@ public class MvcAppointmentController {
         appointmentService.createAppointment(appointment);
         return "redirect:/patients/patientPanel";
     }
-
-
-    @GetMapping("/{id}")
-    public ModelAndView showAppointment(@PathVariable("id") Integer id) {
-        Appointment appointment = appointmentService.getById(id);
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("appointments/appointmentData.html");
-        mav.addObject("appointment", appointment);
-        return mav;
-    }
-
 
     @GetMapping("/appointmentData")
     @PreAuthorize("isAuthenticated()")
