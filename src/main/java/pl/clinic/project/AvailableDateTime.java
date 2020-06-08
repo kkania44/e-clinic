@@ -5,6 +5,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
 import java.util.*;
 
@@ -16,21 +17,17 @@ public class AvailableDateTime {
 
     public static List<String> getWorkingDaysOfCurrentMonth() {
         Calendar calendar = Calendar.getInstance();
-        int today = calendar.get(Calendar.DAY_OF_MONTH);
-
+        int tomorrow = calendar.get(Calendar.DAY_OF_MONTH)+1;
         int maxDayNr = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         List<String> workingDays = new ArrayList<>();
 
-        for (int i = today; i <= maxDayNr; i++) {
+        for (int i = tomorrow; i <= maxDayNr; i++) {
             calendar.set(Calendar.DAY_OF_MONTH, i);
             Date date = calendar.getTime();
-            final LocalDate localDate = date.toInstant()
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDate();
+            final LocalDate localDate = castDateToLocal(date);
+            String dateAsString = getFormattedDateAsString(localDate);
+            DayOfWeek dayOfWeek = getCurrentDayOfWeek(localDate);
 
-            String dateAsString = format.format(calendar.getTime());
-            DayOfWeek dayOfWeek = DayOfWeek.of(localDate.get(ChronoField.DAY_OF_WEEK));
             if (!dayOfWeek.equals(DayOfWeek.SATURDAY) && !dayOfWeek.equals(DayOfWeek.SUNDAY)) {
                 workingDays.add(dateAsString);
             }
@@ -49,6 +46,21 @@ public class AvailableDateTime {
             availableHours.remove(timeAsString);
         }
         return availableHours;
+    }
+
+    private static LocalDate castDateToLocal(Date date) {
+        return date.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+    }
+
+    private static DayOfWeek getCurrentDayOfWeek(LocalDate localDate){
+        return DayOfWeek.of(localDate.get(ChronoField.DAY_OF_WEEK));
+    }
+
+    private static String getFormattedDateAsString(LocalDate localDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return formatter.format(localDate);
     }
 
 }

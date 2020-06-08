@@ -1,7 +1,5 @@
 package pl.clinic.project.mvc;
 
-import org.springframework.beans.factory.ObjectFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -13,18 +11,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import pl.clinic.project.model.User;
 import pl.clinic.project.service.UserService;
-
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/users")
-@SessionAttributes({"user", "patient"})
+@SessionAttributes({"user"})
 public class MvcUserController {
 
     private UserService userService;
-    @Autowired
-    private ObjectFactory<HttpSession> httpSessionFactory;
 
     public MvcUserController(UserService userService) {
         this.userService = userService;
@@ -44,13 +38,13 @@ public class MvcUserController {
     }
 
     @PostMapping("/add")
-    String addNewUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, Model model, HttpSession session) {
+    String addNewUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("errors", bindingResult.getAllErrors());
             return "error.html";
         }
         userService.registerUser(user);
-        return "redirect:login/login";
+        return "redirect:/login";
     }
 
     @GetMapping

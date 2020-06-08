@@ -3,6 +3,7 @@ package pl.clinic.project.mvc;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 import pl.clinic.project.AvailableDateTime;
 import pl.clinic.project.model.Appointment;
@@ -18,7 +19,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/appointments")
-@SessionAttributes({"user", "appointment", "doctors"})
+@SessionAttributes({"user", "appointment"})
 public class MvcAppointmentController {
 
     private final AppointmentService appointmentService;
