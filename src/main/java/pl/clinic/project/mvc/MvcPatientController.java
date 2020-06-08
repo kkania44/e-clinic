@@ -18,6 +18,7 @@ import pl.clinic.project.service.PatientService;
 import pl.clinic.project.service.UserService;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Controller
@@ -44,7 +45,8 @@ public class MvcPatientController {
 
     @PostMapping("/addPatient")
     @PreAuthorize("isAuthenticated()")
-    String addNewPatient (@Valid @ModelAttribute("patient") Patient patient, BindingResult bindingResult, Model model, HttpSession session) {
+    String addNewPatient (@Valid @ModelAttribute("patient") Patient patient, BindingResult bindingResult,
+                          Model model, HttpSession session) {
         if (bindingResult.hasErrors()) {
             final List<FieldError> fieldErrors = bindingResult.getFieldErrors();
             model.addAttribute("errors", fieldErrors);
