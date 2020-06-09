@@ -1,9 +1,6 @@
 package pl.clinic.project.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
@@ -15,6 +12,7 @@ import javax.validation.constraints.Email;
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {

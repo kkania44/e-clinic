@@ -23,12 +23,12 @@ public class DoctorService {
         this.mapper = mapper;
     }
 
-    public void createDoctor(Doctor doctor) {
+    public Integer createDoctor(Doctor doctor) {
         List<DoctorEntity> doctorsWithSamePhone = doctorRepository.findAllByPhoneNumber(doctor.getPhoneNumber());
 
         if (doctorsWithSamePhone.isEmpty()) {
             DoctorEntity doctorEntity = mapper.mapToEntity(doctor);
-            doctorRepository.save(doctorEntity);
+            return doctorRepository.save(doctorEntity).getId();
         } else {
             throw new AlreadyExistsException("Doktor z podanym numerem telefonu jest już w bazie.");
         }

@@ -5,10 +5,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.clinic.project.UserRole;
 import pl.clinic.project.entities.UserEntity;
 import pl.clinic.project.exception.NotFoundException;
 import pl.clinic.project.mapper.UserMapper;
 import pl.clinic.project.model.User;
+import pl.clinic.project.repositories.DoctorRepository;
 import pl.clinic.project.repositories.PatientRepository;
 import pl.clinic.project.repositories.UserRepository;
 
@@ -26,14 +28,15 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserMapper mapper;
     private final PatientRepository patientRepository;
+    private final DoctorRepository doctorRepository;
 
-    public void registerUser(User user) {
+    public void registerUser(User user, UserRole role, Integer doctorId) {
         UserEntity userEntity = UserEntity.builder()
                 .email(user.getEmail())
                 .password(passwordEncoder.encode(user.getPassword()))
-                .role("USER_PATIENT")
+                .role(role.getName())
                 .patient(null)
-                .doctor(null)
+                .doctor(doctorRepository.findById(doctorId).get())
                 .build();
         userRepository.save(userEntity);
     }

@@ -9,8 +9,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import pl.clinic.project.UserRole;
 import pl.clinic.project.model.Doctor;
+import pl.clinic.project.model.DoctorWithCredentials;
+import pl.clinic.project.model.User;
 import pl.clinic.project.service.DoctorService;
+import pl.clinic.project.service.UserService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -20,9 +24,11 @@ import java.util.List;
 public class MvcDoctorController {
 
     private final DoctorService doctorService;
+    private final UserService userService;
 
-    public MvcDoctorController(DoctorService doctorService) {
+    public MvcDoctorController(DoctorService doctorService, UserService userService) {
         this.doctorService = doctorService;
+        this.userService = userService;
     }
 
     @GetMapping("/addDoctor")
@@ -30,18 +36,26 @@ public class MvcDoctorController {
     ModelAndView addNewDoctorPage() {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("admin/addDoctor.html");
+        mav.addObject("doctor", new DoctorWithCredentials());
         return mav;
     }
 
 
     @PostMapping("/addDoctor")
     @PreAuthorize("hasRole('ADMIN')")
-    String addNewDoctor(@Valid @ModelAttribute("doctor") Doctor doctor, BindingResult bindingResult, Model model) {
+    String addNewDoctor(@Valid @ModelAttribute("doctor") DoctorWithCredentials doctor, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("errors", bindingResult.getAllErrors());
             return "error.html";
         }
-        doctorService.createDoctor(doctor);
+        Doctor doctorToAdd = new Doctor(null, doctor.getFirstName(), doctor.getLastName(),
+                                        doctor.getSpeciality(), doctor.getPhoneNumber());
+        Integer doctorId = doctorService.createDoctor(doctorToAdd);
+        User user = User.builder()
+                .email(doctor.getLogin())
+                .password(doctor.getPassword())
+                .build();
+        userService.registerUser(user, UserRole.USER_DOCTOR, doctorId);
         return "redirect:/users/admin";
     }
 
