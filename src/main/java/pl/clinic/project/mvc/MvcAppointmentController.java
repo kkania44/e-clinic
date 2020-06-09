@@ -95,4 +95,11 @@ public class MvcAppointmentController {
         return mav;
     }
 
+    @GetMapping("/cancel/{id}")
+    @PreAuthorize("hasRole('USER_PATIENT')")
+    String deleteAppointment(@PathVariable("id") Integer id) {
+        appointmentService.deleteById(id);
+        return "redirect:/appointments/appointmentData";
+    }
+
 }

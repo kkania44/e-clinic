@@ -19,6 +19,7 @@
     <td><span th:text="${appointment.id}"></span></td>
     <td><span th:text="${appointment.date}"></span></td>
     <td><span th:text="${appointment.time}"></span></td>
+    <td><a th:href="@{/appointments/cancel/} + ${appointment.id}">Odwołaj</a></td>
 </tr>
 </tbody>
 </table>
@@ -39,6 +40,8 @@
     </tr>
     </tbody>
 </table>
+<br>
+<a style="float: bottom" th:href="@{/patients/patientPanel}">Panel pacjenta</a><br>
 
 </body>
 </html>
