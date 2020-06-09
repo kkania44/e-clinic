@@ -3,6 +3,7 @@ package pl.clinic.project.service;
 
 import org.springframework.stereotype.Service;
 import pl.clinic.project.entities.PatientEntity;
+import pl.clinic.project.exception.AlreadyExistsException;
 import pl.clinic.project.exception.NotFoundException;
 import pl.clinic.project.mapper.PatientMapper;
 import pl.clinic.project.model.Patient;
@@ -25,14 +26,24 @@ public class PatientService {
     }
 
     public PatientEntity createPatient(Patient patient) {
+        List<PatientEntity> patientsWithSamePhone = patientRepository.findByPhoneNumber(patient.getPhoneNumber());
+        List<PatientEntity> patientsWithSamePesel = patientRepository.findByPeselNumber(patient.getPeselNumber());
+
+        if (patientsWithSamePhone.size() != 0) {
+            throw new AlreadyExistsException("Pacjent o podanym numerze telefonu jest już w bazie.");
+        }
+        if (patientsWithSamePesel.size() != 0) {
+            throw new AlreadyExistsException("Pacjent o podanym numerze pesel jest już w bazie.");
+        }
+
         PatientEntity patientToAdd = patientMapper.mapToEntity(patient);
         return patientRepository.save(patientToAdd);
     }
 
     @Transactional
-    public void updatePatient (Patient patient){
+    public void updatePatient(Patient patient) {
         PatientEntity patientToUpdate = patientRepository.findById(patient.getId())
-                .orElseThrow( () -> new NotFoundException("Nie znaleziono pacjenta o id " + patient.getId()));
+                .orElseThrow(() -> new NotFoundException("Nie znaleziono pacjenta o id " + patient.getId()));
         patientToUpdate.setFirstName(patient.getFirstName());
         patientToUpdate.setLastName(patient.getLastName());
         patientToUpdate.setPhoneNumber(patient.getPhoneNumber());
@@ -49,5 +60,7 @@ public class PatientService {
                 .collect(Collectors.toList());
     }
 
-    public void deleteById(Integer id) {patientRepository.deleteById(id);}
+    public void deleteById(Integer id) {
+        patientRepository.deleteById(id);
+    }
 }

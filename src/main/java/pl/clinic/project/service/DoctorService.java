@@ -3,6 +3,7 @@ package pl.clinic.project.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.clinic.project.entities.DoctorEntity;
+import pl.clinic.project.exception.AlreadyExistsException;
 import pl.clinic.project.exception.NotFoundException;
 import pl.clinic.project.mapper.DoctorMapper;
 import pl.clinic.project.model.Doctor;
@@ -23,8 +24,14 @@ public class DoctorService {
     }
 
     public void createDoctor(Doctor doctor) {
-        DoctorEntity doctorEntity = mapper.mapToEntity(doctor);
-        doctorRepository.save(doctorEntity);
+        List<DoctorEntity> doctorsWithSamePhone = doctorRepository.findAllByPhoneNumber(doctor.getPhoneNumber());
+
+        if (doctorsWithSamePhone.isEmpty()) {
+            DoctorEntity doctorEntity = mapper.mapToEntity(doctor);
+            doctorRepository.save(doctorEntity);
+        } else {
+            throw new AlreadyExistsException("Doktor z podanym numerem telefonu jest już w bazie.");
+        }
     }
 
     @Transactional
