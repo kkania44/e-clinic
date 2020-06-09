@@ -1,6 +1,7 @@
 package pl.clinic.project.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.clinic.project.entities.AppointmentEntity;
 import pl.clinic.project.entities.DoctorEntity;
 import pl.clinic.project.entities.PatientEntity;
@@ -62,6 +63,11 @@ public class AppointmentService {
 
     public void deleteById(Integer id){
         appointmentRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void deleteAppointmentsWithPastDate(LocalDate date) {
+        appointmentRepository.deleteByDateBefore(date);
     }
 
 }

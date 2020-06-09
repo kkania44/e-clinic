@@ -13,4 +13,6 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
     public List<AppointmentEntity> findAllByPatientId(Integer id);
 
     List<AppointmentEntity> findAllByDoctorIdAndDate(Integer id, LocalDate date);
+
+    void deleteByDateBefore(LocalDate date);
 }
