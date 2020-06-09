@@ -26,8 +26,8 @@ public class PatientService {
     }
 
     public PatientEntity createPatient(Patient patient) {
-        List<PatientEntity> patientsWithSamePhone = patientRepository.findByPhoneNumber(patient.getPhoneNumber());
-        List<PatientEntity> patientsWithSamePesel = patientRepository.findByPeselNumber(patient.getPeselNumber());
+        List<PatientEntity> patientsWithSamePhone = patientRepository.findAllByPhoneNumber(patient.getPhoneNumber());
+        List<PatientEntity> patientsWithSamePesel = patientRepository.findAllByPeselNumber(patient.getPeselNumber());
 
         if (patientsWithSamePhone.size() != 0) {
             throw new AlreadyExistsException("Pacjent o podanym numerze telefonu jest już w bazie.");
@@ -40,18 +40,20 @@ public class PatientService {
         return patientRepository.save(patientToAdd);
     }
 
-    @Transactional
-    public void updatePatient(Patient patient) {
+//    @Transactional
+    public PatientEntity updatePatient(Patient patient) {
         PatientEntity patientToUpdate = patientRepository.findById(patient.getId())
                 .orElseThrow(() -> new NotFoundException("Nie znaleziono pacjenta o id " + patient.getId()));
         patientToUpdate.setFirstName(patient.getFirstName());
         patientToUpdate.setLastName(patient.getLastName());
         patientToUpdate.setPhoneNumber(patient.getPhoneNumber());
+        return patientRepository.save(patientToUpdate);
     }
 
-    public Optional<Patient> getById(Integer id) {
+    public Patient getById(Integer id) {
         return patientRepository.findById(id)
-                .map(ent -> patientMapper.mapToApi(ent));
+                .map(ent -> patientMapper.mapToApi(ent))
+                .orElseThrow(() -> new NotFoundException("Nie znaleziono pacjenta"));
     }
 
     public List<Patient> getAll() {

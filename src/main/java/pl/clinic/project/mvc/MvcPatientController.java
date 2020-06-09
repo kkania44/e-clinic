@@ -104,7 +104,7 @@ public class MvcPatientController {
         Integer id = user.getPatientId();
         ModelAndView mav = new ModelAndView();
         mav.setViewName("patients/patientData.html");
-        Patient patient = patientService.getById(id).get();
+        Patient patient = patientService.getById(id);
         mav.addObject("patient", patient);
         return mav;
     }

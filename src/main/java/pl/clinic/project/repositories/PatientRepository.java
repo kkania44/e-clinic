@@ -9,8 +9,8 @@ import java.util.List;
 @Repository
 public interface PatientRepository extends JpaRepository <PatientEntity, Integer> {
 
-    List<PatientEntity> findByPhoneNumber(String phone);
+    List<PatientEntity> findAllByPhoneNumber(String phone);
 
-    List<PatientEntity> findByPeselNumber(String pesel);
+    List<PatientEntity> findAllByPeselNumber(String pesel);
 
 }
