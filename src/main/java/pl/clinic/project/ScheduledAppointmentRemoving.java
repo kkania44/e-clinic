@@ -17,7 +17,7 @@ public class ScheduledAppointmentRemoving {
         this.appointmentService = appointmentService;
     }
 
-    @Scheduled(cron = "0 47 20 * * *")
+    @Scheduled(cron = "0 0 4 * * *")
     public void removePastAppointments() {
         LocalDate currentDate = LocalDate.now();
         appointmentService.deleteAppointmentsWithPastDate(currentDate);
