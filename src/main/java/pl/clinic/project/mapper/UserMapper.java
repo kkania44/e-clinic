@@ -14,7 +14,12 @@ public class UserMapper {
         if (userEntity.getPatient() != null) {
             return new User(userEntity.getId(), userEntity.getEmail(), userEntity.getPassword(), UserRole.valueOf(userEntity.getRole()),
                     userEntity.getPatient().getId(), null);
-        } else {
+        }
+        else if(userEntity.getDoctor() != null) {
+            return new User(userEntity.getId(), userEntity.getEmail(), userEntity.getPassword(), UserRole.valueOf(userEntity.getRole()),
+                    null, userEntity.getDoctor().getId());
+        }
+        else {
             return new User(userEntity.getId(), userEntity.getEmail(), userEntity.getPassword(), UserRole.valueOf(userEntity.getRole()),
                     null, null);
         }

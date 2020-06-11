@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Wizyty</title>
+</head>
+<body>
+<p th:text="'Lista wizyt na ' + ${date}"></p>
+<table>
+    <thead style="background-color: cadetblue">
+        <tr>
+            <td>Id.</td>
+            <td>Id Pacjenta</td>
+            <td>Godzina</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="appointment: ${appointments}">
+            <td><span th:text="${appointment.id}"></span></td>
+            <td><span th:text="${appointment.patientId}"></span></td>
+            <td><span th:text="${appointment.time}"></span></td>
+        </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

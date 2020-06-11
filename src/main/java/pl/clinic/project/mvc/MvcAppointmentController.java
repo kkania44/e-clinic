@@ -2,10 +2,7 @@ package pl.clinic.project.mvc;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 import pl.clinic.project.AvailableDateTime;
 import pl.clinic.project.model.Appointment;
@@ -15,6 +12,7 @@ import pl.clinic.project.service.AppointmentService;
 import pl.clinic.project.service.DoctorService;
 
 import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +48,7 @@ public class MvcAppointmentController {
     public ModelAndView chooseTimePage(@ModelAttribute("appointment") Appointment appointment,
                                        @PathVariable("id") Integer doctorId) {
         ModelAndView modelAndView = new ModelAndView();
-        List<LocalTime> occupiedHours = appointmentService.getAllByDoctorIdAndDate(doctorId, appointment.getDate());
+        List<LocalTime> occupiedHours = appointmentService.getAllHoursByDoctorIdAndDate(doctorId, appointment.getDate());
         List<String> hours = availableDateTime.getAvailableHours(occupiedHours);
 
         modelAndView.addObject("appointment", appointment);
@@ -92,6 +90,17 @@ public class MvcAppointmentController {
         }
         mav.addObject("appointments", appointments);
         mav.addObject("doctors", doctors);
+        return mav;
+    }
+
+    @PostMapping("/date/{id}")
+    @PreAuthorize("hasAnyRole('USER_DOCTOR', 'ADMIN')")
+    ModelAndView showAppointmentsByDay(@PathVariable("id") Integer id, @ModelAttribute("pickedDate") String date) {
+        ModelAndView mav = new ModelAndView("doctors/appointmentsByDate.html");
+        LocalDate localDate = LocalDate.parse(date);
+        List<Appointment> appointments = appointmentService.getAllByDoctorIdAndDate(id, localDate);
+        mav.addObject("date", date);
+        mav.addObject("appointments", appointments);
         return mav;
     }
 

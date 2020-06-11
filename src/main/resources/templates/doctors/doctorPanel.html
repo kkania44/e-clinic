@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel lekarza</title>
+</head>
+<body>
+<h4>Panel lekarza</h4>
+Twoje id: <span th:text="${doctorId}"></span>
+<h5>MENU</h5>
+
+Pokaż listę wizyt na dzień:
+<form th:action="@{/appointments/date/} +${doctorId}" method="post">
+Data: <select name="pickedDate">
+
+    <option th:each="date : ${dates}"
+            th:value="${date}"
+            th:text="${date}">
+    </option>
+</select>
+    <br>
+    <input type="submit" value="Pokaż">
+</form>
+<a th:href="@{/logout}">Wyloguj się</a>
+<br>
+</body>
+</html>

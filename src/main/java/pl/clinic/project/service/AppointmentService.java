@@ -55,9 +55,15 @@ public class AppointmentService {
                 .collect(Collectors.toList());
     }
 
-    public List<LocalTime> getAllByDoctorIdAndDate(Integer doctorId, LocalDate date) {
+    public List<LocalTime> getAllHoursByDoctorIdAndDate(Integer doctorId, LocalDate date) {
         return appointmentRepository.findAllByDoctorIdAndDate(doctorId, date).stream()
                 .map(ent -> ent.getTime())
+                .collect(Collectors.toList());
+    }
+
+    public List<Appointment> getAllByDoctorIdAndDate(Integer id, LocalDate date) {
+        return appointmentRepository.findAllByDoctorIdAndDate(id, date).stream()
+                .map(mapper::mapToApi)
                 .collect(Collectors.toList());
     }
 

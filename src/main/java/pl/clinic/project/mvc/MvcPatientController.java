@@ -61,7 +61,7 @@ public class MvcPatientController {
 
     @GetMapping("/patientPanel")
     @PreAuthorize("hasRole('USER_PATIENT')")
-    String patientPanelPage(Model model) {
+    String patientPanelPage(Model model, HttpSession session) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         User user = userService.getByEmail(name).get();
@@ -97,10 +97,8 @@ public class MvcPatientController {
 
     @GetMapping("/patientData")
     @PreAuthorize("isAuthenticated()")
-    ModelAndView showPatientData() { ;
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName();
-        User user = userService.getByEmail(name).get();
+    ModelAndView showPatientData(HttpSession session) { ;
+        User user = (User)session.getAttribute("user");
         Integer id = user.getPatientId();
         ModelAndView mav = new ModelAndView();
         mav.setViewName("patients/patientData.html");
@@ -111,10 +109,8 @@ public class MvcPatientController {
 
     @GetMapping("/deleteData")
     @PreAuthorize("isAuthenticated()")
-    ModelAndView deletePatientAndUserData() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String email = auth.getName();
-        User user = userService.getByEmail(email).get();
+    ModelAndView deletePatientAndUserData(HttpSession session) {
+        User user = (User)session.getAttribute("user");
         ModelAndView mav = new ModelAndView();
         mav.setViewName("redirect:/logout");
         userService.deleteUser(user.getId());

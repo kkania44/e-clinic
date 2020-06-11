@@ -22,8 +22,12 @@ public class SecurityHandler implements AuthenticationSuccessHandler {
         String redirectUrl = "";
         if(roles.contains("ROLE_"+UserRole.USER_PATIENT.getName())){
             redirectUrl = "/patients/patientPanel";
-        } else if(roles.contains("ROLE_"+UserRole.ADMIN.getName())) {
+        }
+        if(roles.contains("ROLE_"+UserRole.ADMIN.getName())) {
             redirectUrl = "/users/admin";
+        }
+        if (roles.contains("ROLE_"+UserRole.USER_DOCTOR.getName())) {
+            redirectUrl = "/doctors/panel";
         }
         new DefaultRedirectStrategy().sendRedirect(httpServletRequest, httpServletResponse, redirectUrl);
     }
