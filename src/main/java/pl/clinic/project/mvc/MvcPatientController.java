@@ -66,6 +66,8 @@ public class MvcPatientController {
         String name = auth.getName();
         User user = userService.getByEmail(name).get();
         model.addAttribute("user", user);
+        Patient patient = patientService.getById(user.getId());
+        model.addAttribute("patient", patient);
         if (user.getPatientId() != null) {
             return "patients/patientPanel.html";
         } else {

@@ -1,22 +1,65 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/html">
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
     <meta charset="UTF-8">
     <title>E-przychodnia - panel pacjenta</title>
 </head>
 <body>
-    <h4>Panel Pacjenta</h4>
-    <p th:text = "${user.id}">userId: </p>
-    <br>
-    <a th:href="@{/patients/patientData}">Twoje dane</a>
-    <br>
-    <a th:href="@{/doctors/all}">Lista lekarzy - umów wizytę</a>
-    <br>
-    <a th:href="@{/patients/deleteData}">Usuń swoje dane i konto</a>
-    <br>
-    <a th:href="@{/appointments/appointmentData}">Wyświetl swoje wizyty</a>
-    <br>
-    <a th:href="@{/logout}">Wyloguj się</a>
+<nav th:replace="fragments/navbar.html"></nav>
 
+<main role="main">
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+        <div class="container">
+            <h1 class="display-3" th:inline="text">Witaj, [[${patient.firstName}]]!</h1>
+            <p>W celu poruszania się po stronie skorzystaj z panelu poniżej</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Twoje dane</h5>
+                        <p class="card-text">Kliknij niżej żeby wyświetlić swoje dane</p>
+                        <a th:href="@{/patients/patientData}" class="btn btn-dark">Moje dane</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Lista lekarzy- umów wizytę</h5>
+                        <p class="card-text">Jeżeli chcesz umówić się do lekarza kliknij niżej</p>
+                        <a th:href="@{/doctors/all}" class="btn btn-dark">Umów się</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Wyświetl swoje wizyty</h5>
+                        <p class="card-text">Jeżeli nie pamiętasz swoich umówionych wizyt, kliknij</p>
+                        <a th:href="@{/appointments/appointmentData}" class="btn btn-dark">Moje wizyty</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Usuń swoje dane i konto</h5>
+                        <p class="card-text">Jeżeli chcesz usunąć twoje konto i dane kliknij poniżej</p>
+                        <a th:href="@{/patients/deleteData}" class="btn btn-dark">Usuń konto</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- /container -->
+
+</main>
 </body>
 </html>
