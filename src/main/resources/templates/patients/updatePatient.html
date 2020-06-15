@@ -1,16 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
     <meta charset="UTF-8">
     <title>Edytuj swoje dane</title>
+    <style>
+        body {
+            padding-top: 100px;
+            padding-left: 50px;
+            padding-right: 50px;
+        }
+        @media (max-width: 979px) {
+            body {
+                padding-top: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
+
+<nav th:replace="fragments/navbar.html"></nav>
+
+<h3 class="mt-2">Edytuj swoje dane:</h3>
+<br>
+<br>
 <form th:action="@{/patients/update}" method="post" th:object="${patient}">
-    Imię: <input type="text" th:field="*{firstName}"><br>
-    Nazwisko: <input type="text" th:field="*{lastName}"><br>
-    PESEL: <input type="text" th:field="*{peselNumber}"><br>
-    Numer telefonu: <input type="text" th:field="*{phoneNumber}"><br>
-    <input type="submit" value="Zatwierdź">
+    <div class="form-row">
+        <div class="col-sm-4 mb-3">
+            <label>Imię</label>
+            <input type="text" class="form-control" th:field="*{firstName}" placeholder="Imię" required>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label>Nazwisko</label>
+            <input type="text" class="form-control" th:field="*{lastName}" placeholder="Nazwisko" required>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-4 mb-3">
+            <label>Pesel</label>
+            <input type="text" class="form-control" th:field="*{peselNumber}" placeholder="Pesel" required>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label>Numer telefonu</label>
+            <input type="text" class="form-control" th:field="*{phoneNumber}" placeholder="Numer telefonu" required>
+        </div>
+    </div>
+
+    <button class="btn btn-dark" type="submit">Zapisz</button>
+    <a th:href="@{/patients/patientPanel}" class="btn btn-dark">Wróć do panelu pacjenta</a>
+    <br>
+
 </form>
 </body>
 </html>
