@@ -48,7 +48,7 @@ public class MvcUserController {
             model.addAttribute("errors", bindingResult.getAllErrors());
             return "error.html";
         }
-        userService.registerUser(user, UserRole.USER_PATIENT, null);
+        userService.registerUserAsPatient(user);
         return "redirect:/login";
     }
 

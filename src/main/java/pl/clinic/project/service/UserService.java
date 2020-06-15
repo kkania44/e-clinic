@@ -30,13 +30,21 @@ public class UserService {
     private final PatientRepository patientRepository;
     private final DoctorRepository doctorRepository;
 
-    public void registerUser(User user, UserRole role, Integer doctorId) {
+    public void registerUserAsDoctor(User user, Integer doctorId) {
         UserEntity userEntity = UserEntity.builder()
                 .email(user.getEmail())
                 .password(passwordEncoder.encode(user.getPassword()))
-                .role(role.getName())
-                .patient(null)
+                .role(UserRole.USER_DOCTOR.getName())
                 .doctor(doctorRepository.findById(doctorId).get())
+                .build();
+        userRepository.save(userEntity);
+    }
+
+    public void registerUserAsPatient(User user) {
+        UserEntity userEntity = UserEntity.builder()
+                .email(user.getEmail())
+                .password(passwordEncoder.encode(user.getPassword()))
+                .role(UserRole.USER_PATIENT.getName())
                 .build();
         userRepository.save(userEntity);
     }

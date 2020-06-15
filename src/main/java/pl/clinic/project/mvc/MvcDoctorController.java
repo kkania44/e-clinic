@@ -58,7 +58,7 @@ public class MvcDoctorController {
                 .email(doctor.getLogin())
                 .password(doctor.getPassword())
                 .build();
-        userService.registerUser(user, UserRole.USER_DOCTOR, doctorId);
+        userService.registerUserAsDoctor(user, doctorId);
         return "redirect:/users/admin";
     }
 

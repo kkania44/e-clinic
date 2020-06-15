@@ -48,9 +48,9 @@ public class MvcPatientController {
     String addNewPatient (@Valid @ModelAttribute("patient") Patient patient, BindingResult bindingResult,
                           Model model, HttpSession session) {
         if (bindingResult.hasErrors()) {
-            final List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-            model.addAttribute("errors", fieldErrors);
-            return "error.html";
+//            final List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+//            model.addAttribute("errors", fieldErrors);
+            return "patients/addPatient.html";
         }
         final PatientEntity addedPatient = patientService.createPatient(patient);
         User user = (User) session.getAttribute("user");

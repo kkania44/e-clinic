@@ -5,15 +5,35 @@
     <title>E-przychodnia - nowy pacjent</title>
 </head>
 <body>
-    <p th:text="${session.user.id}"> userId:  </p>
+    Id Pacjenta: <span th:text="${session.user.id}"></span>
+    <br>
 
-
-<form th:action="@{/patients/addPatient}" method="post" th:object="${patient}">
-    Imię: <input type="text" th:field="*{firstName}"><br>
-    Nazwisko: <input type="text" th:field="*{lastName}"><br>
-    PESEL: <input type="text" th:field="*{peselNumber}"><br>
-    Numer telefonu: <input type="text" th:field="*{phoneNumber}"><br>
-    <input type="submit" value="Zatwierdź">
+<form action="#" th:action="@{/patients/addPatient}" method="post" th:object="${patient}">
+    <table>
+        <tr>
+            <td>Imię: </td>
+            <td><input type="text" th:field="*{firstName}"></td>
+            <td th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">FirstName Error</td>
+        </tr>
+        <tr>
+            <td>Nazwisko: </td>
+            <td><input type="text" th:field="*{lastName}"></td>
+            <td th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">LastName Error</td>
+        </tr>
+        <tr>
+            <td>PESEL: </td>
+            <td><input type="text" th:field="*{peselNumber}"></td>
+            <td th:if="${#fields.hasErrors('peselNumber')}" th:errors="*{peselNumber}">PeselNumber Error</td>
+        </tr>
+        <tr>
+            <td>Number telefonu: </td>
+            <td><input type="text" th:field="*{phoneNumber}"></td>
+            <td th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}">PhoneNumber Error</td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Zatwierdź"></td>
+        </tr>
+    </table>
 </form>
 </body>
 </html>
