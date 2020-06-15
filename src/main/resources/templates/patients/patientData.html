@@ -1,17 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <meta charset="UTF-8">
     <title>Patient Data</title>
+    <style>
+        body {
+            padding-top: 80px;
+        }
+        @media (max-width: 979px) {
+            body {
+                padding-top: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-Imię: <p th:text="${patient.firstName}"></p>
-Nazwisko: <p th:text="${patient.lastName}"></p>
-PESEL: <p th:text="${patient.peselNumber}"></p>
-Numer telefonu: <p th:text="${patient.phoneNumber}"></p>
+<nav th:replace="fragments/navbar.html"></nav>
+
+<main role="main">
+<div class="container mx-auto">
+    <div class="row-cols-lg-1">
+        <div class="col">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h5 class="card-title">Twoje dane:</h5>
+                    <p  class="card-text" th:inline="text">Imię: [[${patient.firstName}]]</p>
+                    <p  class="card-text" th:inline="text">Nazwisko: [[${patient.lastName}]]</p>
+                    <p  class="card-text" th:inline="text">PESEL: [[${patient.peselNumber}]]</p>
+                    <p  class="card-text" th:inline="text">Numer telefonu: [[${patient.phoneNumber}]]</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="container mx-auto">
+        <div class="row-cols-lg-1">
+            <div class="col">
+                <a th:href="@{/patients/update}" class="btn btn-dark btn-lg btn-block">Edytuj dane</a><br>
+                <br>
+                <a th:href="@{/patients/patientPanel}" class="btn btn-dark btn-lg btn-block">Wróć do menu pacjenta</a>
+            </div>
+
+        </div>
+    </div>
+</main>
 
 <a th:href="@{/logout}">Wyloguj się</a><br>
-<a th:href="@{/patients/patientPanel}">Panel pacjenta</a><br>
+<a >Panel pacjenta</a><br>
 <a th:href="@{/patients/update}">Edytuj swoje dane</a><br>
 
 </body>
