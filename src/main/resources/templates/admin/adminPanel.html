@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <meta charset="UTF-8">
     <title>Panel admina</title>
 </head>
 <body>
+
+<nav th:replace="fragments/navbar.html"></nav>
+
     <h4>Witaj adminie!</h4>
     <br>
     <a th:href="@{/doctors/addDoctor}">Dodaj doktora do bazy</a>
