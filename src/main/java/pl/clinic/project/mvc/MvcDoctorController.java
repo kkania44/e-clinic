@@ -2,6 +2,7 @@ package pl.clinic.project.mvc;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -70,7 +71,7 @@ public class MvcDoctorController {
         String name = auth.getName();
         User user = userService.getByEmail(name).get();
         Integer doctorId = user.getDoctorId();
-        String pickedDate = "2020-06-15";
+        String pickedDate = "";
 
         List<String> availableDates = AvailableDateTime.getWorkingDaysOfCurrentMonth();
         mav.addObject("doctorId", doctorId);
@@ -86,7 +87,15 @@ public class MvcDoctorController {
         mav.setViewName("listOfDoctors.html");
         List<Doctor> doctors = doctorService.getAll();
         mav.addObject("doctors", doctors);
+        boolean isAdmin = hasAdminRole();
+        mav.addObject("isAdmin", isAdmin);
         return mav;
+    }
+
+    private boolean hasAdminRole() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
     }
 
 
