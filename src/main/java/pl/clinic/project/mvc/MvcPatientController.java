@@ -23,6 +23,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/patients")
+@SessionAttributes({"user", "patient"})
 public class MvcPatientController {
 
     private final PatientService patientService;
