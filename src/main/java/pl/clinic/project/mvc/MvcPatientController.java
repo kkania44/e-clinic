@@ -23,7 +23,6 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/patients")
-@SessionAttributes({"user", "patient"})
 public class MvcPatientController {
 
     private final PatientService patientService;
@@ -97,8 +96,10 @@ public class MvcPatientController {
 
     @GetMapping("/patientData")
     @PreAuthorize("isAuthenticated()")
-    ModelAndView showPatientData(HttpSession session) { ;
-        User user = (User)session.getAttribute("user");
+    ModelAndView showPatientData() { ;
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        User user = userService.getByEmail(name).get();
         Integer id = user.getPatientId();
         ModelAndView mav = new ModelAndView();
         mav.setViewName("patients/patientData.html");
@@ -110,7 +111,9 @@ public class MvcPatientController {
     @GetMapping("/deleteData")
     @PreAuthorize("isAuthenticated()")
     ModelAndView deletePatientAndUserData(HttpSession session) {
-        User user = (User)session.getAttribute("user");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        User user = userService.getByEmail(name).get();
         ModelAndView mav = new ModelAndView();
         mav.setViewName("redirect:/logout");
         userService.deleteUser(user.getId());

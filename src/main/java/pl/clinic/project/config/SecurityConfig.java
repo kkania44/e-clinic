@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 import pl.clinic.project.SecurityHandler;
 import pl.clinic.project.service.SecurityUserDetailsService;
 
@@ -29,9 +30,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final SecurityUserDetailsService userDetailsService;
     @Autowired
     private SecurityHandler successHandler;
-
-
-
 
     @Bean
     @Primary
@@ -51,6 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(daoAuthenticationProvider());
     }
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
