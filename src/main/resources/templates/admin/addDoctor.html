@@ -6,12 +6,38 @@
 </head>
 <body>
 <form th:action="@{/doctors/addDoctor}" method="post" th:object="${doctor}">
-    Imię: <input type="text" th:field="*{firstName}"><br>
-    Nazwisko: <input type="text" th:field="*{lastName}"><br>
-    Specjalizacja: <input type="text"  th:field="*{speciality}"><br>
-    Numer telefonu: <input type="text" th:field="*{phoneNumber}"><br>
-    E-mail: <input type="text" th:field="*{login}"><br>
-    Hasło: <input type="password" th:field="*{password}"><br>
+    <table>
+        <tr>
+            <td>Imię: </td>
+            <td><input type="text" th:field="*{firstName}"></td>
+            <td th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></td>
+        </tr>
+        <tr>
+            <td>Nazwisko: </td>
+            <td><input type="text" th:field="*{lastName}"></td>
+            <td th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></td>
+        </tr>
+        <tr>
+            <td>Specjalizacja: </td>
+            <td><input type="text"  th:field="*{speciality}"></td>
+            <td th:if="${#fields.hasErrors('speciality')}" th:errors="*{speciality}"></td>
+        </tr>
+        <tr>
+            <td>Numer telefonu: </td>
+            <td><input type="text" th:field="*{phoneNumber}"></td>
+            <td th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></td>
+        </tr>
+        <tr>
+            <td>E-mail: </td>
+            <td><input type="text" th:field="*{login}"></td>
+            <td th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></td>
+        </tr>
+        <tr>
+            <td>Hasło: </td>
+            <td><input type="password" th:field="*{password}"></td>
+            <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></td>
+        </tr>
+    </table>
     <input type="submit" value="Zatwierdź">
 </form>
 </body>
