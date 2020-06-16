@@ -49,8 +49,7 @@ public class MvcDoctorController {
     @PreAuthorize("hasRole('ADMIN')")
     String addNewDoctor(@Valid @ModelAttribute("doctor") DoctorWithCredentials doctor, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("errors", bindingResult.getAllErrors());
-            return "error.html";
+            return "admin/addDoctor.html";
         }
         Doctor doctorToAdd = new Doctor(null, doctor.getFirstName(), doctor.getLastName(),
                                         doctor.getSpeciality(), doctor.getPhoneNumber());

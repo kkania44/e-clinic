@@ -1,9 +1,13 @@
 package pl.clinic.project.model;
 
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import pl.clinic.project.validator.PhoneNumber;
+
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 
 @Component
 @Scope(value = "request")
@@ -15,12 +19,19 @@ import pl.clinic.project.validator.PhoneNumber;
 public class DoctorWithCredentials {
 
     private Integer id;
+    @NotEmpty
+    @Length(min = 2)
     private String firstName;
+    @NotEmpty
+    @Length(min = 2, max = 32)
     private String lastName;
+    @Length(min = 2, max = 32)
     private String speciality;
     @PhoneNumber
     private String phoneNumber;
 
+    @NotEmpty
     private String login;
+    @NotEmpty
     private String password;
 }
