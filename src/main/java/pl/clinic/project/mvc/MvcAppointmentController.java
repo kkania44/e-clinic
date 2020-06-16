@@ -81,10 +81,10 @@ public class MvcAppointmentController {
         List<Doctor> allDoctors = doctorService.getAll();
         List<Doctor> doctors = new ArrayList<>();
 
-        for (int i = 0; i<allDoctors.size(); i++){
-            for (int y = 0; y<appointments.size(); y++){
-                if (allDoctors.get(i).getId().equals(appointments.get(y).getDoctorId())){
-                    doctors.add(allDoctors.get(i));
+        for (Appointment appo: appointments) {
+            for (Doctor doctor : allDoctors) {
+                if (appo.getDoctorId().equals(doctor.getId())) {
+                    doctors.add(doctor);
                 }
             }
         }
