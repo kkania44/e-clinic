@@ -6,6 +6,34 @@
 </head>
 <body>
 <form th:action="@{/doctors/addDoctor}" method="post" th:object="${doctor}">
+    <table>
+        <tr>
+            <td>Imię: </td>
+            <td><input type="text" th:field="*{firstName}"></td>
+            <td th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></td>
+        </tr>
+        <tr>
+            <td>Nazwisko: </td>
+            <td><input type="text" th:field="*{lastName}"></td>
+            <td th:if="${#fields.hasErrors('')}" th:errors="*{}"></td>
+        </tr>
+        <tr>
+            <td>Specjalizacja: </td>
+            <td><input type="text"  th:field="*{speciality}"></td>
+            <td th:if="${#fields.hasErrors('')}" th:errors="*{}"></td>
+        </tr>
+        <tr>
+            <td>Numer telefonu: </td>
+            <td><input type="text" th:field="*{phoneNumber}"></td>
+            <td th:if="${#fields.hasErrors('')}" th:errors="*{}"></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td th:if="${#fields.hasErrors('')}" th:errors="*{}"></td>
+        </tr>
+
+
     Imię: <input type="text" th:field="*{firstName}"><br>
     Nazwisko: <input type="text" th:field="*{lastName}"><br>
     Specjalizacja: <input type="text"  th:field="*{speciality}"><br>
@@ -13,6 +41,7 @@
     E-mail: <input type="text" th:field="*{login}"><br>
     Hasło: <input type="password" th:field="*{password}"><br>
     <input type="submit" value="Zatwierdź">
+    </table>
 </form>
 </body>
 </html>
