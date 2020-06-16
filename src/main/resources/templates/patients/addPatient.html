@@ -1,39 +1,60 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/html">
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <meta charset="UTF-8">
     <title>E-przychodnia - nowy pacjent</title>
+    <style>
+        body {
+            padding-top: 100px;
+            padding-left: 50px;
+            padding-right: 50px;
+        }
+        @media (max-width: 979px) {
+            body {
+                padding-top: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-    Id Pacjenta: <span th:text="${session.user.id}"></span>
-    <br>
 
-<form action="#" th:action="@{/patients/addPatient}" method="post" th:object="${patient}">
-    <table>
-        <tr>
-            <td>Imię: </td>
-            <td><input type="text" th:field="*{firstName}"></td>
-            <td th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">FirstName Error</td>
-        </tr>
-        <tr>
-            <td>Nazwisko: </td>
-            <td><input type="text" th:field="*{lastName}"></td>
-            <td th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">LastName Error</td>
-        </tr>
-        <tr>
-            <td>PESEL: </td>
-            <td><input type="text" th:field="*{peselNumber}"></td>
-            <td th:if="${#fields.hasErrors('peselNumber')}" th:errors="*{peselNumber}">PeselNumber Error</td>
-        </tr>
-        <tr>
-            <td>Number telefonu: </td>
-            <td><input type="text" th:field="*{phoneNumber}"></td>
-            <td th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}">PhoneNumber Error</td>
-        </tr>
-        <tr>
-            <td><input type="submit" value="Zatwierdź"></td>
-        </tr>
-    </table>
-</form>
+
+
+    <nav th:replace="fragments/navbar.html"></nav>
+
+    <h3 class="mt-2">Uzupełnij swoje dane poniżej</h3>
+    <br>
+    <br>
+    <form th:action="@{/patients/addPatient}" method="post" th:object="${patient}">
+        <div class="form-row">
+            <div class="col-sm-4 mb-3">
+                <label>Imię</label>
+                <input type="text" class="form-control" th:field="*{firstName}" placeholder="Imię" required>
+                <td th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">FirstName Error</td>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label>Nazwisko</label>
+                <input type="text" class="form-control" th:field="*{lastName}" placeholder="Nazwisko" required>
+                <td th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">LastName Error</td>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-4 mb-3">
+                <label>Pesel</label>
+                <input type="text" class="form-control" th:field="*{peselNumber}" placeholder="Pesel" required>
+                <td th:if="${#fields.hasErrors('peselNumber')}" th:errors="*{peselNumber}">PeselNumber Error</td>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label>Numer telefonu (9 cyfr)</label>
+                <input type="text" class="form-control" th:field="*{phoneNumber}" placeholder="Numer telefonu" required>
+                <td th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}">PhoneNumber Error</td>
+            </div>
+        </div>
+
+        <button class="btn btn-dark" type="submit">Zapisz</button>
+        <br>
+
+    </form>
 </body>
 </html>
