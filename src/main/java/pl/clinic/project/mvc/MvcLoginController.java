@@ -12,7 +12,6 @@ import java.util.Collection;
 
 @Controller
 @RequestMapping("/login")
-@SessionAttributes("user")
 public class MvcLoginController {
 
     @GetMapping

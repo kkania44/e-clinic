@@ -1,6 +1,8 @@
 package pl.clinic.project.mvc;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -10,6 +12,7 @@ import pl.clinic.project.model.Doctor;
 import pl.clinic.project.model.User;
 import pl.clinic.project.service.AppointmentService;
 import pl.clinic.project.service.DoctorService;
+import pl.clinic.project.service.UserService;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
@@ -19,16 +22,16 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/appointments")
-@SessionAttributes({"user", "appointment"})
 public class MvcAppointmentController {
 
     private final AppointmentService appointmentService;
     private final DoctorService doctorService;
     private AvailableDateTime availableDateTime = new AvailableDateTime();
-
-    public MvcAppointmentController(AppointmentService appointmentService, DoctorService doctorService) {
+private final UserService userService;
+    public MvcAppointmentController(AppointmentService appointmentService, DoctorService doctorService, UserService userService) {
         this.appointmentService = appointmentService;
         this.doctorService=doctorService;
+        this.userService=userService;
     }
 
     @GetMapping("/book/{id}")
@@ -62,9 +65,10 @@ public class MvcAppointmentController {
     @PreAuthorize("hasRole('USER_PATIENT')")
     public String createAppointment(@ModelAttribute("appointment") Appointment appointment,
                                     @PathVariable("id") Integer docId, HttpSession session) {
-        User user = (User)session.getAttribute("user");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        User user = userService.getByEmail(name).get();
         Integer patientId = user.getPatientId();
-
         appointment.setPatientId(patientId);
         appointment.setDoctorId(docId);
         appointmentService.createAppointment(appointment);
@@ -74,7 +78,9 @@ public class MvcAppointmentController {
     @GetMapping("/appointmentData")
     @PreAuthorize("isAuthenticated()")
    ModelAndView showPatientData(HttpSession session) { ;
-        User user = (User)session.getAttribute("user");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        User user = userService.getByEmail(name).get();
         Integer id = user.getPatientId();
         ModelAndView mav = new ModelAndView();
         List<Appointment> appointments = appointmentService.getAllByPatientId(id);

@@ -1,14 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <meta charset="UTF-8">
     <title>E-przychodnia - rejestracja</title>
+    <style>
+        body {
+            padding-top: 100px;
+            padding-left: 50px;
+            padding-right: 50px;
+        }
+        @media (max-width: 979px) {
+            body {
+                padding-top: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
+<nav th:replace="fragments/navbar.html"></nav>
+<h3 class="mt-2">Uzupełnij dane i zarejestruj się:</h3>
 <form th:action="@{/users/add}" method="post" th:object="${user}">
-    E-mail: <input type="text" th:field="*{email}"><br>
-    Hasło: <input type="password" th:field="*{password}"><br>
-    <input type="submit" value="Zarejestruj się">
+    <div class="form-row">
+        <div class="col-md-4 mb-3">
+            <label for="username">Email</label>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">@</span>
+                </div>
+                <input type="email" class="form-control" id="username" placeholder="Email" required name="un" th:field="*{email}">
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-6 mb-3">
+            <label for="password1">Hasło</label>
+            <input type="password" class="form-control" id="password1" placeholder="Hasło" required name="up" th:field="*{password}">
+        </div>
+    </div>
+    <button class="btn btn-dark" type="submit">Zarejestruj się</button>
 </form>
 </body>
 </html>
