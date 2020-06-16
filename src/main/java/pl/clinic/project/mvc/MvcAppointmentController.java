@@ -4,6 +4,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import pl.clinic.project.AvailableDateTime;
@@ -14,6 +15,7 @@ import pl.clinic.project.service.AppointmentService;
 import pl.clinic.project.service.DoctorService;
 import pl.clinic.project.service.UserService;
 
+import javax.print.Doc;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -22,6 +24,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/appointments")
+@SessionAttributes("doctor")
 public class MvcAppointmentController {
 
     private final AppointmentService appointmentService;
@@ -36,11 +39,12 @@ private final UserService userService;
 
     @GetMapping("/book/{id}")
     @PreAuthorize("hasRole('USER_PATIENT')")
-    public ModelAndView createAppointmentPage(@PathVariable("id") Integer docId) {
+    public ModelAndView createAppointmentPage(@PathVariable("id") Integer docId, Model model) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("appointments/bookAppointment.html");
         List<String> availableDates = AvailableDateTime.getWorkingDaysOfCurrentMonth();
-
+        Doctor doctor = doctorService.getById(docId).get();
+        modelAndView.addObject("doctor", doctor);
         modelAndView.addObject("dates", availableDates);
         modelAndView.addObject("appointment", new Appointment());
         modelAndView.addObject("doctorId", docId);
@@ -53,7 +57,8 @@ private final UserService userService;
         ModelAndView modelAndView = new ModelAndView();
         List<LocalTime> occupiedHours = appointmentService.getAllHoursByDoctorIdAndDate(doctorId, appointment.getDate());
         List<String> hours = availableDateTime.getAvailableHours(occupiedHours);
-
+        Doctor doctor = doctorService.getById(doctorId).get();
+        modelAndView.addObject("doctor", doctor);
         modelAndView.addObject("appointment", appointment);
         modelAndView.addObject("hours", hours);
         modelAndView.addObject("doctorId", doctorId);
@@ -64,7 +69,7 @@ private final UserService userService;
     @PostMapping("/book/{id}")
     @PreAuthorize("hasRole('USER_PATIENT')")
     public String createAppointment(@ModelAttribute("appointment") Appointment appointment,
-                                    @PathVariable("id") Integer docId, HttpSession session) {
+                                    @PathVariable("id") Integer docId, HttpSession session, Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         User user = userService.getByEmail(name).get();
@@ -105,6 +110,8 @@ private final UserService userService;
         ModelAndView mav = new ModelAndView("doctors/appointmentsByDate.html");
         LocalDate localDate = LocalDate.parse(date);
         List<Appointment> appointments = appointmentService.getAllByDoctorIdAndDate(id, localDate);
+        Doctor doctor = doctorService.getById(id).get();
+        mav.addObject("doctor", doctor);
         mav.addObject("date", date);
         mav.addObject("appointments", appointments);
         return mav;
