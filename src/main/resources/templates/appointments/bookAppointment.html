@@ -86,15 +86,36 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
 
 <script>
+    !function(a){a.fn.datepicker.dates.pl={}}(jQuery);
     $(document).ready(function(){
         var date_input=$('input[name="date"]'); //our date input has the name "date"
         var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+        var disabledWeekDays = [0,6];
+        var date = new Date();
+        $.fn.datepicker.dates['en'] = {
+            days:["Niedziela","Poniedziałek","Wtorek","Środa","Czwartek","Piątek","Sobota"],
+            daysShort:["Niedz.","Pon.","Wt.","Śr.","Czw.","Piąt.","Sob."],
+            daysMin:["Ndz.","Pn.","Wt.","Śr.","Czw.","Pt.","Sob."],
+            months:["Styczeń","Luty","Marzec","Kwiecień","Maj","Czerwiec","Lipiec","Sierpień","Wrzesień","Październik","Listopad","Grudzień"],
+            monthsShort:["Sty.","Lut.","Mar.","Kwi.","Maj","Cze.","Lip.","Sie.","Wrz.","Paź.","Lis.","Gru."],
+            today:"Dzisiaj",
+            weekStart:0,
+            clear:"Wyczyść",
+            minDate: date,
+            startDate: new Date(),
+        }
+
         date_input.datepicker({
             format: 'yyyy-mm-dd',
             container: container,
             todayHighlight: true,
             autoclose: true,
+            daysOfWeekDisabled: disabledWeekDays,
+            startDate: new Date(),
+
         })
+
+
     })
 </script>
 
