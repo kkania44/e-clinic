@@ -33,7 +33,7 @@ public class UserEntity {
     @JoinColumn(name="PT_ID")
     private PatientEntity patient;
 
-    @OneToOne
+    @OneToOne(orphanRemoval = true)
     @JoinColumn(name = "DR_ID")
     private DoctorEntity doctor;
 

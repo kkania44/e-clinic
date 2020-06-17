@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.clinic.project.UserRole;
+import pl.clinic.project.entities.DoctorEntity;
 import pl.clinic.project.entities.UserEntity;
 import pl.clinic.project.exception.NotFoundException;
 import pl.clinic.project.mapper.UserMapper;
@@ -53,6 +54,13 @@ public class UserService {
         return userRepository.findAll().stream()
                 .map(mapper::mapToApi)
                 .collect(Collectors.toList());
+    }
+
+    public Integer getUserIdByDoctorId(Integer id) {
+        DoctorEntity doctor = doctorRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Nie znaleziono doktora"));
+        UserEntity user = userRepository.findAllByDoctor(doctor).get(0);
+        return user.getId();
     }
 
     public Optional<User> getByEmail(String email) {

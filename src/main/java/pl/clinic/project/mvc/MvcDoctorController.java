@@ -7,10 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import pl.clinic.project.AvailableDateTime;
 import pl.clinic.project.UserRole;
@@ -89,6 +86,14 @@ public class MvcDoctorController {
         boolean isAdmin = hasAdminRole();
         mav.addObject("isAdmin", isAdmin);
         return mav;
+    }
+
+    @GetMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    String deleteUserAndRelatedDoctor(@PathVariable("id") Integer id) {
+        Integer userIdToDelete = userService.getUserIdByDoctorId(id);
+        userService.deleteUser(userIdToDelete);
+        return "redirect:/users/admin";
     }
 
     private boolean hasAdminRole() {

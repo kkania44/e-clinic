@@ -7,7 +7,7 @@ public class DoctorMapper {
 
     public DoctorEntity mapToEntity(Doctor doctor) {
         return new DoctorEntity(null, doctor.getFirstName(), doctor.getLastName(),
-                doctor.getSpeciality(), doctor.getPhoneNumber());
+                doctor.getSpeciality(), doctor.getPhoneNumber(), null);
     }
 
     public Doctor mapToApi(DoctorEntity doctorEntity) {
