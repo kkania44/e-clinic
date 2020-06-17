@@ -39,7 +39,7 @@
     </div>
 
 </div>
-<form th:action="@{/appointments/book/time/} +${doctorId}" method="post" th:object="${appointment}">
+<form th:action="@{/appointments/book/time/} +${doctorId}" method="get" th:object="${appointment}">
 
     <div class="bootstrap-iso">
         <div class="container-fluid">
@@ -54,7 +54,7 @@
        </span>
                             </label>
                             <div class="input-group">
-                                <input class="form-control" id="date" name="date" placeholder="YYYY-MM-DD" type="text"/>
+                                <input class="form-control" th:field="*{date}" id="date" name="date" placeholder="YYYY-MM-DD" type="text"/>
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar">
                                     </i>

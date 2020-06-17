@@ -30,7 +30,8 @@ public class MvcAppointmentController {
     private final AppointmentService appointmentService;
     private final DoctorService doctorService;
     private AvailableDateTime availableDateTime = new AvailableDateTime();
-private final UserService userService;
+    private final UserService userService;
+
     public MvcAppointmentController(AppointmentService appointmentService, DoctorService doctorService, UserService userService) {
         this.appointmentService = appointmentService;
         this.doctorService=doctorService;
@@ -52,6 +53,7 @@ private final UserService userService;
     }
 
     @PostMapping("book/time/{id}")
+    @PreAuthorize("hasRole('USER_PATIENT')")
     public ModelAndView chooseTimePage(@ModelAttribute("appointment") Appointment appointment,
                                        @PathVariable("id") Integer doctorId) {
         ModelAndView modelAndView = new ModelAndView();
