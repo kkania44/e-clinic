@@ -101,6 +101,8 @@ public class MvcAppointmentController {
         List<Appointment> appointments = appointmentService.getAllByPatientId(id);
         List<Doctor> allDoctors = doctorService.getAll();
         List<Doctor> doctors = new ArrayList<>();
+        boolean isAdmin = hasAdminRole();
+        mav.addObject("isAdmin", isAdmin);
 
         for (Appointment appo: appointments) {
             for (Doctor doctor : allDoctors) {
@@ -152,5 +154,12 @@ public class MvcAppointmentController {
                         patient.getFirstName(), patient.getLastName());
         return appointmentWithPt;
     }
+
+    private boolean hasAdminRole() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+    }
+
 
 }
