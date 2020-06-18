@@ -54,7 +54,7 @@
             <tr th:each="appointment : ${appointments}">
                 <td><span th:text="${appointment.date}"></span></td>
                 <td><span th:text="${appointment.time}"></span></td>
-                <td><a th:href="@{/appointments/cancel/} + ${appointment.id}" class="btn btn-dark mb-3">Odwołaj</a></td>
+                <td><span><a style="padding: 5px 5px 5px 5px" th:href="@{/appointments/cancel/} + ${appointment.id}">Odwołaj</a></span></td>
             </tr>
             </tbody>
         </table>
