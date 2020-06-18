@@ -71,7 +71,7 @@ public class MvcAppointmentController {
     @PostMapping("/book/{id}")
     @PreAuthorize("hasRole('USER_PATIENT')")
     public String createAppointment(@ModelAttribute("appointment") Appointment appointment,
-                                    @PathVariable("id") Integer docId, HttpSession session, Model model) {
+                                    @PathVariable("id") Integer docId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         User user = userService.getByEmail(name).get();
