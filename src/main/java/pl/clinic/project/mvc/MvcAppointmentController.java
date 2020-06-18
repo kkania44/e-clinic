@@ -15,7 +15,6 @@ import pl.clinic.project.service.AppointmentService;
 import pl.clinic.project.service.DoctorService;
 import pl.clinic.project.service.UserService;
 
-import javax.print.Doc;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -24,7 +23,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/appointments")
-@SessionAttributes("doctor")
+@SessionAttributes({"doctor", "appointment"})
 public class MvcAppointmentController {
 
     private final AppointmentService appointmentService;
@@ -40,7 +39,7 @@ public class MvcAppointmentController {
 
     @GetMapping("/book/{id}")
     @PreAuthorize("hasRole('USER_PATIENT')")
-    public ModelAndView createAppointmentPage(@PathVariable("id") Integer docId, Model model) {
+    public ModelAndView createAppointmentPage(@PathVariable("id") Integer docId) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("appointments/bookAppointment.html");
         List<String> availableDates = AvailableDateTime.getWorkingDaysOfCurrentMonth();
@@ -59,8 +58,6 @@ public class MvcAppointmentController {
         ModelAndView modelAndView = new ModelAndView();
         List<LocalTime> occupiedHours = appointmentService.getAllHoursByDoctorIdAndDate(doctorId, appointment.getDate());
         List<String> hours = availableDateTime.getAvailableHours(occupiedHours);
-        Doctor doctor = doctorService.getById(doctorId).get();
-        modelAndView.addObject("doctor", doctor);
         modelAndView.addObject("appointment", appointment);
         modelAndView.addObject("hours", hours);
         modelAndView.addObject("doctorId", doctorId);
@@ -71,7 +68,7 @@ public class MvcAppointmentController {
     @PostMapping("/book/{id}")
     @PreAuthorize("hasRole('USER_PATIENT')")
     public String createAppointment(@ModelAttribute("appointment") Appointment appointment,
-                                    @PathVariable("id") Integer docId, HttpSession session, Model model) {
+                                    @PathVariable("id") Integer docId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         User user = userService.getByEmail(name).get();
