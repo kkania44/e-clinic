@@ -1,22 +1,28 @@
 package pl.clinic.project.mvc;
 
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 import pl.clinic.project.AvailableDateTime;
-import pl.clinic.project.model.Appointment;
-import pl.clinic.project.model.Doctor;
-import pl.clinic.project.model.User;
+import pl.clinic.project.GeneratePdf;
+import pl.clinic.project.model.*;
 import pl.clinic.project.service.AppointmentService;
 import pl.clinic.project.service.DoctorService;
+import pl.clinic.project.service.PatientService;
 import pl.clinic.project.service.UserService;
 
 import javax.servlet.http.HttpSession;
+import java.awt.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -29,13 +35,16 @@ public class MvcAppointmentController {
 
     private final AppointmentService appointmentService;
     private final DoctorService doctorService;
+    private final PatientService patientService;
     private AvailableDateTime availableDateTime = new AvailableDateTime();
     private final UserService userService;
 
-    public MvcAppointmentController(AppointmentService appointmentService, DoctorService doctorService, UserService userService) {
+    public MvcAppointmentController(AppointmentService appointmentService, DoctorService doctorService,
+                                    PatientService patientService, UserService userService) {
         this.appointmentService = appointmentService;
-        this.doctorService=doctorService;
-        this.userService=userService;
+        this.doctorService = doctorService;
+        this.patientService = patientService;
+        this.userService = userService;
     }
 
     @GetMapping("/book/{id}")
@@ -105,17 +114,27 @@ public class MvcAppointmentController {
         return mav;
     }
 
-    @PostMapping("/date/{id}")
+    @GetMapping(value = "/date/{id}", produces = MediaType.APPLICATION_PDF_VALUE)
     @PreAuthorize("hasAnyRole('USER_DOCTOR', 'ADMIN')")
-    ModelAndView showAppointmentsByDay(@PathVariable("id") Integer id, @ModelAttribute("pickedDate") String date) {
-        ModelAndView mav = new ModelAndView("doctors/appointmentsByDate.html");
+    ResponseEntity<InputStreamResource> showAppointmentsByDay(@PathVariable("id") Integer doctorId, @ModelAttribute("pickedDate") String date) {
         LocalDate localDate = LocalDate.parse(date);
-        List<Appointment> appointments = appointmentService.getAllByDoctorIdAndDate(id, localDate);
-        Doctor doctor = doctorService.getById(id).get();
-        mav.addObject("doctor", doctor);
-        mav.addObject("date", date);
-        mav.addObject("appointments", appointments);
-        return mav;
+        List<Appointment> appointments = appointmentService.getAllByDoctorIdAndDate(doctorId, localDate);
+        List<AppointmentWithPatientData> appointmentsWithPt = new ArrayList<>();
+
+        for (Appointment appo: appointments) {
+            appointmentsWithPt.add(createAppointmentWithPt(appo));
+        }
+
+        ByteArrayInputStream inputStream = GeneratePdf.appointmentsList(appointmentsWithPt, date);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "inline; filename=listaWizyt.pdf");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(new InputStreamResource(inputStream));
+
     }
 
     @GetMapping("/cancel/{id}")
@@ -123,6 +142,15 @@ public class MvcAppointmentController {
     String deleteAppointment(@PathVariable("id") Integer id) {
         appointmentService.deleteById(id);
         return "redirect:/appointments/appointmentData";
+    }
+
+    private AppointmentWithPatientData createAppointmentWithPt(Appointment appointment) {
+        final Integer patientId = appointment.getPatientId();
+        Patient patient = patientService.getById(patientId);
+        AppointmentWithPatientData appointmentWithPt =
+                new AppointmentWithPatientData(appointment.getId(), appointment.getTime(),
+                        patient.getFirstName(), patient.getLastName());
+        return appointmentWithPt;
     }
 
 }

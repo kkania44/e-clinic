@@ -10,15 +10,17 @@
     <thead style="background-color: cadetblue">
         <tr>
             <td>Id.</td>
-            <td>Id Pacjenta</td>
             <td>Godzina</td>
+            <td>Imię pacjenta</td>
+            <td>Nazwisko pacjenta</td>
         </tr>
     </thead>
     <tbody>
         <tr th:each="appointment: ${appointments}">
             <td><span th:text="${appointment.id}"></span></td>
-            <td><span th:text="${appointment.patientId}"></span></td>
             <td><span th:text="${appointment.time}"></span></td>
+            <td><span th:text="${appointment.ptFirstName}"></span></td>
+            <td><span th:text="${appointment.ptLastName}"></span></td>
         </tr>
     </tbody>
 </table>

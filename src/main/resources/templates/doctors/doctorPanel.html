@@ -9,8 +9,8 @@
 Twoje id: <span th:text="${doctorId}"></span>
 <h5>MENU</h5>
 
-Pokaż listę wizyt na dzień:
-<form th:action="@{/appointments/date/} +${doctorId}" method="post">
+Pokaż listę wizyt na dzień (plik PDF):
+<form th:action="@{/appointments/date/} +${doctorId}" method="get">
 Data: <select name="pickedDate">
 
     <option th:each="date : ${dates}"
