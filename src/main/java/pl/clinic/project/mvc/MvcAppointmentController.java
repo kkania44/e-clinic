@@ -90,7 +90,8 @@ public class MvcAppointmentController {
         List<Appointment> appointments = appointmentService.getAllByPatientId(id);
         List<Doctor> allDoctors = doctorService.getAll();
         List<Doctor> doctors = new ArrayList<>();
-
+        boolean isAdmin = hasAdminRole();
+        mav.addObject("isAdmin", isAdmin);
         for (Appointment appo: appointments) {
             for (Doctor doctor : allDoctors) {
                 if (appo.getDoctorId().equals(doctor.getId())) {
@@ -122,5 +123,12 @@ public class MvcAppointmentController {
         appointmentService.deleteById(id);
         return "redirect:/appointments/appointmentData";
     }
+
+    private boolean hasAdminRole() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+    }
+
 
 }
