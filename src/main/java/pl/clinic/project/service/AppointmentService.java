@@ -67,6 +67,7 @@ public class AppointmentService {
                 .collect(Collectors.toList());
     }
 
+
     public void deleteById(Integer id){
         appointmentRepository.deleteById(id);
     }
