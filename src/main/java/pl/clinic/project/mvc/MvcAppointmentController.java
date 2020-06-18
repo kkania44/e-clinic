@@ -6,6 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 import pl.clinic.project.AvailableDateTime;
 import pl.clinic.project.model.Appointment;
@@ -68,7 +69,7 @@ public class MvcAppointmentController {
     @PostMapping("/book/{id}")
     @PreAuthorize("hasRole('USER_PATIENT')")
     public String createAppointment(@ModelAttribute("appointment") Appointment appointment,
-                                    @PathVariable("id") Integer docId) {
+                                    @PathVariable("id") Integer docId, SessionStatus status) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         User user = userService.getByEmail(name).get();
@@ -76,6 +77,7 @@ public class MvcAppointmentController {
         appointment.setPatientId(patientId);
         appointment.setDoctorId(docId);
         appointmentService.createAppointment(appointment);
+        status.setComplete();
         return "redirect:/patients/patientPanel";
     }
 
