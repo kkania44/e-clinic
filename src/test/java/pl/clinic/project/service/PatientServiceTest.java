@@ -33,8 +33,7 @@ class PatientServiceTest {
     @Test
     public void shouldAddPatient() {
         // given
-        Patient patient = new Patient(null, "Krzysztof", "Krawczyk",
-                "10010055555", "200200200");
+        Patient patient = getSamplePatient();
         // when
         service.createPatient(patient);
         // then
@@ -44,14 +43,25 @@ class PatientServiceTest {
     @Test
     public void shouldNotAddPatientWithExistingPeselNumber() {
         // given
-        Patient patient = new Patient(null, "Krzysztof", "Krawczyk",
-                "10010055555", "200200200");
+        Patient patient = getSamplePatient();
         // when
         Mockito.when(repository.findAllByPeselNumber(patient.getPeselNumber()))
                 .thenReturn(Collections.singletonList(new PatientEntity()));
         Executable expectedException = () -> service.createPatient(patient);
         // then
         assertThrows(AlreadyExistsException.class, expectedException);
+    }
+
+    @Test
+    public void shouldNotAddPatientWithExistingPhone() {
+        // given
+        Patient patient = getSamplePatient();
+        // when
+        Mockito.when(repository.findAllByPhoneNumber(patient.getPhoneNumber()))
+                .thenReturn(Collections.singletonList(new PatientEntity()));
+        Executable expectedEx = () -> service.createPatient(patient);
+        // then
+        assertThrows(AlreadyExistsException.class, expectedEx);
     }
 
 //    @Test
@@ -78,6 +88,11 @@ class PatientServiceTest {
         // then
         assertEquals(patientfromDB.getLastName(), actualPatient.getLastName());
         assertEquals(patientfromDB.getPhoneNumber(), actualPatient.getPhoneNumber());
+    }
+
+    private Patient getSamplePatient() {
+        return new Patient(null, "Krzysztof", "Krawczyk",
+                "10010055555", "200200200");
     }
 
 }

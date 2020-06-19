@@ -26,12 +26,20 @@ public class DoctorService {
     public Integer createDoctor(Doctor doctor) {
         List<DoctorEntity> doctorsWithSamePhone = doctorRepository.findAllByPhoneNumber(doctor.getPhoneNumber());
 
-        if (doctorsWithSamePhone.isEmpty()) {
-            DoctorEntity doctorEntity = mapper.mapToEntity(doctor);
-            return doctorRepository.save(doctorEntity).getId();
-        } else {
+//        if (doctorsWithSamePhone.isEmpty()) {
+//            DoctorEntity doctorEntity = mapper.mapToEntity(doctor);
+//            return doctorRepository.save(doctorEntity).getId();
+//        } else {
+//            throw new AlreadyExistsException("Doktor z podanym numerem telefonu jest już w bazie.");
+//        }
+
+        if (doctorsWithSamePhone.size() != 0){
             throw new AlreadyExistsException("Doktor z podanym numerem telefonu jest już w bazie.");
         }
+        DoctorEntity doctorEntity = mapper.mapToEntity(doctor);
+        final DoctorEntity save = doctorRepository.save(doctorEntity);
+        return save.getId();
+
     }
 
     @Transactional
