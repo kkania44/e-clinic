@@ -50,17 +50,17 @@ class DoctorServiceTest {
 //    @Test
 //    public void shouldAddPatient() {
 //        // given
-//        Doctor doctor = new Doctor(1, "Michał", "Torba", "chirurg", "200200200");
+//        Doctor doctor = new Doctor(null, "Michał", "Torba", "chirurg", "200200200");
 //        // when
 //        service.createDoctor(doctor);
 //        // then
 //        verify(repository).save(Mockito.any());
-    }
+//    }
 
     @Test
     public void shouldNotAddDoctorWithSamePhone() {
         // given
-        Doctor doctor = new Doctor(1, "Michał", "Torba", "chirurg", "200200200");
+        Doctor doctor = getSampleDoctor();
         // when
         when(repository.findAllByPhoneNumber(doctor.getPhoneNumber())).thenReturn(Collections.singletonList(new DoctorEntity()));
         Executable expectedEx = () -> service.createDoctor(doctor);
@@ -68,8 +68,25 @@ class DoctorServiceTest {
         assertThrows(AlreadyExistsException.class, expectedEx);
     }
 
+    @Test
+    public void shouldGetDoctorById() {
+        // given
+        DoctorEntity doctor = getSampleDoctorEntity();
+        // when
+        when(repository.findById(doctor.getId())).thenReturn(java.util.Optional.of(doctor));
+        Doctor docById = service.getById(1).get();
+        // then
+        verify(repository).findById(Mockito.anyInt());
+        assertEquals(doctor.getFirstName(), docById.getFirstName());
+        assertEquals(doctor.getPhoneNumber(), docById.getPhoneNumber());
+    }
+
     private DoctorEntity getSampleDoctorEntity() {
         return new DoctorEntity(1, "Michał", "Torba", "chirurg", "200200200", null);
+    }
+
+    private Doctor getSampleDoctor() {
+        return new Doctor(1, "Michał", "Torba", "chirurg", "200200200");
     }
 
 }

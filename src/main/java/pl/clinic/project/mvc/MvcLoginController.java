@@ -26,7 +26,7 @@ public class MvcLoginController {
         } else if (authorities.contains(new SimpleGrantedAuthority("ROLE_"+ UserRole.USER_PATIENT.getName()))) {
             return "redirect:/patients/patientPanel";
         } else {
-            return "redirect:/";
+            return "redirect:/doctors/panel";
         }
     }
 
