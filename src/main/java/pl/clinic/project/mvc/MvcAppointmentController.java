@@ -66,11 +66,13 @@ public class MvcAppointmentController {
     public ModelAndView chooseTimePage(@ModelAttribute("appointment") Appointment appointment,
                                        @PathVariable("id") Integer doctorId) {
         ModelAndView modelAndView = new ModelAndView();
+        Doctor doctor = doctorService.getById(doctorId).get();
         List<LocalTime> occupiedHours = appointmentService.getAllHoursByDoctorIdAndDate(doctorId, appointment.getDate());
         List<String> hours = availableDateTime.getAvailableHours(occupiedHours);
         modelAndView.addObject("appointment", appointment);
         modelAndView.addObject("hours", hours);
         modelAndView.addObject("doctorId", doctorId);
+        modelAndView.addObject("doctor", doctor);
         modelAndView.setViewName("appointments/bookAppointmentHour.html");
         return modelAndView;
     }
@@ -91,28 +93,23 @@ public class MvcAppointmentController {
     }
 
     @GetMapping("/appointmentData")
-    @PreAuthorize("isAuthenticated()")
-   ModelAndView showPatientData(HttpSession session) { ;
+    @PreAuthorize("hasAnyRole('USER_PATIENT', 'ADMIN')")
+   ModelAndView showPatientData() { ;
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         User user = userService.getByEmail(name).get();
         Integer id = user.getPatientId();
         ModelAndView mav = new ModelAndView();
         List<Appointment> appointments = appointmentService.getAllByPatientId(id);
-        List<Doctor> allDoctors = doctorService.getAll();
-        List<Doctor> doctors = new ArrayList<>();
+
+        List<AppointmentWithDoctorData> appointmentWithDoc = new ArrayList<>();
         boolean isAdmin = hasAdminRole();
         mav.addObject("isAdmin", isAdmin);
 
         for (Appointment appo: appointments) {
-            for (Doctor doctor : allDoctors) {
-                if (appo.getDoctorId().equals(doctor.getId())) {
-                    doctors.add(doctor);
-                }
-            }
+            appointmentWithDoc.add(createAppointmentWithDoc(appo));
         }
-        mav.addObject("appointments", appointments);
-        mav.addObject("doctors", doctors);
+        mav.addObject("appointments", appointmentWithDoc);
         return mav;
     }
 
@@ -153,6 +150,19 @@ public class MvcAppointmentController {
                 new AppointmentWithPatientData(appointment.getId(), appointment.getTime(),
                         patient.getFirstName(), patient.getLastName());
         return appointmentWithPt;
+    }
+
+    private AppointmentWithDoctorData createAppointmentWithDoc(Appointment appointment) {
+        final Integer doctorId = appointment.getDoctorId();
+        Doctor doctor = doctorService.getById(doctorId).get();
+        return new AppointmentWithDoctorData(
+                appointment.getId(),
+                appointment.getDate(),
+                appointment.getTime(),
+                doctor.getFirstName(),
+                doctor.getLastName(),
+                doctor.getSpeciality(),
+                doctor.getPhoneNumber());
     }
 
     private boolean hasAdminRole() {

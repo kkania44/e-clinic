@@ -1,22 +1,48 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/html">
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <meta charset="UTF-8">
     <title>Wybierz godzinę</title>
+    <style>
+        body {
+            padding-top: 100px;
+            padding-right: 50px;
+            padding-left: 50px;
+        }
+        @media (max-width: 979px) {
+            body {
+                padding-top: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-<form th:action="@{/appointments/book/} +${doctorId}" method="post" th:object="${appointment}">
+<nav th:replace="fragments/navbar.html"></nav>
+<div class="container col">
+    <div>
+        <h1 class="mt-5"></h1>
+        <h3>Twój wybór:</h3>
+        <p class="lead" th:inline="text">Doktor: [[${doctor.firstName}]] [[${doctor.lastName}]] </p>
+        <p class="lead" th:inline="text">Specjalizacja: [[${doctor.speciality}]]</p>
+        <p class="lead" th:inline="text">Data: [[${appointment.date}]]</p>
+    </div>
+</div>
+<div class="container col">
+    <div style="padding-bottom: 10px">
+        <h4>Wybierz godzinę:</h4>
+    </div>
+</div>
 
-    Data: <span th:text="*{date}" th:value="*{date}" th:field="*{date}"></span>
-    <br>
-    Godzina: <select th:field="*{time}">
-            <option th:each="hour : ${hours}"
-                      th:value="${hour}"
-                      th:text="${hour}">
-            </option>
+<div class="container col">
+<form th:action="@{/appointments/book/} +${doctorId}" method="post" th:object="${appointment}">
+   <select th:field = "*{time}" class="browser-default custom-select custom-select-lg col-1">
+        <option th:each="hour : ${hours}"  th:value="${hour}"
+                th:text="${hour}" selected>Wybierz godzinę</option>
     </select>
     <br>
-    <input type="submit" value="Zarezerwuj">
+    <input type="submit" class="btn-dark btn" value="Zarezerwuj">
 </form>
+</div>
 </body>
 </html>
