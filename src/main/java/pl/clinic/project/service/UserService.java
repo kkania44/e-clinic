@@ -56,6 +56,12 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+    public List<User> getAllUsersPatients() {
+        return userRepository.findAllByPatientNotNull().stream()
+                .map(mapper::mapToApi)
+                .collect(Collectors.toList());
+    }
+
     public Integer getUserIdByDoctorId(Integer id) {
         DoctorEntity doctor = doctorRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Nie znaleziono doktora"));

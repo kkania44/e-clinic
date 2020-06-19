@@ -121,4 +121,14 @@ public class MvcPatientController {
         return mav;
     }
 
+    @GetMapping("/all")
+    @PreAuthorize("hasRole('ADMIN')")
+    ModelAndView displayListOfPatients() {
+        ModelAndView mav = new ModelAndView("admin/allUsersPatients.html");
+        List<User> users = userService.getAllUsersPatients();
+        List<Patient> patients = patientService.getAll();
+        mav.addObject("users", users);
+        mav.addObject("patients", patients);
+        return mav;
+    }
 }

@@ -14,4 +14,6 @@ public interface UserRepository extends JpaRepository <UserEntity, Integer> {
     Optional<UserEntity> findByEmail(String email);
 
     List<UserEntity> findAllByDoctor(DoctorEntity doctor);
+
+    List<UserEntity> findAllByPatientNotNull();
 }

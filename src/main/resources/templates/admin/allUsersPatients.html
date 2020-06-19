@@ -1,10 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Lista pacjentów</title>
 </head>
 <body>
-
+    <table>
+        <thead>
+            <tr>
+                <td>Id.</td>
+                <td>Email</td>
+                <td>Imię</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="">
+                <td><span th:text=""></span></td>
+                <td><span th:text=""></span></td>
+                <td><span th:text=""></span></td>
+            </tr>
+        </tbody>
+    </table>
 </body>
 </html>
