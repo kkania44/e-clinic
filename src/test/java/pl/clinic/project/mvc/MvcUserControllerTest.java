@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -35,7 +36,6 @@ class MvcUserControllerTest {
     @MockBean
     UserService service;
 
-    // jesli nie ma mockuser -> redirect na login -> przetestować
     @Test
     @WithMockUser(roles = "ADMIN")
     public void shouldShowAdminPanel() throws Exception {
@@ -47,7 +47,36 @@ class MvcUserControllerTest {
                 .andExpect(status().is2xxSuccessful());
     }
 
-    // uzupełnić
+    @Test
+    @WithMockUser(roles = "USER_PATIENT")
+    public void shouldNotLetPatientToAdminPage() throws Exception {
+        // when
+        ResultActions resultActions = getDefaultResultActions("admin");
+        // then
+        resultActions.andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    @WithAnonymousUser
+    public void shouldRedirectAnonymousUserToRegister() throws Exception {
+        // when
+        ResultActions resultActions = getDefaultResultActions("add");
+        // then
+        resultActions.andExpect(status().is2xxSuccessful())
+                .andExpect(model().attributeExists("user"))
+                .andExpect(content().string(Matchers.containsString("Uzupełnij dane i zarejestruj się:")));
+    }
+
+    @Test
+    @WithMockUser(username = "sampleUser", roles = "USER_PATIENT")
+    public void shouldNotLetLoggedUserToRegister() throws Exception {
+        // when
+        ResultActions resultActions = getDefaultResultActions("/add");
+        // then
+        resultActions.andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/login"));
+    }
+
     @Test
     public void addingNewUserTest() throws Exception {
         //when
@@ -56,6 +85,8 @@ class MvcUserControllerTest {
                 .andDo(print());
         // then
         Mockito.verify(service).registerUserAsPatient(Mockito.any(User.class));
+        resultActions.andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/login"));
     }
 
 
