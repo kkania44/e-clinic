@@ -21,6 +21,8 @@ Data: <select name="pickedDate">
     <br>
     <input type="submit" value="Pokaż">
 </form>
+<a th:href="@{/doctors/update/} + ${doctorId}">Edytuj swoje dane</a>
+<br>
 <a th:href="@{/logout}">Wyloguj się</a>
 <br>
 </body>

@@ -38,7 +38,9 @@ public class DoctorService {
     public void updateDoctor(Doctor doctor) {
         DoctorEntity doctorToUpdate = doctorRepository.findById(doctor.getId())
                 .orElseThrow(() -> new NotFoundException("Nie znaleziono doktora."));
+        doctorToUpdate.setLastName(doctor.getLastName());
         doctorToUpdate.setPhoneNumber(doctor.getPhoneNumber());
+        doctorToUpdate.setSpeciality(doctor.getSpeciality());
     }
 
     public List<Doctor> getAll() {

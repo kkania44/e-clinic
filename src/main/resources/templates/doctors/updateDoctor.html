@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Edytuj dane</title>
+</head>
+<body>
+<!--    Id.: <span th:text="${doctor.id}" th:field="${doctor.id}"></span>-->
+    <form th:action="@{/doctors/update}" method="post" th:object="${doctor}">
+        <table>
+            <tr>
+                <td><input type="hidden" th:field="${doctor.id}"></td>
+            </tr>
+            <tr>
+                <td>Imię: </td>
+                <td><input type="text" th:field="*{firstName}"></td>
+                <td th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></td>
+            </tr>
+            <tr>
+                <td>Nazwisko: </td>
+                <td><input type="text" th:field="*{lastName}"></td>
+                <td th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></td>
+            </tr>
+            <tr>
+                <td>Specjalizacja: </td>
+                <td><input type="text"  th:field="*{speciality}"></td>
+                <td th:if="${#fields.hasErrors('speciality')}" th:errors="*{speciality}"></td>
+            </tr>
+            <tr>
+                <td>Numer telefonu: </td>
+                <td><input type="text" th:field="*{phoneNumber}"></td>
+                <td th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></td>
+            </tr>
+        </table>
+        <input type="submit" value="Zatwierdź">
+    </form>
+<a th:href="@{/doctors/panel}">Wróć do panelu</a>
+</body>
+</html>

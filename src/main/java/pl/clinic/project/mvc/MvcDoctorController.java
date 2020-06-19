@@ -38,6 +38,7 @@ public class MvcDoctorController {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("admin/addDoctor.html");
         mav.addObject("doctor", new DoctorWithCredentials());
+        mav.addObject("isAdmin", true);
         return mav;
     }
 
@@ -86,6 +87,25 @@ public class MvcDoctorController {
         boolean isAdmin = hasAdminRole();
         mav.addObject("isAdmin", isAdmin);
         return mav;
+    }
+
+    @GetMapping("/update/{id}")
+    @PreAuthorize("hasAnyRole('USER_DOCTOR', 'ADMIN')")
+    ModelAndView updateDoctorPage(@PathVariable("id") Integer id) {
+        Doctor doctorToUpdate = doctorService.getById(id).get();
+        ModelAndView mav = new ModelAndView("doctors/updateDoctor.html");
+        mav.addObject("doctor", doctorToUpdate);
+        return mav;
+    }
+
+    @PostMapping("/update")
+    @PreAuthorize("hasAnyRole('USER_DOCTOR', 'ADMIN')")
+    String updateDoctor(@Valid @ModelAttribute("doctor") Doctor doctor, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "doctors/updateDoctor.html";
+        }
+        doctorService.updateDoctor(doctor);
+        return "redirect:/doctors/panel";
     }
 
     @GetMapping("/delete/{id}")

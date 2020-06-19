@@ -27,12 +27,12 @@
             <td><input type="text" th:field="*{phoneNumber}"></td>
             <td th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></td>
         </tr>
-        <tr>
+        <tr th:if="isAdmin">
             <td>E-mail: </td>
             <td><input type="text" th:field="*{login}"></td>
             <td th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></td>
         </tr>
-        <tr>
+        <tr th:if="isAdmin">
             <td>Hasło: </td>
             <td><input type="password" th:field="*{password}"></td>
             <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></td>
