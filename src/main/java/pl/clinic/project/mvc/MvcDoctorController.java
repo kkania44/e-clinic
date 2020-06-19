@@ -69,7 +69,7 @@ public class MvcDoctorController {
         Integer doctorId = user.getDoctorId();
         String pickedDate = "";
 
-        List<String> availableDates = AvailableDateTime.getWorkingDaysOfCurrentMonth();
+        List<String> availableDates = AvailableDateTime.getWorkingDaysOfCurrentMonth(false);
         mav.addObject("doctorId", doctorId);
         mav.addObject("dates", availableDates);
         mav.addObject("pickedDate", pickedDate);

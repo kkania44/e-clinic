@@ -15,13 +15,13 @@ public class AvailableDateTime {
             "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30",
             "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30");
 
-    public static List<String> getWorkingDaysOfCurrentMonth() {
+    public static List<String> getWorkingDaysOfCurrentMonth(boolean tomorrow) {
         Calendar calendar = Calendar.getInstance();
-        int tomorrow = calendar.get(Calendar.DAY_OF_MONTH)+1;
+        int today = calendar.get(Calendar.DAY_OF_MONTH);
         int maxDayNr = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
         List<String> workingDays = new ArrayList<>();
 
-        for (int i = tomorrow; i <= maxDayNr; i++) {
+        for (int i = today; i <= maxDayNr; i++) {
             calendar.set(Calendar.DAY_OF_MONTH, i);
             Date date = calendar.getTime();
             final LocalDate localDate = castDateToLocal(date);
@@ -32,6 +32,11 @@ public class AvailableDateTime {
                 workingDays.add(dateAsString);
             }
         }
+
+        if (tomorrow) {
+            workingDays.remove(0);
+        }
+
         return workingDays;
     }
 

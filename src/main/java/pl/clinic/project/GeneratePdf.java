@@ -55,6 +55,7 @@ public class GeneratePdf {
             document.add(chunkWithDate);
 
             document.add(table);
+            document.addTitle(date);
             document.close();
 
         } catch (DocumentException ex) {

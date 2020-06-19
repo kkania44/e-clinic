@@ -52,7 +52,7 @@ public class MvcAppointmentController {
     public ModelAndView createAppointmentPage(@PathVariable("id") Integer docId) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("appointments/bookAppointment.html");
-        List<String> availableDates = AvailableDateTime.getWorkingDaysOfCurrentMonth();
+        List<String> availableDates = AvailableDateTime.getWorkingDaysOfCurrentMonth(true);
         Doctor doctor = doctorService.getById(docId).get();
         modelAndView.addObject("doctor", doctor);
         modelAndView.addObject("dates", availableDates);
