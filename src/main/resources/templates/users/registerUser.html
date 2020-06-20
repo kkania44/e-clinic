@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.js" integrity="sha256-5i/mQ300M779N2OVDrl16lbohwXNUdzL/R2aVUXyXWA=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <meta charset="UTF-8">
     <link th:rel="stylesheet" th:href="@{assets/password-strength-meter/password.min.css}"/>
@@ -35,11 +36,22 @@
     </div>
     <div class="form-row">
         <div class="col-md-6 mb-3">
-            <label for="password">Hasło</label>
-            <input type="password" class="form-control" id="password" placeholder="Hasło" required name="up" th:field="*{password}">
+            <label for="pass">Hasło</label>
+            <input type="password" class="form-control" id="pass" placeholder="Hasło" required name="up" th:field="*{password}">
+            <label for="password2">Powtórz hasło</label>
+            <input type="password" class="form-control" id="password2" placeholder="Powtórz hasło" required name="up2">
         </div>
     </div>
     <button class="btn btn-dark" type="submit">Zarejestruj się</button>
 </form>
+<script>
+    $('form').on('submit',function(){
+        if($('#pass').val()!=$('#cpass').val()){
+            alert('Hasła się nie zgadzają');
+            return false;
+        }
+        return true;
+    });
+</script>
 </body>
 </html>
