@@ -119,17 +119,26 @@ public class MvcPatientController {
         return mav;
     }
 
-    // dokończyć
     @GetMapping("/all")
     @PreAuthorize("hasRole('ADMIN')")
     ModelAndView displayListOfPatients() {
         ModelAndView mav = new ModelAndView("admin/allUsersPatients.html");
-        List<User> users = userService.getAllUsersPatients();
         List<Patient> patients = patientService.getAll();
         List<UserWithPatientData> usersPatients = new ArrayList<>();
-        for (User user : users) {
 
+        for (Patient patient : patients) {
+            User user = userService.getUserByPatientId(patient.getId());
+            UserWithPatientData userPatient = new UserWithPatientData(
+                    user.getId(), user.getEmail(),
+                    patient.getId(),
+                    patient.getFirstName(),
+                    patient.getLastName(),
+                    patient.getPeselNumber(),
+                    patient.getPhoneNumber()
+            );
+            usersPatients.add(userPatient);
         }
+        mav.addObject("users", usersPatients);
         return mav;
     }
 }
