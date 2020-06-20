@@ -64,11 +64,11 @@ public class UserService {
         return userRepository.findByEmail(email).map(mapper::mapToApi);
     }
 
-    @Transactional
     public void update(User user) {
         UserEntity userToUpdate = userRepository.findById(user.getId())
                 .orElseThrow(() -> new NotFoundException("Nie znaleziono zalogowanego użytkownika "));
         userToUpdate.setPatient(patientRepository.findById(user.getPatientId()).get());
+        userRepository.save(userToUpdate);
     }
 
     public void deleteUser(Integer id){

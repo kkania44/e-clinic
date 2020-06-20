@@ -1,4 +1,4 @@
-package pl.clinic.project;
+package pl.clinic.project.pdf;
 
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfPCell;

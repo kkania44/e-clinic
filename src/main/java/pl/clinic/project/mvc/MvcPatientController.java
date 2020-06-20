@@ -11,10 +11,12 @@ import org.springframework.web.servlet.ModelAndView;
 import pl.clinic.project.entities.PatientEntity;
 import pl.clinic.project.model.Patient;
 import pl.clinic.project.model.User;
+import pl.clinic.project.model.UserWithPatientData;
 import pl.clinic.project.service.PatientService;
 import pl.clinic.project.service.UserService;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -117,14 +119,17 @@ public class MvcPatientController {
         return mav;
     }
 
+    // dokończyć
     @GetMapping("/all")
     @PreAuthorize("hasRole('ADMIN')")
     ModelAndView displayListOfPatients() {
         ModelAndView mav = new ModelAndView("admin/allUsersPatients.html");
         List<User> users = userService.getAllUsersPatients();
         List<Patient> patients = patientService.getAll();
-        mav.addObject("users", users);
-        mav.addObject("patients", patients);
+        List<UserWithPatientData> usersPatients = new ArrayList<>();
+        for (User user : users) {
+
+        }
         return mav;
     }
 }
