@@ -47,15 +47,6 @@ public class MvcUserController {
         return "redirect:/login";
     }
 
-    @GetMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    ModelAndView getAllUsers() {
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("users/users.html");
-        mav.addObject("users", userService.getAll());
-        return mav;
-    }
-
     @GetMapping("/admin")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     String showAdminPanel() {

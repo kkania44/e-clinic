@@ -50,12 +50,6 @@ public class UserService {
         userRepository.save(userEntity);
     }
 
-    public List<User> getAll() {
-        return userRepository.findAll().stream()
-                .map(mapper::mapToApi)
-                .collect(Collectors.toList());
-    }
-
     public List<User> getAllUsersPatients() {
         return userRepository.findAllByPatientNotNull().stream()
                 .map(mapper::mapToApi)

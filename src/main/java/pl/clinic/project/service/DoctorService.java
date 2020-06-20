@@ -56,7 +56,4 @@ public class DoctorService {
         return doctorRepository.findById(id)
                 .map(ent -> mapper.mapToApi(ent));
     }
-    public void deleteById(Integer id) {
-        doctorRepository.deleteById(id);
-    }
 }
