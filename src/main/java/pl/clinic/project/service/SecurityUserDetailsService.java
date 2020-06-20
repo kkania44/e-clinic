@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.clinic.project.entities.UserEntity;
 import pl.clinic.project.repositories.UserRepository;
-
 import java.util.ArrayList;
 import java.util.List;
 

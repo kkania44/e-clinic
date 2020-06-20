@@ -2,8 +2,6 @@ package pl.clinic.project.entities;
 
 
 import lombok.*;
-import pl.clinic.project.model.Appointment;
-
 import javax.persistence.*;
 import java.util.List;
 

@@ -6,11 +6,8 @@ import pl.clinic.project.entities.DoctorEntity;
 import pl.clinic.project.exception.AlreadyExistsException;
 import pl.clinic.project.exception.NotFoundException;
 import pl.clinic.project.mapper.DoctorMapper;
-import pl.clinic.project.model.Appointment;
 import pl.clinic.project.model.Doctor;
 import pl.clinic.project.repositories.DoctorRepository;
-
-import javax.print.Doc;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

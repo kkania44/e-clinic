@@ -2,7 +2,6 @@ package pl.clinic.project.mvc;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +9,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import pl.clinic.project.AvailableDateTime;
-import pl.clinic.project.UserRole;
 import pl.clinic.project.model.Doctor;
 import pl.clinic.project.model.DoctorWithCredentials;
 import pl.clinic.project.model.User;

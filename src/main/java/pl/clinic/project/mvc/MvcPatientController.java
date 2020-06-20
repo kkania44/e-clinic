@@ -6,19 +6,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import pl.clinic.project.entities.PatientEntity;
 import pl.clinic.project.model.Patient;
 import pl.clinic.project.model.User;
-import pl.clinic.project.service.AppointmentService;
 import pl.clinic.project.service.PatientService;
 import pl.clinic.project.service.UserService;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Controller

@@ -1,6 +1,6 @@
 package pl.clinic.project.service;
 
-import lombok.Builder;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,9 +14,6 @@ import pl.clinic.project.model.User;
 import pl.clinic.project.repositories.DoctorRepository;
 import pl.clinic.project.repositories.PatientRepository;
 import pl.clinic.project.repositories.UserRepository;
-
-import javax.servlet.http.HttpSession;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

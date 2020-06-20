@@ -8,10 +8,7 @@ import pl.clinic.project.exception.NotFoundException;
 import pl.clinic.project.mapper.PatientMapper;
 import pl.clinic.project.model.Patient;
 import pl.clinic.project.repositories.PatientRepository;
-
-import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

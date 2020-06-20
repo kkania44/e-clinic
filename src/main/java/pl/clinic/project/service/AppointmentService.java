@@ -8,15 +8,12 @@ import pl.clinic.project.entities.PatientEntity;
 import pl.clinic.project.exception.NotFoundException;
 import pl.clinic.project.mapper.AppointmentMapper;
 import pl.clinic.project.model.Appointment;
-import pl.clinic.project.model.Patient;
 import pl.clinic.project.repositories.AppointmentRepository;
 import pl.clinic.project.repositories.DoctorRepository;
 import pl.clinic.project.repositories.PatientRepository;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

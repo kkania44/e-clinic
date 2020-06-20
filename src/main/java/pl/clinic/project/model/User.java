@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import pl.clinic.project.UserRole;
-
 import javax.validation.constraints.Email;
 
 @Component

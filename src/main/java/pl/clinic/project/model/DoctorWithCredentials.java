@@ -5,9 +5,7 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import pl.clinic.project.validator.PhoneNumber;
-
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
 @Component

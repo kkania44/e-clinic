@@ -18,11 +18,7 @@ import pl.clinic.project.service.AppointmentService;
 import pl.clinic.project.service.DoctorService;
 import pl.clinic.project.service.PatientService;
 import pl.clinic.project.service.UserService;
-
-import javax.servlet.http.HttpSession;
-import java.awt.*;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
