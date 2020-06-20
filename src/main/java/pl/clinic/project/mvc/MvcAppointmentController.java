@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 import pl.clinic.project.AvailableDateTime;
-import pl.clinic.project.GeneratePdf;
+import pl.clinic.project.pdf.GeneratePdf;
 import pl.clinic.project.model.*;
 import pl.clinic.project.service.AppointmentService;
 import pl.clinic.project.service.DoctorService;
