@@ -144,6 +144,7 @@ public class MvcDoctorController {
             String signInPass = Character.toString((char)code);
             passBuilder.append(signInPass);
         }
+        passBuilder.append(random.nextInt(89)+10);
         return passBuilder.toString();
     }
 
