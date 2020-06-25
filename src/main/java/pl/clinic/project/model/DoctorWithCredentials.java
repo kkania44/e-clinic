@@ -32,6 +32,5 @@ public class DoctorWithCredentials {
     @NotEmpty
     @Email
     private String login;
-    @NotEmpty
-    private String password;
+
 }

@@ -1,5 +1,9 @@
 package pl.clinic.project.mvc;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,10 +22,12 @@ import javax.validation.Valid;
 @RequestMapping("/users")
 public class MvcUserController {
 
+    private JavaMailSender mailSender;
     private UserService userService;
 
-    public MvcUserController(UserService userService) {
+    public MvcUserController(UserService userService, JavaMailSender mailSender) {
         this.userService = userService;
+        this.mailSender = mailSender;
     }
 
     @GetMapping("/add")
@@ -44,6 +50,9 @@ public class MvcUserController {
             return "error.html";
         }
         userService.registerUserAsPatient(user);
+
+//        configure smtp client to send emails to users with confirmation
+        sendSimpleMail(user.getEmail(), "Aktywacja konta", "Twoje konto w e-przychodni zostało aktywowane.");
         return "redirect:/login";
     }
 
@@ -59,5 +68,13 @@ public class MvcUserController {
         userService.deleteUser(id);
     }
 
+
+    private void sendSimpleMail(String to, String subject, String message) {
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(to);
+        mailMessage.setSubject(subject);
+        mailMessage.setText(message);
+        mailSender.send(mailMessage);
+    }
 
 }

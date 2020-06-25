@@ -1,5 +1,7 @@
 package pl.clinic.project.mvc;
 
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,7 +18,12 @@ import pl.clinic.project.service.DoctorService;
 import pl.clinic.project.service.UserService;
 
 import javax.validation.Valid;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Controller
 @RequestMapping("/doctors")
@@ -24,10 +31,12 @@ public class MvcDoctorController {
 
     private final DoctorService doctorService;
     private final UserService userService;
+    private JavaMailSender mailSender;
 
-    public MvcDoctorController(DoctorService doctorService, UserService userService) {
+    public MvcDoctorController(DoctorService doctorService, UserService userService, JavaMailSender mailSender) {
         this.doctorService = doctorService;
         this.userService = userService;
+        this.mailSender = mailSender;
     }
 
     @GetMapping("/addDoctor")
@@ -50,11 +59,17 @@ public class MvcDoctorController {
         Doctor doctorToAdd = new Doctor(null, doctor.getFirstName(), doctor.getLastName(),
                                         doctor.getSpeciality(), doctor.getPhoneNumber());
         Integer doctorId = doctorService.createDoctor(doctorToAdd);
+        String pass = generatePass();
+
         User user = User.builder()
                 .email(doctor.getLogin())
-                .password(doctor.getPassword())
+                .password(pass)
                 .build();
+
         userService.registerUserAsDoctor(user, doctorId);
+        Logger.getLogger(MvcDoctorController.class.getName()).log(Level.INFO, pass);
+//        configure smtp client to send emails with password to doctors
+//        sendSimpleMail(user.getEmail(), "Hasło do konta", "Hasło do twojego konta w e-przychodni: "+pass);
         return "redirect:/users/admin";
     }
 
@@ -120,5 +135,23 @@ public class MvcDoctorController {
                 .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
     }
 
+    private String generatePass() {
+        int randomizeBound = 26;
+        Random random = new Random();
+        StringBuilder passBuilder = new StringBuilder();
+        for (int i = 0; i < 6; i++) {
+            int code = random.nextInt(randomizeBound) + 97;
+            String signInPass = Character.toString((char)code);
+            passBuilder.append(signInPass);
+        }
+        return passBuilder.toString();
+    }
 
+    private void sendSimpleMail(String to, String subject, String message) {
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(to);
+        mailMessage.setSubject(subject);
+        mailMessage.setText(message);
+        mailSender.send(mailMessage);
+    }
 }
