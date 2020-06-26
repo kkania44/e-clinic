@@ -49,12 +49,11 @@ public class GeneratePdf {
             PdfWriter.getInstance(document, outputStream);
             document.open();
 
-            Chunk chunkWithDate = new Chunk("Wizyty z dnia " +date, FontFactory.getFont(FontFactory.TIMES_BOLD));
-            chunkWithDate.setTextRise(15F);
-            document.add(chunkWithDate);
+            Chunk chunkWithDate = createChunkWithDate(date);
 
-            document.add(table);
             document.addTitle(date);
+            document.add(chunkWithDate);
+            document.add(table);
             document.close();
 
         } catch (DocumentException ex) {
@@ -80,6 +79,12 @@ public class GeneratePdf {
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
         return cell;
+    }
+
+    private static Chunk createChunkWithDate(String date) {
+        Chunk chunkWithDate = new Chunk("Wizyty z dnia " +date, FontFactory.getFont(FontFactory.TIMES_BOLD));
+        chunkWithDate.setTextRise(15F);
+        return chunkWithDate;
     }
 
 }

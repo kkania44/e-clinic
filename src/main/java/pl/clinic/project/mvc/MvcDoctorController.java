@@ -96,8 +96,8 @@ public class MvcDoctorController {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("listOfDoctors.html");
         List<Doctor> doctors = doctorService.getAll();
-        mav.addObject("doctors", doctors);
         boolean isAdmin = hasAdminRole();
+        mav.addObject("doctors", doctors);
         mav.addObject("isAdmin", isAdmin);
         return mav;
     }
@@ -105,8 +105,8 @@ public class MvcDoctorController {
     @GetMapping("/update/{id}")
     @PreAuthorize("hasAnyRole('USER_DOCTOR', 'ADMIN')")
     ModelAndView updateDoctorPage(@PathVariable("id") Integer id) {
-        Doctor doctorToUpdate = doctorService.getById(id).get();
         ModelAndView mav = new ModelAndView("doctors/updateDoctor.html");
+        Doctor doctorToUpdate = doctorService.getById(id).get();
         mav.addObject("doctor", doctorToUpdate);
         return mav;
     }

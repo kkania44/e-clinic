@@ -23,6 +23,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/appointments")
@@ -46,14 +47,15 @@ public class MvcAppointmentController {
     @GetMapping("/book/{id}")
     @PreAuthorize("hasRole('USER_PATIENT')")
     public ModelAndView createAppointmentPage(@PathVariable("id") Integer docId) {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("appointments/bookAppointment.html");
         List<String> availableDates = AvailableDateTime.getWorkingDaysOfCurrentMonth(true);
         Doctor doctor = doctorService.getById(docId).get();
-        modelAndView.addObject("doctor", doctor);
-        modelAndView.addObject("dates", availableDates);
-        modelAndView.addObject("appointment", new Appointment());
-        modelAndView.addObject("doctorId", docId);
+
+        Map<String, Object> mavObjects = Map.of("doctor", doctor,
+                "dates", availableDates,
+                "appointment", new Appointment());
+        ModelAndView modelAndView = createModelAndViewWithMultiplyObjects(mavObjects);
+        modelAndView.setViewName("appointments/bookAppointment.html");
+
         return modelAndView;
     }
 
@@ -61,24 +63,32 @@ public class MvcAppointmentController {
     @PreAuthorize("hasRole('USER_PATIENT')")
     public ModelAndView chooseTimePage(@ModelAttribute("appointment") Appointment appointment,
                                        @PathVariable("id") Integer doctorId) {
-        ModelAndView modelAndView = new ModelAndView();
         Doctor doctor = doctorService.getById(doctorId).get();
         List<LocalTime> occupiedHours = appointmentService.getAllHoursByDoctorIdAndDate(doctorId, appointment.getDate());
         List<String> hours = availableDateTime.getAvailableHours(occupiedHours);
-        modelAndView.addObject("appointment", appointment);
-        modelAndView.addObject("hours", hours);
-        modelAndView.addObject("doctorId", doctorId);
-        modelAndView.addObject("doctor", doctor);
+
+        Map<String, Object> mavObjects = Map.of("doctor", doctor,
+                "hours", hours,
+                "appointment", appointment);
+        ModelAndView modelAndView = createModelAndViewWithMultiplyObjects(mavObjects);
         modelAndView.setViewName("appointments/bookAppointmentHour.html");
+
         return modelAndView;
+    }
+
+    private static ModelAndView createModelAndViewWithMultiplyObjects(Map<String, Object> modelObjects) {
+        ModelAndView mav = new ModelAndView();
+        for (Map.Entry<String, Object> entry: modelObjects.entrySet()) {
+            mav.addObject(entry.getKey(), entry.getValue());
+        }
+        return mav;
     }
 
     @PostMapping("/book/{id}")
     @PreAuthorize("hasRole('USER_PATIENT')")
     public String createAppointment(@ModelAttribute("appointment") Appointment appointment,
                                     @PathVariable("id") Integer docId, SessionStatus status) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName();
+        String name = getUsername();
         User user = userService.getByEmail(name).get();
         Integer patientId = user.getPatientId();
         appointment.setPatientId(patientId);
@@ -91,22 +101,25 @@ public class MvcAppointmentController {
     @GetMapping("/appointmentData")
     @PreAuthorize("hasAnyRole('USER_PATIENT', 'ADMIN')")
    ModelAndView showPatientData() { ;
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName();
+        ModelAndView mav = new ModelAndView("appointments/appointmentData.html");
+        String name = getUsername();
         User user = userService.getByEmail(name).get();
         Integer id = user.getPatientId();
-        ModelAndView mav = new ModelAndView();
         List<Appointment> appointments = appointmentService.getAllByPatientId(id);
-
         List<AppointmentWithDoctorData> appointmentWithDoc = new ArrayList<>();
         boolean isAdmin = hasAdminRole();
         mav.addObject("isAdmin", isAdmin);
 
         for (Appointment appo: appointments) {
-            appointmentWithDoc.add(createAppointmentWithDoc(appo));
+            appointmentWithDoc.add(createAppointmentWithDoctorData(appo));
         }
         mav.addObject("appointments", appointmentWithDoc);
         return mav;
+    }
+
+    private static String getUsername() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getName();
     }
 
     @GetMapping(value = "/date/{id}", produces = MediaType.APPLICATION_PDF_VALUE)
@@ -117,7 +130,7 @@ public class MvcAppointmentController {
         List<AppointmentWithPatientData> appointmentsWithPt = new ArrayList<>();
 
         for (Appointment appo: appointments) {
-            appointmentsWithPt.add(createAppointmentWithPt(appo));
+            appointmentsWithPt.add(createAppointmentWithPatientData(appo));
         }
 
         ByteArrayInputStream inputStream = GeneratePdf.appointmentsList(appointmentsWithPt, date);
@@ -139,7 +152,7 @@ public class MvcAppointmentController {
         return "redirect:/appointments/appointmentData";
     }
 
-    private AppointmentWithPatientData createAppointmentWithPt(Appointment appointment) {
+    private AppointmentWithPatientData createAppointmentWithPatientData(Appointment appointment) {
         final Integer patientId = appointment.getPatientId();
         Patient patient = patientService.getById(patientId);
         AppointmentWithPatientData appointmentWithPt =
@@ -148,7 +161,7 @@ public class MvcAppointmentController {
         return appointmentWithPt;
     }
 
-    private AppointmentWithDoctorData createAppointmentWithDoc(Appointment appointment) {
+    private AppointmentWithDoctorData createAppointmentWithDoctorData(Appointment appointment) {
         final Integer doctorId = appointment.getDoctorId();
         Doctor doctor = doctorService.getById(doctorId).get();
         return new AppointmentWithDoctorData(

@@ -35,7 +35,7 @@
 </div>
 
 <div class="container col">
-<form th:action="@{/appointments/book/} +${doctorId}" method="post" th:object="${appointment}">
+<form th:action="@{/appointments/book/} +${doctor.id}" method="post" th:object="${appointment}">
    <select th:field = "*{time}" class="browser-default custom-select custom-select-lg col-1">
         <option th:each="hour : ${hours}"  th:value="${hour}"
                 th:text="${hour}" selected>Wybierz godzinę</option>

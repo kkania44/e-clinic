@@ -35,8 +35,7 @@ public class MvcPatientController {
     @GetMapping("/addPatient")
     @PreAuthorize("isAuthenticated()")
     ModelAndView addNewPatientPage() {
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("patients/addPatient.html");
+        ModelAndView mav = new ModelAndView("patients/addPatient.html");
         mav.addObject("patient", new Patient());
         return mav;
     }
@@ -53,22 +52,6 @@ public class MvcPatientController {
         user.setPatientId(addedPatient.getId());
         userService.update(user);
         return "redirect:/patients/patientPanel";
-    }
-
-    @GetMapping("/patientPanel")
-    @PreAuthorize("hasRole('USER_PATIENT')")
-    String patientPanelPage(Model model, HttpSession session) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName();
-        User user = userService.getByEmail(name).get();
-        model.addAttribute("user", user);
-        if (user.getPatientId() != null) {
-            Patient patient = patientService.getById(user.getPatientId());
-            model.addAttribute("patient", patient);
-            return "patients/patientPanel.html";
-        } else {
-            return "redirect:/patients/addPatient";
-        }
     }
 
     @GetMapping("/update")
@@ -93,16 +76,29 @@ public class MvcPatientController {
         return "redirect:/patients/patientData";
     }
 
+    @GetMapping("/patientPanel")
+    @PreAuthorize("hasRole('USER_PATIENT')")
+    String patientPanelPage(Model model) {
+        String name = getUsername();
+        User user = userService.getByEmail(name).get();
+        model.addAttribute("user", user);
+        if (user.getPatientId() != null) {
+            Patient patient = patientService.getById(user.getPatientId());
+            model.addAttribute("patient", patient);
+            return "patients/patientPanel.html";
+        } else {
+            return "redirect:/patients/addPatient";
+        }
+    }
+
     @GetMapping("/patientData")
     @PreAuthorize("isAuthenticated()")
     ModelAndView showPatientData() { ;
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName();
+        ModelAndView mav = new ModelAndView("patients/patientData.html");
+        String name = getUsername();
         User user = userService.getByEmail(name).get();
-        Integer id = user.getPatientId();
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("patients/patientData.html");
-        Patient patient = patientService.getById(id);
+        Integer patientId = user.getPatientId();
+        Patient patient = patientService.getById(patientId);
         mav.addObject("patient", patient);
         return mav;
     }
@@ -110,13 +106,16 @@ public class MvcPatientController {
     @GetMapping("/deleteData")
     @PreAuthorize("isAuthenticated()")
     ModelAndView deletePatientAndUserData(HttpSession session) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName();
+        ModelAndView mav = new ModelAndView("redirect:/logout");
+        String name = getUsername();
         User user = userService.getByEmail(name).get();
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("redirect:/logout");
         userService.deleteUser(user.getId());
         return mav;
+    }
+
+    private static String getUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();
     }
 
     @GetMapping("/all")
@@ -124,8 +123,13 @@ public class MvcPatientController {
     ModelAndView displayListOfPatients() {
         ModelAndView mav = new ModelAndView("admin/allUsersPatients.html");
         List<Patient> patients = patientService.getAll();
-        List<UserWithPatientData> usersPatients = new ArrayList<>();
+        List<UserWithPatientData> usersBeingPatients = createListOfUsersBeingPatients(patients);
+        mav.addObject("users", usersBeingPatients);
+        return mav;
+    }
 
+    private List<UserWithPatientData> createListOfUsersBeingPatients(List<Patient> patients) {
+        List<UserWithPatientData> usersPatients = new ArrayList<>();
         for (Patient patient : patients) {
             User user = userService.getUserByPatientId(patient.getId());
             UserWithPatientData userPatient = new UserWithPatientData(
@@ -138,7 +142,6 @@ public class MvcPatientController {
             );
             usersPatients.add(userPatient);
         }
-        mav.addObject("users", usersPatients);
-        return mav;
+        return usersPatients;
     }
 }

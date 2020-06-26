@@ -41,7 +41,7 @@
     </div>
 
 </div>
-<form th:action="@{/appointments/book/time/} +${doctorId}" method="post" th:object="${appointment}">
+<form th:action="@{/appointments/book/time/} +${doctor.id}" method="post" th:object="${appointment}">
 
     <div class="bootstrap-iso">
         <div class="container-fluid">
