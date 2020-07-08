@@ -52,7 +52,7 @@ public class MvcUserController {
         userService.registerUserAsPatient(user);
 
 //        configure smtp client to send emails to users with confirmation
-        sendSimpleMail(user.getEmail(), "Aktywacja konta", "Twoje konto w e-przychodni zostało aktywowane.");
+//        sendSimpleMail(user.getEmail(), "Aktywacja konta", "Twoje konto w e-przychodni zostało aktywowane.");
         return "redirect:/login";
     }
 
