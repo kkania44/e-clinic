@@ -100,7 +100,7 @@ public class MvcAppointmentController {
 
     @GetMapping("/appointmentData")
     @PreAuthorize("hasAnyRole('USER_PATIENT', 'ADMIN')")
-   ModelAndView showPatientData() { ;
+   ModelAndView showAppointmentsForPatient() { ;
         ModelAndView mav = new ModelAndView("appointments/appointmentData.html");
         String name = getUsername();
         User user = userService.getByEmail(name).get();

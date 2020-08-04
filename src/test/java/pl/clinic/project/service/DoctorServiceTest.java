@@ -3,6 +3,7 @@ package pl.clinic.project.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import pl.clinic.project.entities.DoctorEntity;
 import pl.clinic.project.exception.AlreadyExistsException;
@@ -47,15 +48,20 @@ class DoctorServiceTest {
         assertEquals("Worek", actualDoctors.get(1).getLastName());
     }
 
-//    @Test
-//    public void shouldAddPatient() {
-//        // given
-//        Doctor doctor = new Doctor(null, "Michał", "Torba", "chirurg", "200200200");
-//        // when
-//        service.createDoctor(doctor);
-//        // then
-//        verify(repository).save(Mockito.any());
-//    }
+    @Test
+    public void shouldAddPatient() {
+        // given
+        Doctor doctor = new Doctor(null, "Michał", "Torba", "chirurg", "200200200");
+        DoctorEntity doctorEntity = new DoctorEntity(
+                1, "Michał", "Torba", "chirurg", "200200200", null);
+        // when
+        when(repository.findAllByPhoneNumber(doctor.getPhoneNumber())).thenReturn(Collections.emptyList());
+        when(repository.save(Mockito.any(DoctorEntity.class))).thenReturn(doctorEntity);
+        Integer actualId = service.createDoctor(doctor);
+        // then
+        assertEquals(1, actualId);
+        verify(repository).save(Mockito.any(DoctorEntity.class));
+    }
 
     @Test
     public void shouldNotAddDoctorWithSamePhone() {
