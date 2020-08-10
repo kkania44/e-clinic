@@ -85,6 +85,8 @@ public class MvcUserController {
         String password = PasswordGenerator.generate();
         logger.log(Level.INFO, "Nowe hasło: " +password);
         userService.setPassword(username, password);
+//        configure smtp client to send email with new password
+//        sendSimpleMail(username, "Reset hasła", "Hasło zresetowane. Twoje nowe hasło: " +password);
         return "redirect:/login";
     }
 

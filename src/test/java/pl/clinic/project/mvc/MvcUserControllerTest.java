@@ -3,17 +3,20 @@ package pl.clinic.project.mvc;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import pl.clinic.project.model.User;
 import pl.clinic.project.service.UserService;
 
@@ -81,6 +84,29 @@ class MvcUserControllerTest {
                 .andDo(print());
         // then
         Mockito.verify(service).registerUserAsPatient(Mockito.any(User.class));
+        resultActions.andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/login"));
+    }
+
+    @Test
+    public void passwordResetPageTest() throws Exception {
+        // when
+        ResultActions resultActions = mockMvc
+                .perform(MockMvcRequestBuilders.get("/users/resetPassword"))
+                .andDo(print());
+        // then
+        resultActions.andExpect(status().is2xxSuccessful())
+                .andExpect(model().attributeExists("username"));
+    }
+
+    @Test
+    public void shouldResetPassword() throws Exception {
+        // when
+        ResultActions resultActions = mockMvc
+                .perform(MockMvcRequestBuilders.post("/users/resetPassword"))
+                .andDo(print());
+        // then
+        Mockito.verify(service).setPassword(Mockito.anyString(), Mockito.anyString());
         resultActions.andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/login"));
     }
