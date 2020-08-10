@@ -48,7 +48,7 @@ public class MvcAppointmentController {
     @PreAuthorize("hasRole('USER_PATIENT')")
     public ModelAndView createAppointmentPage(@PathVariable("id") Integer docId) {
         List<String> availableDates = AvailableDateTime.getWorkingDaysOfCurrentMonth(true);
-        Doctor doctor = doctorService.getById(docId).get();
+        Doctor doctor = doctorService.getById(docId);
 
         Map<String, Object> mavObjects = Map.of("doctor", doctor,
                 "dates", availableDates,
@@ -63,7 +63,7 @@ public class MvcAppointmentController {
     @PreAuthorize("hasRole('USER_PATIENT')")
     public ModelAndView chooseTimePage(@ModelAttribute("appointment") Appointment appointment,
                                        @PathVariable("id") Integer doctorId) {
-        Doctor doctor = doctorService.getById(doctorId).get();
+        Doctor doctor = doctorService.getById(doctorId);
         List<LocalTime> occupiedHours = appointmentService.getAllHoursByDoctorIdAndDate(doctorId, appointment.getDate());
         List<String> hours = availableDateTime.getAvailableHours(occupiedHours);
 
@@ -89,7 +89,7 @@ public class MvcAppointmentController {
     public String createAppointment(@ModelAttribute("appointment") Appointment appointment,
                                     @PathVariable("id") Integer docId, SessionStatus status) {
         String name = getUsername();
-        User user = userService.getByEmail(name).get();
+        User user = userService.getByEmail(name);
         Integer patientId = user.getPatientId();
         appointment.setPatientId(patientId);
         appointment.setDoctorId(docId);
@@ -103,7 +103,7 @@ public class MvcAppointmentController {
    ModelAndView showAppointmentsForPatient() { ;
         ModelAndView mav = new ModelAndView("appointments/appointmentData.html");
         String name = getUsername();
-        User user = userService.getByEmail(name).get();
+        User user = userService.getByEmail(name);
         Integer id = user.getPatientId();
         List<Appointment> appointments = appointmentService.getAllByPatientId(id);
         List<AppointmentWithDoctorData> appointmentWithDoc = new ArrayList<>();
@@ -163,7 +163,7 @@ public class MvcAppointmentController {
 
     private AppointmentWithDoctorData createAppointmentWithDoctorData(Appointment appointment) {
         final Integer doctorId = appointment.getDoctorId();
-        Doctor doctor = doctorService.getById(doctorId).get();
+        Doctor doctor = doctorService.getById(doctorId);
         return new AppointmentWithDoctorData(
                 appointment.getId(),
                 appointment.getDate(),

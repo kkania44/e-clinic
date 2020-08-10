@@ -49,8 +49,9 @@ public class DoctorService {
                 .collect(Collectors.toList());
     }
 
-    public Optional<Doctor> getById(Integer id){
+    public Doctor getById(Integer id){
         return doctorRepository.findById(id)
-                .map(ent -> mapper.mapToApi(ent));
+                .map(ent -> mapper.mapToApi(ent))
+                .orElseThrow(() -> new NotFoundException("Nie znaleziono doktora o id " +id));
     }
 }

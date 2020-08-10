@@ -80,7 +80,7 @@ public class MvcDoctorController {
         ModelAndView mav = new ModelAndView("doctors/doctorPanel.html");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
-        User user = userService.getByEmail(name).get();
+        User user = userService.getByEmail(name);
         Integer doctorId = user.getDoctorId();
         String pickedDate = "";
 
@@ -107,7 +107,7 @@ public class MvcDoctorController {
     @PreAuthorize("hasAnyRole('USER_DOCTOR', 'ADMIN')")
     ModelAndView updateDoctorPage(@PathVariable("id") Integer id) {
         ModelAndView mav = new ModelAndView("doctors/updateDoctor.html");
-        Doctor doctorToUpdate = doctorService.getById(id).get();
+        Doctor doctorToUpdate = doctorService.getById(id);
         mav.addObject("doctor", doctorToUpdate);
         return mav;
     }

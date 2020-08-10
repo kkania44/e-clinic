@@ -80,7 +80,7 @@ class DoctorServiceTest {
         DoctorEntity doctor = getSampleDoctorEntity();
         // when
         when(repository.findById(doctor.getId())).thenReturn(java.util.Optional.of(doctor));
-        Doctor docById = service.getById(1).get();
+        Doctor docById = service.getById(1);
         // then
         verify(repository).findById(Mockito.anyInt());
         assertEquals(doctor.getFirstName(), docById.getFirstName());

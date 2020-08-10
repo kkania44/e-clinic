@@ -70,8 +70,10 @@ public class UserService {
         return user.getId();
     }
 
-    public Optional<User> getByEmail(String email) {
-        return userRepository.findByEmail(email).map(mapper::mapToApi);
+    public User getByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .map(mapper::mapToApi)
+                .orElseThrow(() -> new NotFoundException("Nie znaleziono użytkownika " +email));
     }
 
     public void setPassword(String username, String password){

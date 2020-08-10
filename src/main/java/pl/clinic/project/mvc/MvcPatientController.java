@@ -80,7 +80,7 @@ public class MvcPatientController {
     @PreAuthorize("hasRole('USER_PATIENT')")
     String patientPanelPage(Model model) {
         String name = getUsername();
-        User user = userService.getByEmail(name).get();
+        User user = userService.getByEmail(name);
         model.addAttribute("user", user);
         if (user.getPatientId() != null) {
             Patient patient = patientService.getById(user.getPatientId());
@@ -96,7 +96,7 @@ public class MvcPatientController {
     ModelAndView showPatientData() { ;
         ModelAndView mav = new ModelAndView("patients/patientData.html");
         String name = getUsername();
-        User user = userService.getByEmail(name).get();
+        User user = userService.getByEmail(name);
         Integer patientId = user.getPatientId();
         Patient patient = patientService.getById(patientId);
         mav.addObject("patient", patient);
@@ -108,7 +108,7 @@ public class MvcPatientController {
     ModelAndView deletePatientAndUserData(HttpSession session) {
         ModelAndView mav = new ModelAndView("redirect:/logout");
         String name = getUsername();
-        User user = userService.getByEmail(name).get();
+        User user = userService.getByEmail(name);
         userService.deleteUser(user.getId());
         return mav;
     }
