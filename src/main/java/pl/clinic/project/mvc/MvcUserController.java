@@ -14,14 +14,18 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import pl.clinic.project.model.User;
+import pl.clinic.project.password_generator.PasswordGenerator;
 import pl.clinic.project.service.UserService;
 
 import javax.validation.Valid;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Controller
 @RequestMapping("/users")
 public class MvcUserController {
 
+    private final Logger logger = Logger.getLogger(MvcUserController.class.getName());
     private JavaMailSender mailSender;
     private UserService userService;
 
@@ -68,6 +72,21 @@ public class MvcUserController {
         userService.deleteUser(id);
     }
 
+    @GetMapping("/resetPassword")
+    ModelAndView resetPasswordPage() {
+        ModelAndView mav = new ModelAndView("users/resetPassword.html");
+        String username = "";
+        mav.addObject("username", username);
+        return mav;
+    }
+
+    @PostMapping("/resetPassword")
+    String resetPassword(@ModelAttribute("username") String username) {
+        String password = PasswordGenerator.generate();
+        logger.log(Level.INFO, "Nowe hasło: " +password);
+        userService.setPassword(username, password);
+        return "redirect:/login";
+    }
 
     private void sendSimpleMail(String to, String subject, String message) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();

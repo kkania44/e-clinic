@@ -74,7 +74,14 @@ public class UserService {
         return userRepository.findByEmail(email).map(mapper::mapToApi);
     }
 
-    public void update(User user) {
+    public void setPassword(String username, String password){
+        UserEntity userToUpdate = userRepository.findByEmail(username)
+                .orElseThrow(() -> new NotFoundException("Nie znaleziono użytkownika " +username));
+        userToUpdate.setPassword(passwordEncoder.encode(password));
+        userRepository.save(userToUpdate);
+    }
+
+    public void setPatientId(User user) {
         UserEntity userToUpdate = userRepository.findById(user.getId())
                 .orElseThrow(() -> new NotFoundException("Nie znaleziono zalogowanego użytkownika "));
         userToUpdate.setPatient(patientRepository.findById(user.getPatientId()).get());

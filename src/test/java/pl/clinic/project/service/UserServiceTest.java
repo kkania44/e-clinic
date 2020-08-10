@@ -95,7 +95,7 @@ class UserServiceTest {
         // when
         Mockito.when(userRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(userUpdate));
         Mockito.when(patientRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(patient));
-        service.update(getSampleUserPatient());
+        service.setPatientId(getSampleUserPatient());
         // then
         Mockito.verify(userRepository).save(userUpdate);
     }
