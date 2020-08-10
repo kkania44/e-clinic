@@ -13,7 +13,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Constraint(validatedBy = PhoneNumberValidator.class)
 public @interface PhoneNumber  {
 
-    String message() default "Incorrect phone number";
+    String message() default "Nieprawidłowy numer telefonu";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 

@@ -26,8 +26,11 @@
                 <div class="card-body">
                     <h5 class="card-title">Twoje dane:</h5>
                     <p  class="card-text" th:inline="text">Imię: [[${patient.firstName}]]</p>
+
                     <p  class="card-text" th:inline="text">Nazwisko: [[${patient.lastName}]]</p>
+
                     <p  class="card-text" th:inline="text">PESEL: [[${patient.peselNumber}]]</p>
+
                     <p  class="card-text" th:inline="text">Numer telefonu: [[${patient.phoneNumber}]]</p>
                 </div>
             </div>

@@ -50,7 +50,7 @@ public class MvcPatientController {
         final PatientEntity addedPatient = patientService.createPatient(patient);
         User user = (User) session.getAttribute("user");
         user.setPatientId(addedPatient.getId());
-        userService.update(user);
+        userService.setPatientId(user);
         return "redirect:/patients/patientPanel";
     }
 
@@ -69,7 +69,7 @@ public class MvcPatientController {
     @PreAuthorize("hasRole('USER_PATIENT')")
     String updatePatient(@Valid @ModelAttribute("patient") Patient patient, BindingResult bindingResult) {
         if (bindingResult.hasErrors()){
-            return "error.html";
+            return "patients/updatePatient.html";
         }
 
         patientService.updatePatient(patient);

@@ -14,6 +14,7 @@ import pl.clinic.project.AvailableDateTime;
 import pl.clinic.project.model.Doctor;
 import pl.clinic.project.model.DoctorWithCredentials;
 import pl.clinic.project.model.User;
+import pl.clinic.project.password_generator.PasswordGenerator;
 import pl.clinic.project.service.DoctorService;
 import pl.clinic.project.service.UserService;
 
@@ -59,7 +60,7 @@ public class MvcDoctorController {
         Doctor doctorToAdd = new Doctor(null, doctor.getFirstName(), doctor.getLastName(),
                                         doctor.getSpeciality(), doctor.getPhoneNumber());
         Integer doctorId = doctorService.createDoctor(doctorToAdd);
-        String pass = generatePass();
+        String pass = PasswordGenerator.generate();
 
         User user = User.builder()
                 .email(doctor.getLogin())
@@ -75,7 +76,7 @@ public class MvcDoctorController {
 
     @GetMapping("/panel")
     @PreAuthorize("hasRole('USER_DOCTOR')")
-    ModelAndView showDoctorPanel(Model model) {
+    ModelAndView showDoctorPanel() {
         ModelAndView mav = new ModelAndView("doctors/doctorPanel.html");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
@@ -133,19 +134,6 @@ public class MvcDoctorController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.getAuthorities().stream()
                 .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
-    }
-
-    private String generatePass() {
-        int randomizeBound = 26;
-        Random random = new Random();
-        StringBuilder passBuilder = new StringBuilder();
-        for (int i = 0; i < 6; i++) {
-            int code = random.nextInt(randomizeBound) + 97;
-            String signInPass = Character.toString((char)code);
-            passBuilder.append(signInPass);
-        }
-        passBuilder.append(random.nextInt(89)+10);
-        return passBuilder.toString();
     }
 
     private void sendSimpleMail(String to, String subject, String message) {

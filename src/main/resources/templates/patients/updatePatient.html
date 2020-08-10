@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
@@ -30,20 +30,24 @@
         <div class="col-sm-4 mb-3">
             <label>Imię</label>
             <input type="text" class="form-control" th:field="*{firstName}" placeholder="Imię" required>
+            <td th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">FirstName Error</td>
         </div>
         <div class="col-md-4 mb-3">
             <label>Nazwisko</label>
             <input type="text" class="form-control" th:field="*{lastName}" placeholder="Nazwisko" required>
+            <td th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">LastName Error</td>
         </div>
     </div>
     <div class="form-row">
         <div class="col-md-4 mb-3">
             <label>Pesel</label>
             <input type="text" class="form-control" th:field="*{peselNumber}" placeholder="Pesel" required>
+            <td th:if="${#fields.hasErrors('peselNumber')}" th:errors="*{peselNumber}">PeselNumber Error</td>
         </div>
         <div class="col-md-4 mb-3">
             <label>Numer telefonu</label>
             <input type="text" class="form-control" th:field="*{phoneNumber}" placeholder="Numer telefonu" required>
+            <td th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}">PhoneNumber Error</td>
         </div>
     </div>
 

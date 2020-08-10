@@ -3,6 +3,8 @@ package pl.clinic.project.model;
 import lombok.*;
 import org.hibernate.validator.constraints.pl.PESEL;
 import pl.clinic.project.validator.PhoneNumber;
+
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -14,13 +16,11 @@ import javax.validation.constraints.NotNull;
 public class Patient {
 
     private Integer id;
-    @NotNull
-    @NotEmpty
+    @NotBlank
     private String firstName;
-    @NotNull
-    @NotEmpty
+    @NotBlank
     private String lastName;
-    @PESEL
+    @PESEL(message = "Nieprawidłowy numer PESEL")
     private String peselNumber;
     @PhoneNumber
     private String phoneNumber;
