@@ -11,8 +11,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import pl.clinic.project.exception.NotFoundException;
 import pl.clinic.project.model.User;
 import pl.clinic.project.password_generator.PasswordGenerator;
 import pl.clinic.project.service.UserService;
@@ -76,17 +78,27 @@ public class MvcUserController {
     ModelAndView resetPasswordPage() {
         ModelAndView mav = new ModelAndView("users/resetPassword.html");
         String username = "";
-        mav.addObject("username", username);
+        mav.addObject("user", new User());
         return mav;
     }
 
     @PostMapping("/resetPassword")
-    String resetPassword(@ModelAttribute("username") String username) {
-        String password = PasswordGenerator.generate();
-        logger.log(Level.INFO, "Nowe hasło: " +password);
-        userService.setPassword(username, password);
+    String resetPassword(@Valid @ModelAttribute("user") User user, BindingResult bindingResult) {
+        try {
+            User userFromDB = userService.getByEmail(user.getEmail());
+            String password = PasswordGenerator.generate();
+            logger.log(Level.INFO, "Nowe hasło: " +password);//
 //        configure smtp client to send email with new password
 //        sendSimpleMail(username, "Reset hasła", "Hasło zresetowane. Twoje nowe hasło: " +password);
+
+            userFromDB.setPassword(password);
+            userService.setPassword(userFromDB);
+        } catch (NotFoundException e) {
+            bindingResult.addError(new ObjectError("email", "Niepoprawny email"));
+            user.setEmail("");
+            return "/users/resetPassword.html";
+        }
+
         return "redirect:/login";
     }
 

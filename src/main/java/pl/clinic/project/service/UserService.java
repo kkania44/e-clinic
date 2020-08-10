@@ -76,10 +76,10 @@ public class UserService {
                 .orElseThrow(() -> new NotFoundException("Nie znaleziono użytkownika " +email));
     }
 
-    public void setPassword(String username, String password){
-        UserEntity userToUpdate = userRepository.findByEmail(username)
-                .orElseThrow(() -> new NotFoundException("Nie znaleziono użytkownika " +username));
-        userToUpdate.setPassword(passwordEncoder.encode(password));
+    public void setPassword(User user){
+        UserEntity userToUpdate = userRepository.findById(user.getId())
+                .orElseThrow(() -> new NotFoundException("Nie znaleziono użytkownika " +user.getEmail()));
+        userToUpdate.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(userToUpdate);
     }
 
