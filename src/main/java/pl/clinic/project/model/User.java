@@ -19,7 +19,7 @@ public class User {
 
     private Integer id;
     @Email
-    @NotBlank
+//    @NotBlank
     private String email;
     private String password;
     private UserRole role;

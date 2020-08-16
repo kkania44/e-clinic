@@ -29,21 +29,27 @@ public class MvcPatientController {
 
     public MvcPatientController(PatientService patientService, UserService userService) {
         this.patientService = patientService;
-        this.userService=userService;
+        this.userService = userService;
     }
 
-    @GetMapping("/addPatient")
+    @GetMapping
     @PreAuthorize("isAuthenticated()")
-    ModelAndView addNewPatientPage() {
-        ModelAndView mav = new ModelAndView("patients/addPatient.html");
-        mav.addObject("patient", new Patient());
-        return mav;
+    ModelAndView addNewPatientPage(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user.getPatientId() == null) {
+            ModelAndView mav = new ModelAndView("patients/addPatient.html");
+            mav.addObject("patient", new Patient());
+            return mav;
+        } else {
+            return new ModelAndView("patients/patientPanel.html");
+        }
     }
 
-    @PostMapping("/addPatient")
+    @PostMapping
     @PreAuthorize("isAuthenticated()")
-    String addNewPatient (@Valid @ModelAttribute("patient") Patient patient, BindingResult bindingResult,
-                          Model model, HttpSession session) {
+    String addNewPatient (@Valid @ModelAttribute("patient") Patient patient,
+                          BindingResult bindingResult,
+                          HttpSession session) {
         if (bindingResult.hasErrors()) {
             return "patients/addPatient.html";
         }
@@ -78,7 +84,7 @@ public class MvcPatientController {
 
     @GetMapping("/patientPanel")
     @PreAuthorize("hasRole('USER_PATIENT')")
-    String patientPanelPage(Model model) {
+    String showPatientPanel(Model model) {
         String name = getUsername();
         User user = userService.getByEmail(name);
         model.addAttribute("user", user);
@@ -87,7 +93,7 @@ public class MvcPatientController {
             model.addAttribute("patient", patient);
             return "patients/patientPanel.html";
         } else {
-            return "redirect:/patients/addPatient";
+            return "redirect:/patients";
         }
     }
 
