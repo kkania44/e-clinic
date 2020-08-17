@@ -3,26 +3,21 @@ package pl.clinic.project.mvc;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import pl.clinic.project.entities.UserEntity;
+import pl.clinic.project.UserRole;
 import pl.clinic.project.model.User;
 import pl.clinic.project.repositories.UserRepository;
 import pl.clinic.project.service.UserService;
-
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
@@ -85,9 +80,10 @@ class MvcUserControllerTest {
 
     @Test
     public void addingNewUserTest() throws Exception {
+        User user = new User(1, "user@wp.pl", "pass", UserRole.USER_PATIENT, null,null);
         //when
         ResultActions resultActions = mockMvc
-                .perform(MockMvcRequestBuilders.post("/users/add"))
+                .perform(MockMvcRequestBuilders.post("/users/add", user))
                 .andDo(print());
         // then
         Mockito.verify(service).registerUserAsPatient(Mockito.any(User.class));
@@ -103,23 +99,9 @@ class MvcUserControllerTest {
                 .andDo(print());
         // then
         resultActions.andExpect(status().is2xxSuccessful())
-                .andExpect(model().attributeExists("username"));
+                .andExpect(model().attributeExists("user"));
     }
 
-//    @Test
-//    public void shouldResetPassword() throws Exception {
-//        User user = new User();
-//        user.setEmail("user@wp.pl");
-//        // when
-//        Mockito.when(repository.findByEmail(user.getEmail())).thenReturn(Optional.of(new UserEntity()));
-//        ResultActions resultActions = mockMvc
-//                .perform(MockMvcRequestBuilders.post("/users/resetPassword"))
-//                .andDo(print());
-//        // then
-//        Mockito.verify(service).setPassword(Mockito.any(User.class));
-//        resultActions.andExpect(status().is3xxRedirection())
-//                .andExpect(redirectedUrl("/login"));
-//    }
 
 
     private ResultActions getDefaultResultActions(String url) throws Exception {

@@ -1,9 +1,7 @@
 package pl.clinic.project.mvc;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -87,10 +85,9 @@ public class MvcUserController {
         try {
             User userFromDB = userService.getByEmail(user.getEmail());
             String password = PasswordGenerator.generate();
-            logger.log(Level.INFO, "Nowe hasło: " +password);//
+            logger.log(Level.INFO, "Nowe hasło: " +password);
 //        configure smtp client to send email with new password
 //        sendSimpleMail(username, "Reset hasła", "Hasło zresetowane. Twoje nowe hasło: " +password);
-
             userFromDB.setPassword(password);
             userService.setPassword(userFromDB);
         } catch (NotFoundException e) {

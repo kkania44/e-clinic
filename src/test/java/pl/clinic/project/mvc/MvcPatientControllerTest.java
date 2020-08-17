@@ -5,13 +5,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import pl.clinic.project.UserRole;
 import pl.clinic.project.entities.PatientEntity;
 import pl.clinic.project.model.Patient;
@@ -45,10 +45,26 @@ class MvcPatientControllerTest {
     @WithMockUser(roles = "USER_PATIENT")
     public void shouldDisplayAddPatientPage() throws Exception {
         // when
-        ResultActions resultActions = getResultActionFor("/patients");
+        ResultActions resultActions = mockMvc.perform(get("/patients")
+                .sessionAttr("user", new User()))
+                .andDo(print());
         // then
         resultActions.andExpect(status().is2xxSuccessful())
                 .andExpect(model().attributeExists("patient"));
+    }
+
+    @Test
+    @WithMockUser(roles = "USER_PATIENT")
+    public void shouldRedirectToPanelWhenPatientExists() throws Exception {
+        // given
+        User user = new User(1, "user@wp.pl", "pass", UserRole.USER_PATIENT, 1, null);
+        Patient patient = new Patient(1, "Name", "User", null, null);
+        // when
+        ResultActions resultActions = mockMvc.perform(get("/patients")
+                .sessionAttrs(Map.of("user", user, "patient", patient)))
+                .andDo(print());
+        // then
+        resultActions.andExpect(status().is2xxSuccessful());
     }
 
     @Test
