@@ -1,5 +1,5 @@
 # e-clinic
-Web application used to arranging appointments with doctors and managing them. <br> 
+Web application used for arranging appointments with doctors and managing them. <br> 
 Stack used in app: Spring Boot, Hibernate, MySQL, Thymeleaf, JUnit. <br>
 App contains:
 - user's authentication and authorization, <br>
