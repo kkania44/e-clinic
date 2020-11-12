@@ -1,7 +1,5 @@
 package pl.clinic.project.mvc;
 
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -12,26 +10,25 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import pl.clinic.project.service.MailService;
 import pl.clinic.project.exception.NotFoundException;
+import pl.clinic.project.model.Email;
 import pl.clinic.project.model.User;
 import pl.clinic.project.password_generator.PasswordGenerator;
 import pl.clinic.project.service.UserService;
 
 import javax.validation.Valid;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Controller
 @RequestMapping("/users")
 public class MvcUserController {
 
-    private final Logger logger = Logger.getLogger(MvcUserController.class.getName());
-    private JavaMailSender mailSender;
+    private MailService mailService;
     private UserService userService;
 
-    public MvcUserController(UserService userService, JavaMailSender mailSender) {
+    public MvcUserController(UserService userService, MailService mailService) {
         this.userService = userService;
-        this.mailSender = mailSender;
+        this.mailService = mailService;
     }
 
     @GetMapping("/add")
@@ -56,7 +53,7 @@ public class MvcUserController {
         userService.registerUserAsPatient(user);
 
 //        configure smtp client to send emails to users with confirmation
-//        sendSimpleMail(user.getEmail(), "Aktywacja konta", "Twoje konto w e-przychodni zostało aktywowane.");
+        mailService.sendMail(new Email(user.getEmail(), "Aktywacja konta", "Twoje konto w E-przychodni zostało aktywowane."));
         return "redirect:/login";
     }
 
@@ -85,9 +82,9 @@ public class MvcUserController {
         try {
             User userFromDB = userService.getByEmail(user.getEmail());
             String password = PasswordGenerator.generate();
-            logger.log(Level.INFO, "Nowe hasło: " +password);
-//        configure smtp client to send email with new password
-//        sendSimpleMail(username, "Reset hasła", "Hasło zresetowane. Twoje nowe hasło: " +password);
+            mailService.sendMail(new Email(userFromDB.getEmail(), "Reset hasła", "Twoje hasło w e-przychodni zostało zresetowane. \n" +
+                    "Nowe hasło: " +password));
+
             userFromDB.setPassword(password);
             userService.setPassword(userFromDB);
         } catch (NotFoundException e) {
@@ -97,14 +94,6 @@ public class MvcUserController {
         }
 
         return "redirect:/login";
-    }
-
-    private void sendSimpleMail(String to, String subject, String message) {
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(to);
-        mailMessage.setSubject(subject);
-        mailMessage.setText(message);
-        mailSender.send(mailMessage);
     }
 
 }

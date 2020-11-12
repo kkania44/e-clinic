@@ -13,9 +13,11 @@ import org.springframework.web.servlet.ModelAndView;
 import pl.clinic.project.AvailableDateTime;
 import pl.clinic.project.model.Doctor;
 import pl.clinic.project.model.DoctorWithCredentials;
+import pl.clinic.project.model.Email;
 import pl.clinic.project.model.User;
 import pl.clinic.project.password_generator.PasswordGenerator;
 import pl.clinic.project.service.DoctorService;
+import pl.clinic.project.service.MailService;
 import pl.clinic.project.service.UserService;
 
 import javax.validation.Valid;
@@ -32,12 +34,12 @@ public class MvcDoctorController {
 
     private final DoctorService doctorService;
     private final UserService userService;
-    private JavaMailSender mailSender;
+    private MailService mailService;
 
-    public MvcDoctorController(DoctorService doctorService, UserService userService, JavaMailSender mailSender) {
+    public MvcDoctorController(DoctorService doctorService, UserService userService, MailService mailService) {
         this.doctorService = doctorService;
         this.userService = userService;
-        this.mailSender = mailSender;
+        this.mailService = mailService;
     }
 
     @GetMapping("/addDoctor")
@@ -68,9 +70,7 @@ public class MvcDoctorController {
                 .build();
 
         userService.registerUserAsDoctor(user, doctorId);
-        Logger.getLogger(MvcDoctorController.class.getName()).log(Level.INFO, pass);
-//        configure smtp client to send emails with password to doctors
-//        sendSimpleMail(user.getEmail(), "Hasło do konta", "Hasło do twojego konta w e-przychodni: "+pass);
+        mailService.sendMail(new Email(user.getEmail(), "Hasło do konta", "Hasło do twojego konta w e-przychodni: " +pass));
         return "redirect:/users/admin";
     }
 
@@ -136,11 +136,4 @@ public class MvcDoctorController {
                 .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
     }
 
-    private void sendSimpleMail(String to, String subject, String message) {
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(to);
-        mailMessage.setSubject(subject);
-        mailMessage.setText(message);
-        mailSender.send(mailMessage);
-    }
 }
