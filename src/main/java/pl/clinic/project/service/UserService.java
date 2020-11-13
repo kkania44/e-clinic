@@ -63,11 +63,12 @@ public class UserService {
                 .orElseThrow(() -> new NotFoundException("Nie znaleziono usera"));
     }
 
-    public Integer getUserIdByDoctorId(Integer id) {
+    public User getUserByDoctorId(Integer id) {
         DoctorEntity doctor = doctorRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Nie znaleziono doktora"));
-        UserEntity user = userRepository.findAllByDoctor(doctor).get(0);
-        return user.getId();
+        return userRepository.findByDoctor(doctor)
+                .map(mapper::mapToApi)
+                .orElseThrow(() -> new NotFoundException("Nie znaleziono usera."));
     }
 
     public User getByEmail(String email) {

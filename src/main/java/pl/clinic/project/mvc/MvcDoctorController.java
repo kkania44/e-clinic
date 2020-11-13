@@ -1,32 +1,23 @@
 package pl.clinic.project.mvc;
 
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import pl.clinic.project.AvailableDateTime;
-import pl.clinic.project.model.Doctor;
-import pl.clinic.project.model.DoctorWithCredentials;
-import pl.clinic.project.model.Email;
-import pl.clinic.project.model.User;
+import pl.clinic.project.model.*;
 import pl.clinic.project.password_generator.PasswordGenerator;
 import pl.clinic.project.service.DoctorService;
 import pl.clinic.project.service.MailService;
 import pl.clinic.project.service.UserService;
 
 import javax.validation.Valid;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Controller
 @RequestMapping("/doctors")
@@ -122,10 +113,38 @@ public class MvcDoctorController {
         return "redirect:/doctors/panel";
     }
 
+    @GetMapping("/changePassword")
+    @PreAuthorize("hasRole('USER_DOCTOR')")
+    ModelAndView getChangingPasswordForm() {
+        ModelAndView mav = new ModelAndView("doctors/changePassword.html");
+        mav.addObject("newPassword", new NewPassword());
+        return mav;
+    }
+
+    @PostMapping("/changePassword")
+    @PreAuthorize("hasRole('USER_DOCTOR')")
+    String changePassword(@Valid @ModelAttribute("newPassword") NewPassword newPassword, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "doctors/changePassword";
+        }
+        if (newPassword.arePasswordsSame()) {
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            User user = userService.getByEmail(username);
+            user.setPassword(newPassword.getPassword1());
+            userService.setPassword(user);
+            return "redirect:/doctors/panel";
+        } else {
+            bindingResult.rejectValue("password1", "error.newPassword", "Hasła nie są takie same");
+            return "doctors/changePassword.html";
+        }
+    }
+
     @GetMapping("/delete/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     String deleteUserAndRelatedDoctor(@PathVariable("id") Integer id) {
-        Integer userIdToDelete = userService.getUserIdByDoctorId(id);
+        Integer userIdToDelete = userService
+                .getUserByDoctorId(id)
+                .getId();
         userService.deleteUser(userIdToDelete);
         return "redirect:/users/admin";
     }

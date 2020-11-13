@@ -20,4 +20,6 @@ public interface UserRepository extends JpaRepository <UserEntity, Integer> {
     List<UserEntity> findAllByPatientNotNull();
 
     Optional<UserEntity> findByPatient(PatientEntity patientEntity);
+
+    Optional<UserEntity> findByDoctor(DoctorEntity doctorEntity);
 }

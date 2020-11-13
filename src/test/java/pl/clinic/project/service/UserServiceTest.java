@@ -82,7 +82,7 @@ class UserServiceTest {
         // when
         Mockito.when(userRepository.findAllByDoctor(Mockito.any())).thenReturn(Collections.singletonList(user));
         Mockito.when(doctorRepository.findById(1)).thenReturn(Optional.of(doctor));
-        Integer actualId = service.getUserIdByDoctorId(1);
+        Integer actualId = service.getUserByDoctorId(1).getId();
         // then
         assertEquals(1, actualId);
     }
