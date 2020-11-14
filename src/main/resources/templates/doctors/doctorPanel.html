@@ -6,7 +6,6 @@
 </head>
 <body>
 <h4>Panel lekarza</h4>
-Twoje id: <span th:text="${doctorId}"></span>
 <h5>MENU</h5>
 
 Pokaż listę wizyt na dzień (plik PDF):
@@ -22,6 +21,8 @@ Data: <select name="pickedDate">
     <input type="submit" value="Pokaż">
 </form>
 <a th:href="@{/doctors/update/} + ${doctorId}">Edytuj swoje dane</a>
+<br>
+<a th:href="@{/users/changePassword}">Zmień hasło</a>
 <br>
 <a th:href="@{/logout}">Wyloguj się</a>
 <br>

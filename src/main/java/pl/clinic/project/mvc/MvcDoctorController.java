@@ -6,7 +6,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import pl.clinic.project.AvailableDateTime;
@@ -111,32 +110,6 @@ public class MvcDoctorController {
         }
         doctorService.updateDoctor(doctor);
         return "redirect:/doctors/panel";
-    }
-
-    @GetMapping("/changePassword")
-    @PreAuthorize("hasRole('USER_DOCTOR')")
-    ModelAndView getChangingPasswordForm() {
-        ModelAndView mav = new ModelAndView("doctors/changePassword.html");
-        mav.addObject("newPassword", new NewPassword());
-        return mav;
-    }
-
-    @PostMapping("/changePassword")
-    @PreAuthorize("hasRole('USER_DOCTOR')")
-    String changePassword(@Valid @ModelAttribute("newPassword") NewPassword newPassword, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "doctors/changePassword";
-        }
-        if (newPassword.arePasswordsSame()) {
-            String username = SecurityContextHolder.getContext().getAuthentication().getName();
-            User user = userService.getByEmail(username);
-            user.setPassword(newPassword.getPassword1());
-            userService.setPassword(user);
-            return "redirect:/doctors/panel";
-        } else {
-            bindingResult.rejectValue("password1", "error.newPassword", "Hasła nie są takie same");
-            return "doctors/changePassword.html";
-        }
     }
 
     @GetMapping("/delete/{id}")

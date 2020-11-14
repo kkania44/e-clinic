@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import pl.clinic.project.model.NewPassword;
 import pl.clinic.project.service.MailService;
 import pl.clinic.project.exception.NotFoundException;
 import pl.clinic.project.model.Email;
@@ -88,12 +89,38 @@ public class MvcUserController {
             userFromDB.setPassword(password);
             userService.setPassword(userFromDB);
         } catch (NotFoundException e) {
-            bindingResult.addError(new ObjectError("email", "Niepoprawny email"));
+            bindingResult.rejectValue("email", "error.user", "Niepoprawny email");
             user.setEmail("");
             return "/users/resetPassword.html";
         }
 
         return "redirect:/login";
+    }
+
+    @GetMapping("/changePassword")
+    @PreAuthorize("hasAnyRole('USER_PATIENT', 'USER_DOCTOR')")
+    ModelAndView getChangingPasswordForm() {
+        ModelAndView mav = new ModelAndView("users/changePassword.html");
+        mav.addObject("newPassword", new NewPassword());
+        return mav;
+    }
+
+    @PostMapping("/changePassword")
+    @PreAuthorize("hasAnyRole('USER_PATIENT', 'USER_DOCTOR')")
+    String changePassword(@Valid @ModelAttribute("newPassword") NewPassword newPassword, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "users/changePassword";
+        }
+        if (newPassword.arePasswordsSame()){
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            User user = userService.getByEmail(username);
+            user.setPassword(newPassword.getPassword1());
+            userService.setPassword(user);
+            return "redirect:/login";
+        } else {
+            bindingResult.rejectValue("password1", "error.newPassword", "Hasła nie są takie same");
+            return "users/changePassword.html";
+        }
     }
 
 }

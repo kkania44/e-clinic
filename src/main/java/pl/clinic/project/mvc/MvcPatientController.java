@@ -82,7 +82,7 @@ public class MvcPatientController {
         return "redirect:/patients/patientData";
     }
 
-    @GetMapping("/patientPanel")
+    @GetMapping("/panel")
     @PreAuthorize("hasRole('USER_PATIENT')")
     String showPatientPanel(Model model) {
         String name = getUsername();
