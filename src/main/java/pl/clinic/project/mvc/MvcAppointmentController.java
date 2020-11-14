@@ -95,7 +95,7 @@ public class MvcAppointmentController {
         appointment.setDoctorId(docId);
         appointmentService.createAppointment(appointment);
         status.setComplete();
-        return "redirect:/patients/patientPanel";
+        return "redirect:/patients/panel";
     }
 
     @GetMapping("/appointmentData")
