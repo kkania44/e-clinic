@@ -56,8 +56,8 @@ public class MvcPatientController {
         final PatientEntity addedPatient = patientService.createPatient(patient);
         User user = (User) session.getAttribute("user");
         user.setPatientId(addedPatient.getId());
-        userService.setPatientId(user);
-        return "redirect:/patients/patientPanel";
+        userService.setPatientId(user);K
+        return "redirect:/patients/panel";
     }
 
     @GetMapping("/update")
