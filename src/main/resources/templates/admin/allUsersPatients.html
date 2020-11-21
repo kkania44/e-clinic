@@ -1,33 +1,49 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <meta charset="UTF-8">
     <title>Lista pacjentów</title>
+    <style>
+        body {
+            padding-top: 100px;
+        }
+        @media (max-width: 979px) {
+            body {
+                padding-top: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <table>
-        <thead style="background-color: cadetblue">
-            <tr>
-                <td>Id.</td>
-                <td>Email</td>
-                <td>Id. Pacjenta</td>
-                <td>Imię</td>
-                <td>Nazwisko</td>
-                <td>PESEL</td>
-                <td>Numer telefonu</td>
-            </tr>
+<nav th:replace="fragments/navbar.html"></nav>
+
+<div class="container">
+    <h2>Lista pacjentów</h2>
+
+    <table class="table">
+        <thead class="thead-dark">
+        <tr class="text-center">
+            <th>Id</th>
+            <th>Email</th>
+            <th>Imię</th>
+            <th>Nazwisko</th>
+            <th>PESEL</th>
+            <th>Numer telefonu</th>
+        </tr>
         </thead>
-        <tbody>
-            <tr th:each="user : ${users}">
-                <td><span th:text="${user.userId}"></span></td>
-                <td><span th:text="${user.email}"></span></td>
-                <td><span th:text="${user.patientId}"></span></td>
-                <td><span th:text="${user.firstName}"></span></td>
-                <td><span th:text="${user.lastName}"></span></td>
-                <td><span th:text="${user.pesel}"></span></td>
-                <td><span th:text="${user.phoneNumber}"></span></td>
+        <tbody class="text-center">
+        <tr th:each="user : ${users}">
+            <td><span th:text="${user.userId}"></span></td>
+            <td><span th:text="${user.email}"></span></td>
+            <td><span th:text="${user.firstName}"></span></td>
+            <td><span th:text="${user.lastName}"></span></td>
+            <td><span th:text="${user.pesel}"></span></td>
+            <td><span th:text="${user.phoneNumber}"></span></td>
             </tr>
         </tbody>
     </table>
+    <a th:href="@{/users/admin}" class="btn btn-dark mb-3" >Wróć do panelu admina</a>
+</div>
 </body>
 </html>

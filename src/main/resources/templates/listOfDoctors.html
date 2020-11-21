@@ -19,7 +19,7 @@
 <nav th:replace="fragments/navbar.html"></nav>
 <div class="container">
     <h2>Lista lekarzy</h2>
-    <p>Wybierz z poniższej listy lekarza i umów się na konkretny dzień i godzinę</p>
+    <p th:if="${notAdmin}">Wybierz z poniższej listy lekarza i umów się na konkretny dzień i godzinę</p>
     <table class="table">
         <thead class="thead-dark">
         <tr class="text-center">

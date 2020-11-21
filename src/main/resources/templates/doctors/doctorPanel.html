@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <meta charset="UTF-8">
     <title>Panel lekarza</title>
 </head>
 <body>
-<h4>Panel lekarza</h4>
-<h5>MENU</h5>
+<nav th:replace="fragments/navbar.html"></nav>
+<br>
 
-Pokaż listę wizyt na dzień (plik PDF):
+<h4>Panel lekarza</h4>
+
+Wygeneruj listę wizyt PDF na dzień:
 <form th:action="@{/appointments/date/} +${doctorId}" method="get">
 Data: <select name="pickedDate">
 
@@ -18,13 +21,12 @@ Data: <select name="pickedDate">
     </option>
 </select>
     <br>
-    <input type="submit" value="Pokaż">
+    <input type="submit" value="Generuj">
 </form>
 <a th:href="@{/doctors/update/} + ${doctorId}">Edytuj swoje dane</a>
 <br>
 <a th:href="@{/users/changePassword}">Zmień hasło</a>
 <br>
 <a th:href="@{/logout}">Wyloguj się</a>
-<br>
 </body>
 </html>
