@@ -84,7 +84,7 @@ class MvcPatientControllerTest {
         // then
         Mockito.verify(userService, Mockito.times(1)).setPatientId(Mockito.any(User.class));
         resultActions.andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/patients/patientPanel"));
+                .andExpect(redirectedUrl("/patients/panel"));
     }
 
     @Test
@@ -96,7 +96,7 @@ class MvcPatientControllerTest {
         // when
         Mockito.when(userService.getByEmail("user@wp.pl")).thenReturn(user);
         Mockito.when(patientService.getById(1)).thenReturn(patient);
-        ResultActions resultActions = getResultActionFor("/patients/patientPanel");
+        ResultActions resultActions = getResultActionFor("/patients/panel");
         // then
         resultActions.andExpect(model().attribute("user", user))
                 .andExpect(model().attribute("patient", patient))
@@ -110,7 +110,7 @@ class MvcPatientControllerTest {
         User user = new User(1, "user@wp.pl", "pass", UserRole.USER_PATIENT, null, null);
         // when
         Mockito.when(userService.getByEmail(Mockito.anyString())).thenReturn(user);
-        ResultActions resultActions = getResultActionFor("/patients/patientPanel");
+        ResultActions resultActions = getResultActionFor("/patients/panel");
         // then
         resultActions
                 .andExpect(status().is3xxRedirection())
@@ -121,7 +121,7 @@ class MvcPatientControllerTest {
     @WithMockUser(roles = "USER_DOCTOR")
     public void shouldNotLetDoctorToPatientPanel() throws Exception {
         // when
-        ResultActions resultActions = getResultActionFor("/patients/patientPanel");
+        ResultActions resultActions = getResultActionFor("/patients/panel");
         // then
         resultActions.andExpect(status().is4xxClientError());
     }

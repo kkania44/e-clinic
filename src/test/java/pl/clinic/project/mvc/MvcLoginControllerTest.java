@@ -43,7 +43,7 @@ class MvcLoginControllerTest {
         // then
 
         resultActions.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
-                .andExpect(MockMvcResultMatchers.redirectedUrl("/patients/patientPanel"));
+                .andExpect(MockMvcResultMatchers.redirectedUrl("/patients/panel"));
     }
 
     @Test
