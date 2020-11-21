@@ -20,7 +20,7 @@
                 <a class="nav-link" th:href="@{/users/add}">Zarejestruj się</a>
             </li>
             <li class="nav-item" sec:authorize="hasRole('USER_PATIENT')">
-                <a class="nav-link" th:href="@{/patients/patientPanel}">Panel pacjenta</a>
+                <a class="nav-link" th:href="@{/patients/panel}">Panel pacjenta</a>
             </li>
             <li class="nav-item" sec:authorize="hasRole('ADMIN')">
                 <a class="nav-link" th:href="@{/users/admin}">Panel admina</a>
