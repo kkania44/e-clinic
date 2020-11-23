@@ -87,13 +87,13 @@ public class MvcUserController {
     @PostMapping("/resetPassword")
     String resetPassword(@Valid @ModelAttribute("user") User user, BindingResult bindingResult) {
         try {
-            User userFromDB = userService.getByEmail(user.getEmail());
+            user = userService.getByEmail(user.getEmail());
             String password = PasswordGenerator.generate();
-            mailService.sendMail(new Email(userFromDB.getEmail(), "Reset hasła", "Twoje hasło w e-przychodni zostało zresetowane. \n" +
+            mailService.sendMail(new Email(user.getEmail(), "Reset hasła", "Twoje hasło w e-przychodni zostało zresetowane. \n" +
                     "Nowe hasło: " +password));
 
-            userFromDB.setPassword(password);
-            userService.setPassword(userFromDB);
+            user.setPassword(password);
+            userService.setPassword(user);
         } catch (NotFoundException e) {
             bindingResult.rejectValue("email", "error.user", "Niepoprawny email");
             user.setEmail("");

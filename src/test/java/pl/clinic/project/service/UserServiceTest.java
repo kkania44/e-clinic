@@ -2,6 +2,7 @@ package pl.clinic.project.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mockito;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -9,6 +10,7 @@ import pl.clinic.project.UserRole;
 import pl.clinic.project.entities.DoctorEntity;
 import pl.clinic.project.entities.PatientEntity;
 import pl.clinic.project.entities.UserEntity;
+import pl.clinic.project.exception.AlreadyExistsException;
 import pl.clinic.project.mapper.UserMapper;
 import pl.clinic.project.model.User;
 import pl.clinic.project.repositories.DoctorRepository;
@@ -52,9 +54,32 @@ class UserServiceTest {
         // given
         User user = getSampleUserPatient();
         // when
+        Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.empty());
         service.registerUserAsPatient(user);
         // then
         Mockito.verify(userRepository, Mockito.times(1)).save(Mockito.any(UserEntity.class));
+    }
+
+    @Test
+    public void shouldNotAddPatientWithDuplicatedEmail() {
+        //given
+        User user = getSampleUserPatient();
+        // when
+        Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(new UserEntity()));
+        Executable expected = () -> service.registerUserAsPatient(user);
+        //then
+        assertThrows(AlreadyExistsException.class, expected);
+    }
+
+    @Test
+    public void shouldNotAddDoctorWithDuplicatedEmail() {
+        // given
+        User userDoc = getSampleUserDoctor();
+        // when
+        Mockito.when(userRepository.findByEmail(userDoc.getEmail())).thenReturn(Optional.of(new UserEntity()));
+        Executable expected = () -> service.registerUserAsDoctor(userDoc, userDoc.getDoctorId());
+        // then
+        assertThrows(AlreadyExistsException.class, expected);
     }
 
     @Test

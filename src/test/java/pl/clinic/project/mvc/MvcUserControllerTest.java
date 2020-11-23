@@ -4,6 +4,7 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
+import org.mockito.internal.verification.Times;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,11 +16,18 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import pl.clinic.project.UserRole;
+import pl.clinic.project.model.Email;
 import pl.clinic.project.model.User;
 import pl.clinic.project.repositories.UserRepository;
+import pl.clinic.project.service.MailService;
 import pl.clinic.project.service.UserService;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -33,9 +41,10 @@ class MvcUserControllerTest {
 
     @MockBean
     UserRepository repository;
-
     @MockBean
     UserService service;
+
+    MailService mailService = Mockito.mock(MailService.class);
 
     @Test
     @WithMockUser(roles = "ADMIN")
@@ -83,10 +92,10 @@ class MvcUserControllerTest {
         User user = new User(1, "user@wp.pl", "pass", UserRole.USER_PATIENT, null,null);
         //when
         ResultActions resultActions = mockMvc
-                .perform(MockMvcRequestBuilders.post("/users/add", user))
+                .perform(post("/users/add", user))
                 .andDo(print());
         // then
-        Mockito.verify(service).registerUserAsPatient(Mockito.any(User.class));
+        verify(service).registerUserAsPatient(any(User.class));
         resultActions.andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/login"));
     }
@@ -95,16 +104,14 @@ class MvcUserControllerTest {
     public void passwordResetPageTest() throws Exception {
         // when
         ResultActions resultActions = mockMvc
-                .perform(MockMvcRequestBuilders.get("/users/resetPassword"))
+                .perform(get("/users/resetPassword"))
                 .andDo(print());
         // then
         resultActions.andExpect(status().is2xxSuccessful())
                 .andExpect(model().attributeExists("user"));
     }
 
-
-
     private ResultActions getDefaultResultActions(String url) throws Exception {
-        return mockMvc.perform(MockMvcRequestBuilders.get("/users/"+url)).andDo(print());
+        return mockMvc.perform(get("/users/"+url)).andDo(print());
     }
 }
