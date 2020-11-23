@@ -10,6 +10,7 @@ import pl.clinic.project.UserRole;
 import pl.clinic.project.entities.DoctorEntity;
 import pl.clinic.project.entities.PatientEntity;
 import pl.clinic.project.entities.UserEntity;
+import pl.clinic.project.exception.AlreadyExistsException;
 import pl.clinic.project.exception.NotFoundException;
 import pl.clinic.project.mapper.UserMapper;
 import pl.clinic.project.model.Patient;
@@ -32,22 +33,32 @@ public class UserService {
     private final DoctorRepository doctorRepository;
 
     public void registerUserAsDoctor(User user, Integer doctorId) {
-        UserEntity userEntity = UserEntity.builder()
-                .email(user.getEmail())
-                .password(passwordEncoder.encode(user.getPassword()))
-                .role(UserRole.USER_DOCTOR.getName())
-                .doctor(doctorRepository.findById(doctorId).get())
-                .build();
-        userRepository.save(userEntity);
+        Optional<UserEntity> userByEmail = userRepository.findByEmail(user.getEmail());
+        if (userByEmail.isPresent()) {
+            throw new AlreadyExistsException("Użytkownik o podanym adresie email już istnieje");
+        } else {
+            UserEntity userEntity = UserEntity.builder()
+                    .email(user.getEmail())
+                    .password(passwordEncoder.encode(user.getPassword()))
+                    .role(UserRole.USER_DOCTOR.getName())
+                    .doctor(doctorRepository.findById(doctorId).get())
+                    .build();
+            userRepository.save(userEntity);
+        }
     }
 
     public void registerUserAsPatient(User user) {
-        UserEntity userEntity = UserEntity.builder()
-                .email(user.getEmail())
-                .password(passwordEncoder.encode(user.getPassword()))
-                .role(UserRole.USER_PATIENT.getName())
-                .build();
-        userRepository.save(userEntity);
+        Optional<UserEntity> userByEmail = userRepository.findByEmail(user.getEmail());
+        if (userByEmail.isPresent()) {
+            throw new AlreadyExistsException("Użytkownik o podanym adresie email już istnieje");
+        } else {
+            UserEntity userEntity = UserEntity.builder()
+                    .email(user.getEmail())
+                    .password(passwordEncoder.encode(user.getPassword()))
+                    .role(UserRole.USER_PATIENT.getName())
+                    .build();
+            userRepository.save(userEntity);
+        }
     }
 
     public List<User> getAllUsersPatients() {

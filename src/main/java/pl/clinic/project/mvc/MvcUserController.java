@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import pl.clinic.project.exception.AlreadyExistsException;
 import pl.clinic.project.model.NewPassword;
 import pl.clinic.project.service.MailService;
 import pl.clinic.project.exception.NotFoundException;
@@ -49,13 +50,18 @@ public class MvcUserController {
     String addNewUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("errors", bindingResult.getAllErrors());
-            return "error.html";
+            return "users/registerUser.html";
         }
-        userService.registerUserAsPatient(user);
-
+        try {
+            userService.registerUserAsPatient(user);
 //        configure smtp client to send emails to users with confirmation
-        mailService.sendMail(new Email(user.getEmail(), "Aktywacja konta", "Twoje konto w E-przychodni zostało aktywowane."));
-        return "redirect:/login";
+            mailService.sendMail(new Email(user.getEmail(), "Aktywacja konta", "Twoje konto w E-przychodni zostało aktywowane."));
+            return "redirect:/login";
+        } catch (AlreadyExistsException e) {
+            bindingResult.rejectValue("email", "error.user", e.getMessage());
+            user.setEmail("");
+            return "users/registerUser.html";
+        }
     }
 
     @GetMapping("/admin")

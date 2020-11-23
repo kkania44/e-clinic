@@ -32,6 +32,7 @@
                 </div>
                 <input type="email" class="form-control" id="inputEmail" placeholder="Email" required name="un" th:field="*{email}">
             </div>
+            <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Password Error</p>
         </div>
     </div>
     <div class="form-row">

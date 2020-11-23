@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import pl.clinic.project.AvailableDateTime;
+import pl.clinic.project.exception.AlreadyExistsException;
 import pl.clinic.project.model.*;
 import pl.clinic.project.password_generator.PasswordGenerator;
 import pl.clinic.project.service.DoctorService;
@@ -45,23 +46,29 @@ public class MvcDoctorController {
 
     @PostMapping("/addDoctor")
     @PreAuthorize("hasRole('ADMIN')")
-    String addNewDoctor(@Valid @ModelAttribute("doctor") DoctorWithCredentials doctor, BindingResult bindingResult, Model model) {
+    String addNewDoctor(@Valid @ModelAttribute("doctor") DoctorWithCredentials doctor, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "admin/addDoctor.html";
         }
-        Doctor doctorToAdd = new Doctor(null, doctor.getFirstName(), doctor.getLastName(),
-                                        doctor.getSpeciality(), doctor.getPhoneNumber());
-        Integer doctorId = doctorService.createDoctor(doctorToAdd);
-        String pass = PasswordGenerator.generate();
+        try {
+            Doctor doctorToAdd = new Doctor(null, doctor.getFirstName(), doctor.getLastName(),
+                    doctor.getSpeciality(), doctor.getPhoneNumber());
+            Integer doctorId = doctorService.createDoctor(doctorToAdd);
+            String pass = PasswordGenerator.generate();
 
-        User user = User.builder()
-                .email(doctor.getLogin())
-                .password(pass)
-                .build();
+            User user = User.builder()
+                    .email(doctor.getLogin())
+                    .password(pass)
+                    .build();
 
-        userService.registerUserAsDoctor(user, doctorId);
-        mailService.sendMail(new Email(user.getEmail(), "Hasło do konta", "Hasło do twojego konta w e-przychodni: " +pass));
-        return "redirect:/users/admin";
+            userService.registerUserAsDoctor(user, doctorId);
+            mailService.sendMail(new Email(user.getEmail(), "Hasło do konta", "Hasło do twojego konta w e-przychodni: " + pass));
+            return "redirect:/users/admin";
+        } catch (AlreadyExistsException e) {
+            bindingResult.rejectValue("login", "doctor.error", e.getMessage());
+            doctor.setLogin("");
+            return "admin/addDoctor.html";
+        }
     }
 
     @GetMapping("/panel")
