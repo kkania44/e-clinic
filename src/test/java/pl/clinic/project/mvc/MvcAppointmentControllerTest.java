@@ -72,7 +72,7 @@ class MvcAppointmentControllerTest {
         // then
         verify(appointmentService).createAppointment(Mockito.any(Appointment.class));
         resultActions.andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/patients/patientPanel"));
+                .andExpect(redirectedUrl("/patients/panel"));
     }
 
     @Test

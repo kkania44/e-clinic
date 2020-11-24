@@ -105,7 +105,7 @@ class UserServiceTest {
         DoctorEntity doctor = new DoctorEntity(1, "doc1@wp.pl", "1242", UserRole.USER_DOCTOR.getName(), null, null);
         UserEntity user = new UserEntity(1, "user@wp.pl", "password", UserRole.USER_DOCTOR.getName(), null, null);
         // when
-        Mockito.when(userRepository.findAllByDoctor(Mockito.any())).thenReturn(Collections.singletonList(user));
+        Mockito.when(userRepository.findByDoctor(Mockito.any(DoctorEntity.class))).thenReturn(Optional.of(user));
         Mockito.when(doctorRepository.findById(1)).thenReturn(Optional.of(doctor));
         Integer actualId = service.getUserByDoctorId(1).getId();
         // then
