@@ -5,7 +5,11 @@ App contains:
 - user's authentication and authorization, <br>
 - panel for patients: <br>
 Patient can: sign up, log in, reset/change password, provide personal data and update it, make an appointment - choose date and doctor, cancel an appointment, delete account. <br>
-- panel for doctors (in plain html): <br>
+- panel for doctors: <br>
 Doctor can: log in, reset/change password, provide personal data, get information about their patient, list appointments on choosen day. <br>
 - panel for admin: <br>
 Admin can manage patients, doctors and appointments, create accounts for doctors.
+- simple front-end with Bootstrap
+
+App demo: 
+https://youtu.be/YClDl6SuGTw
